@@ -191,7 +191,7 @@ the end of this case study are:
 
 #### Data import and wrangling
 
-See [this case
+See [the part 1 case
 study](https://github.com/opencasestudies/ocs-bp-RTC-wrangling) for the
 data import and data wrangling details.
 

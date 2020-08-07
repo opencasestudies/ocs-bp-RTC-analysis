@@ -114,7 +114,7 @@ The skills, methods, and concepts that students will be familiar with by the end
 
 #### Data import and wrangling
 
-See [this case study](https://github.com/opencasestudies/ocs-bp-RTC-wrangling) for the data import and data wrangling details. 
+See [the part 1 case study](https://github.com/opencasestudies/ocs-bp-RTC-wrangling) for the data import and data wrangling details. 
 
 #### Data Visualization
 
