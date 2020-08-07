@@ -7,9 +7,9 @@ output: md_document
 
 # OpenCaseStudies
 
-<!-- badges: start -->
-[![R build status](https://github.com/opencasestudies/ocs-bp-RTC-analysis/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-bp-RTC-analysis/actions)
-<!-- badges: end -->
+ <!-- badges: start -->
+  [![R build status](https://github.com/opencasestudies/ocs-bp-RTC-analysis/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-bp-RTC-analysis/actions)
+  <!-- badges: end -->
 
 ### Disclaimer 
 
