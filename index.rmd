@@ -102,7 +102,7 @@ AVOCADO: I like the graphic! Should we mention this process is actually investig
 Hmm, bummer this is not in PMC for a free version....
 
 However, we will focus particularly on multicollinearity and how it can influence the results we get from linear regression. 
-Specifically, this analysis will demonstrate how methodological details can be critically influential for our overall conclusions and can result in important policy related consequences. The [Donohue, et al. article]((https://www.nber.org/papers/w23510.pdf){target="_blank"}) will provide a basis for the motivation. 
+Specifically, this analysis will demonstrate how methodological details can be critically influential for our overall conclusions and can result in important policy related consequences. The [Donohue, et al. article]((https://www.nber.org/papers/w23510.pdf){target="_blank"}) will provide the motivation and illustration. 
 
 #### {.reference_block}
 
@@ -167,6 +167,7 @@ Specifically, we will consider the two ways to define the demographic variables 
 AVOCADO: Should these data science learning objectives be updated now that we have split the case studies? I know some  of these are covered in the other one (I think items 1-5), so perhaps we can indicate that with a different  font, or an asterisk and refer the reader to the other case study?
 
 We will especially focus on using packages and functions from the [`tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as `dplyr` and `ggplot2`. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+AVOCADO: Change "efficient" to whatever Mike Love suggested?
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
@@ -191,11 +192,11 @@ However, there are no federal laws about carrying firearms in public.
 
 These laws are created and enforced at the US state level. 
 States vary greatly in their laws about the right to carry firearms. 
-Some require extensive effort to obtain a permit to legally carry a firearm, while other states require very minimal effort to legally carry a firearm.
+Some require extensive effort to obtain a permit to legally carry a firearm, while other states require very minimal effort to do so.
 
 <details> <summary> Click here for more information on history of right-to-carry policies in the US. </summary>
 
-According to [Wikipedia](https://en.wikipedia.org/wiki/History_of_concealed_carry_in_the_U.S.){target="_blank"} about the history of right-to-carry policies in the United States:
+According to the [Wikipedia entry](https://en.wikipedia.org/wiki/History_of_concealed_carry_in_the_U.S.){target="_blank"} about the history of right-to-carry policies in the United States:
 
 > Public perception on concealed carry vs open carry has largely flipped. In the early days of the United States, open carrying of firearms, long guns and revolvers was a common and well-accepted practice. Seeing guns carried openly was not considered to be any cause for alarm. Therefore, anyone who would carry a firearm but attempt to conceal it was considered to have something to hide, and presumed to be a criminal. For this reason, concealed carry was denounced as a detestable practice in the early days of the United States.
 
@@ -221,7 +222,7 @@ You can see that no state in the US currently has a "Rights Infringed/Non-Issue"
 However the level of restrictions is dramatically different from one state to another.
 
 
-AVOCADO: I put this next section in a details clickable box. My sense is that we should delete this information entirely from the case study, but keeping it for now and will come back and decide at the end if we want to keep it after I look through the whole thing. 
+AVOCADO: I put this next section in a details clickable box. My sense is that we should delete this information entirely from the case study, but keeping it for now and will come back and decide at the end if we want to keep it after I look through the whole thing. I agree this part can be dropped (MAT)
 
 <details> <summary> Click here for more information on right-to-carry policies over time. </summary>
 
@@ -282,13 +283,14 @@ knitr::include_graphics(here("img", "RTC_map.png"))
 ```
 States with laws of the category rights restricted - very limited issue (red) are considered as not having a permissive right-to-carry law. Recall that no states currently have a rights infringed/non-issue law.
 
-States of all other categories (shall issue, discretionary/reasonable issue, and no permit required) (all shades of blue) are considered the same in our analysis, as having a permissive right-to-carry law.
+States of all other categories (shall issue, discretionary/reasonable issue, and no permit required, all shades of blue) are considered the same in our analysis, as having a permissive right-to-carry law.
 
-3) Because our analysis is an oversimplification, our analysis should not be used for determining policy changes, instead we suggest that users consult with a specialist.
+3) Because our analysis is an oversimplification, the results presented here should not be used for determining policy changes; instead we suggest that users interested in such a determination consult with a specialist.
 
 avocado - this is from Michael and very important... not sure how we want to word this...
+I have tried editing it some more, but I agree that we should have someone else take a look at it as well. (MAT)
 
-It is important to note that we do not treat race as an objective measure. Despite this, it can be used to advance scientific inquiry. For more information on this topic, we have included a link to a [paper on the use of race as a measure in epidemiology](https://academic.oup.com/epirev/article/22/2/187/456942). 
+4) It is important to note that we do not treat race as an objective measure. While we recognize the limitations around determining and reporting race, and interpretation of any observed difference by race, we believe including race as an explanatory variable in an epidemiological study can be useful to advance scientific inquiry. For more information on this topic, we have included a link to a [paper on the use of race as a measure in epidemiology](https://academic.oup.com/epirev/article/22/2/187/456942). 
 
 
 We will begin by loading the packages that we will need:
@@ -372,11 +374,11 @@ knitr::include_graphics(here("img", "ourdata.png"))
 ***
 avocado:add link below
 
-See [this case study](needlink){target="_blank"} for details about data import and wrangling.
+See [this case study](needlink){target="_blank"} for details about data import and wrangling. We include data sources here for completeness, but will start from processed data in this case study.
 
 ## Demographic and population data
 
-To obtain information about age, sex, and race, and overall population we will use US Census Bureau data, just like both of the articles. The census data is available for different time spans. Here are the links for the years used in our analysis. We will use data from 1977 to 2010.
+To obtain information about age, sex, race, and overall population size we will use US Census Bureau data, as was done in both of the articles. The census data is available for different time spans. Here are the links for the years used in our analysis. We will use data from 1977 to 2010.
 
 Data   | Link                                                                        
 ---------- |-------------
@@ -424,9 +426,11 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 
 ###### *ML is abbreviated as LM in the source article
 
-We can see that only the percentage of males that were from age 15-39 of the race groups (black, white, and other) were used in the Donohue analysis.
+We can see that only the percentage of males that were from age 15-39 of the race groups (black, white, and other) were used in the Donohue analysis, whereas the Mustard and Lott paper, individuals from ages 10 to over 65 were used.
 
-Ultimately we made a tibble of data that was similar to each analysis. We will load this data now, which is located in the `data` directory. We can use the `here()` function of the `here` package to easily locate it.
+The final product from our data wrangling are two tibbles of data with variables selected to be similar to those used in each analysis. The overarching idea of this case study is to compare the model results from these two data sets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the data sets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multi-collinearity on our modeling results.
+
+We will load this data now, which is located in the `data` directory. We can use the `here()` function of the `here` package to easily locate it.
 
 ```{r}
 load(file = here::here("data", "Wrangled_data.rda"))
@@ -449,7 +453,7 @@ DONOHUE_DF %>%
    colnames()
 ```
 
-Lastly, we will check that the `YEAR` values are the same. We can use the `setequal()` function of the `dplyr` package to see if the values are the same. 
+Lastly, we will check that the `YEAR` values are the same, i.e., that the two tibbles contain data from the same set of years. We can use the `setequal()` function of the `dplyr` package to see if the values are the same. 
 
 ```{r}
 setequal(DONOHUE_DF %>% distinct(YEAR),
