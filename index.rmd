@@ -66,7 +66,7 @@ Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hi
 # **Motivation**
 *** 
 
-This case study will introduce the topic of [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity){target="_blank"}, which occurs in regression when one or more independent variable can be predicted by other independent varaibles. 
+This case study will introduce the topic of [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity){target="_blank"}, which occurs in regression when one or more independent variables can be predicted by other independent varaibles. 
 
 We will do so by showcasing a real world example where multicollinearity in part resulted in historically controversial and conflicting findings about the influence of the adoption of right-to-carry (RTC) concealed handgun laws on violent crime rates in the United States. 
 
@@ -88,17 +88,18 @@ knitr::include_graphics(here("img", "Donohue.png"))
 
 ##### [[source]](https://www.nber.org/papers/w23510.pdf){target="_blank"}
 
-This has been a controversial topic as many other articles also had conflicting results. See [here](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"} for a list of studies.
+This has been a controversial topic as many other analyses also produced conflicting results. See [here](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"} for a list of studies.
 
-The [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} article discusses how there are many other important methodological aspects besides [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity){target="_blank"} (which occurs when independent varaibles are highly related in a regression analysis) that could account for the historically conflicting results in these previous papers.
+The [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} article discusses how there are many other important methodological aspects besides [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity){target="_blank"} (which occurs when predictor or input variables are highly related in a regression analysis) that could account for the historically conflicting results in these previous manuscripts.
 
-In fact, nearly every aspect of the data analysis process was different between the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} analysis and the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} analysis.
+In fact, nearly every aspect of the data analysis process was different between the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} and [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} analyses.
 
 ```{r, echo=FALSE, out.height = '75%', out.width = '75%', fig.align='center'}
 knitr::include_graphics(here("img", "Educational_Graphic1.jpg"))
 ```
 
 AVOCADO: I like the graphic! Should we mention this process is actually investigating the replicability (e.g. this paper https://www.nature.com/articles/s41562-019-0629-z) of the study as starting with the data are different? 
+Hmm, bummer this is not in PMC for a free version....
 
 However, we will focus particularly on multicollinearity and how it can influence the results we get from linear regression. 
 Specifically, this analysis will demonstrate how methodological details can be critically influential for our overall conclusions and can result in important policy related consequences. The [Donohue, et al. article]((https://www.nber.org/papers/w23510.pdf){target="_blank"}) will provide a basis for the motivation. 
@@ -112,7 +113,7 @@ David B. Mustard & John Lott. Crime, Deterrence, and Right-to-Carry Concealed Ha
 ####
 
 
-Before we leave this section, we provide a high-level overview of what variables were (or were not) included in the [Donohue, Aneja and Weber](https://www.nber.org/papers/w23510.pdf){target="_blank"}) (DAW) paper and the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} (ML) paper:
+Before we leave this section, we provide a high-level overview of what variables were (or were not) included in the [Donohue, Aneja and Weber](https://www.nber.org/papers/w23510.pdf){target="_blank"} (DAW) paper and the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} (ML) paper:
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
@@ -124,7 +125,7 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 
 ###### *ML is abbreviated as LM in the source article
 
-**Note**: We are not attempting to re-create the analyses from the original authors. Instead, we aim to use a subset of the listed explanatory variables in this case study to demonstrate multicollinearity. These variables will be consistent for both analyses that we will perform, with the exception that one analysis will have 6 demographic variables like the analysis in the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} article and the other will have 36 demographic variables like the analysis in the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} article.
+**Note**: We are not attempting to re-create the analyses from the original authors. Instead, we aim to use a subset of the listed explanatory variables in this case study to demonstrate multicollinearity. These variables will be consistent for both analyses that we will perform, with the exception that one analysis will have 6 demographic variables as in the analysis in the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} article and the other will have 36 demographic variables as in the analysis in the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} article.
 
 
 # **Main Question**
@@ -137,7 +138,9 @@ What is the effect of multicollinearity on linear regression models when analyzi
 
 ####
 
-Specifically, we will consider the two ways to define the demographic variables (as described above) and investigate how the inclusion of different numbers of age groups influence the results of an analysis of right to carry laws and violence rates.
+AVOCADO: perhaps change main question to What is the effect of multicollinearity on coefficient estimates from linear regression models when analyzing right to carry laws and violence rates?
+
+Specifically, we will consider the two ways to define the demographic variables (as described above) and investigate how the inclusion of different numbers of age groups influences the results of an analysis of right to carry laws and violence rates.
 
 
 # **Learning Objectives** 
@@ -145,11 +148,11 @@ Specifically, we will consider the two ways to define the demographic variables 
 
 <u>**Statistical Learning Objectives:**</u> 
 
-1. What multicollinearity is and how it can influence linear regression coefficients?
-2. How to look for the presence of multicollinarity and determine the severity?
-3. The difference between multicollinearity and correlation.
-4. Implementation of panel regression analysis (`plm`).
-5. Calculation of VIF (`car`).
+1. Provide an illustration of what multicollinearity is and how it can influence linear regression coefficients.
+2. Demonstrate how to look for the presence of multicollinarity and determine its severity.
+3. Illustrate the difference between multicollinearity and correlation.
+4. Provide tools and guidance on the implementation of panel regression analysis (`plm` package).
+5. Define and show how to calculate a variance inflation factor (VIF) (`car` package).
 
 <u>**Data science Learning Objectives:**</u>
 
@@ -161,6 +164,7 @@ Specifically, we will consider the two ways to define the demographic variables 
 6. Data visualizations (`ggplot2`).
 7. Sampling subsets of data (`rsample`).
 
+AVOCADO: Should these data science learning objectives be updated now that we have split the case studies? I know some  of these are covered in the other one (I think items 1-5), so perhaps we can indicate that with a different  font, or an asterisk and refer the reader to the other case study?
 
 We will especially focus on using packages and functions from the [`tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as `dplyr` and `ggplot2`. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
 
@@ -802,7 +806,7 @@ Again, the p-value is much smaller than the significance threshold of < 0.05. Th
 
 
 
-There is one more test that we could perform. To test if using a random effect model would be more appropriate compared to the fixed effect model, one could use the [Hausmen test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} for this (also called the Durbin-Wu-Hausman test). This can be implemented using the `phtest()` function of the `plm` package.
+There is one more test that we could perform. To test if using a random effect model would be more appropriate compared to the fixed effect model, one could use the [Hausman test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} for this (also called the Durbin-Wu-Hausman test). This can be implemented using the `phtest()` function of the `plm` package.
 
 ```{r}
 
@@ -924,7 +928,7 @@ comparing_analyses <- DONOHUE_OUTPUT_TIDY %>%
 comparing_analyses
 ```
 
-We can see that for the first analysis (similar to the [Donohue et al.](https://www.nber.org/papers/w23510.pdf) {target="_blank"} study) the coefficient estimate for the presence of a permissive Right-to-carry law is positive, while for the second analysis (similar to the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} study) the coefficient estimate is negative. Thus in the first analysis we could conclude that the effect of adopting permissive right-to-carry laws  may be associated with increases in violent crime (although this was not a significant result (in contrast with the real [Donohue et al.](https://www.nber.org/papers/w23510.pdf) {target="_blank"} study )); while in the other analysis we could conclude that the laws may be associated with decreases in violent crime.
+We can see that for the first analysis (similar to the [Donohue et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} study) the coefficient estimate for the presence of a permissive Right-to-carry law is positive, while for the second analysis (similar to the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} study) the coefficient estimate is negative. Thus in the first analysis we could conclude that the effect of adopting permissive right-to-carry laws  may be associated with increases in violent crime (although this was not a significant result (in contrast with the real [Donohue et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} study )); while in the other analysis we could conclude that the laws may be associated with decreases in violent crime.
 
 Let's make a plot of this finding. We will show error bars for the coefficient estimates for both analyses using the `geom_errorbar()` function of the `ggplot2` package. This requires specifying the minimum and maximum for our error bar, which in our case we would like to be the low and high values of our confidence intervals for the coefficient estimates. We will also add a horizontal line at y = 0 using the `geom_hline()` function of the `ggplot2` package. 
 
@@ -1004,7 +1008,7 @@ When seemingly independent variables are highly related to one another, the rela
 
 In regression analysis, this distortion is often a by-product of a violation of the independence assumption. This distortion, if large enough, can impact statistical inference. 
 
-The phenomena called multicollinearity occurs when independent variables are highly related to one another
+The phenomenon called multicollinearity occurs when independent variables are highly related to one another
 
 There are several ways we can diagnose multicollinearity.
 
@@ -1026,7 +1030,7 @@ According to [Wikipedia](https://en.wikipedia.org/wiki/Multicollinearity){target
 
 > multicollinearity (also collinearity) is a phenomenon in which one predictor variable in a multiple regression model can be linearly predicted from the others with a substantial degree of accuracy. 
 
-Thus collinearity describes linear prediction or association. Often those variables will be highly correlated.
+Thus collinearity describes linear prediction or association between variables. Often those variables will be highly correlated.
 
 The issue with this in linear regression, is that linear regression aims to determine how a one unit change in a regressor influences a one unit change in the dependent variable. In fact, this is what the coefficient estimates aim to tell us for each regressor.
 
@@ -1384,6 +1388,8 @@ simulation_plot
 
 ```
 
+AVOCADO: Is it possible to reorder the variables so they are more consistent between the two panels? I would like the variables that are exactly shared to be grouped together on one side or the other in the same order, and the demographic variables grouped together, more or less in the same order (i.e., black, white and then other, for example).
+
 We can see that the range of coefficient estimates when only one observation is removed is much larger in Analysis 2 for nearly all variables, but particularly for many of the additional demographic variables.
 
 Let's make a plot showing the summary of the overall coefficient instability.
@@ -1419,6 +1425,8 @@ simulation_plot <- coeff_sd %>%
 simulation_plot
 
 ```
+
+AVOCADO: What terms are shown in this plot? All of them? A particular one?
 
 Here we can clearly see that overall the coefficient estimates are much less stable in Analysis 2. This is a clear indication that we have multicollinearity.
 
@@ -1520,7 +1528,7 @@ According to [Wikipedia](https://en.wikipedia.org/wiki/Variance_inflation_factor
 
 VIF values can be calculated for each explanatory variable in a model by performing the following calculation:
 
-1) Run another ordinary least squares (OLS) linear regression with one of the explanatory  variables of your model of interest ($Xi$) as the dependent variable and keep the remaining explanatory variables as explanatory variables.
+1) Run another ordinary least squares (OLS) linear regression with one of the explanatory  variables of your model of interest ($X_i$) as the dependent variable and keep the remaining explanatory variables as explanatory variables.
 
 So generically speaking say this is our model:
 
@@ -1531,7 +1539,7 @@ If we want to calculate the VIF value for $X_1$ we would need to perform another
 
 $$X_1 = β_0 +  β_2X_2 + β_3X_3 $$
 
-The [$R^2$ coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination){target="_blank"} also called R squared value from this regression is then used to calculate the VIF as follows:
+The [$R^2$ coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination){target="_blank"}(also called R squared value) from this regression is then used to calculate the VIF as follows:
 
 $$\frac{1}{1-R^{2}}$$
 
@@ -1549,9 +1557,11 @@ Recall that according to [Wikipedia](https://en.wikipedia.org/wiki/Variance_infl
 
 > The variance inflation factor (VIF) is the **quotient of the variance in a model with multiple terms by the variance of a model with one term alone**.
 
-The $R^2$ value ranges from 0 to 1. Thus, if a variation of a variable is highly explained by the other variables, the $R^2$ will approach 1. Thus the denominator in the VIF calculation $1-R_i^{2}$ (which is sometimes referred to as tolerance) will be smaller and the VIF value will be larger.
+The $R^2$ value ranges from 0 to 1. Thus, if the variation of one variable is highly explained by the other variables, the $R^2$ will approach 1. Thus the denominator in the VIF calculation $1-R_i^{2}$ (which is sometimes referred to as tolerance) will be smaller and the VIF value will be larger.
 
 Thus, **higher VIF vales** indicate **more severe multicollinearity**. Typically a threshold of a tolerance of less than 0.10 and/or a VIF of 10 and above is used as a rule of thumb to determine if the presence of multicollinearity might be problematic.
+
+AVOCADO: Is there a good reference for the above statement?
 
 Please see this [article](https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf){target="_blank"} for a thorough explanation of how to interpret VIF values and how to decide what to do if your model has high multicollinearity.
 
@@ -1562,6 +1572,7 @@ We could do this manually creating many linear regressions, but that would obvio
 
 avocado: Idk if this is true or if we need to do what Michael did?
 https://stackoverflow.com/questions/20281055/test-for-multicollinearity-in-panel-data-r
+AVOCADO: When I read that entry, it looks like as long as you are using model="pooling" for the plm call, you are OK (not that I really know what is going on here -- I'll try to figure it out more)
 
 Since VIF values are calculated using only the independent variables, we don't need to worry about the effect of time and individuals in our calculation, thus we will use the pooled model. Otherwise, the `vif()` function is incompatible with the output from the `plm()` function.
 
@@ -1711,6 +1722,8 @@ vif_plot <- vif_df %>%
 vif_plot
 ```
 We can see that both analyses have some variables with relatively high multicollinearity, however analysis 2 has variables with very high multicollinearity.
+
+AVOCADO: change y-axis label  to log VIF
 
 In many cases it would be advisable to remove one or more of these variables and reassess the VIF values. There are also other options, such as [ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization){target="_blank"}. However, both of these options need to be done with care as they can also introduce bias into the model.
 
@@ -2136,12 +2149,12 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [Confidence intervals](https://en.wikipedia.org/wiki/Confidence_interval){target="_blank"}   
 [Linear regression](https://en.wikipedia.org/wiki/Linear_regression){target="_blank"}  
 [panel regression analysis](https://en.wikipedia.org/wiki/Panel_analysis){target="_blank"}   
-[Hausmen test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} 
+[Hausman test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} 
 [Resampling](https://en.wikipedia.org/wiki/Resampling_(statistics)){target="_blank"}   
 [Variance inflation factor (VIF)](https://en.wikipedia.org/wiki/Variance_inflation_factor){target="_blank"}   
 [$R^2$ coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination){target="_blank"}   
 [Ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization){target="_blank"}  
-[LaTeX mathematical notation](https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html)target="_blank"}   
+[LaTeX mathematical notation](https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html){target="_blank"}   
 
 For more information on linear regression see this [book](https://rafalab.github.io/dsbook/linear-models.html#linear-regression-in-the-tidyverse){target="_blank"} and this [case study](https://opencasestudies.github.io/ocs-bp-diet/){target="_blank"}.
 
