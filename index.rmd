@@ -428,7 +428,7 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 
 We can see that only the percentage of males that were from age 15-39 of the race groups (black, white, and other) were used in the Donohue analysis, whereas the Mustard and Lott paper, individuals from ages 10 to over 65 were used.
 
-The final product from our data wrangling are two tibbles of data with variables selected to be similar to those used in each analysis. The overarching idea of this case study is to compare the model results from these two data sets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the data sets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multi-collinearity on our modeling results.
+The final products from our data wrangling are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two data sets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the data sets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multi-collinearity on our modeling results, which is the main objective of this case study.
 
 We will load this data now, which is located in the `data` directory. We can use the `here()` function of the `here` package to easily locate it.
 
@@ -464,16 +464,18 @@ setequal(DONOHUE_DF %>% distinct(YEAR),
 # **Data Exploration**
 ***
 
- Let's do some quick visualizations to get a sense of our outcome of interest, the violent crime data. 
+Let's do some quick visualizations to get a sense of our outcome of interest, the violent crime data. 
  
 First we will plot the rate of violent crime over time to get a sense of the general trend.
 
 To do so we need to summarise the data for each year across all of the states. 
-Thus we will use the `group_by()` function and the `summarise()` functions to calculate an overall sum of violent crime relative to the population for each year. 
+Thus we will use the `group_by()` function and the `summarise()` functions to calculate an overall number of violent crimes relative to the total population for each year. In fact, we will calculate the log of the number of violent crimes per 100,000 individuals, as this will make it easier to see the trend in the data. In addition, by looking at the rate per 100,000 individuals, we can more directly compare crime statistics across groups like states with different populations, as you will see below.
+
+AVOCADO: is there another good motivation for converting the units like this? I think it is worth explaining as transformations/interpretability are important components of data science.
 
 Then we will use the `ggplot2` package to plot the data. The first step in creating a plot with this package is to use the `ggplot()` function and the `aes()` argument to specify what data should be plotted on the x-axis and what data should be plotted in on the y-axis. Then we select what type of plot we would like to make using one of the `geom_*()` functions. Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details.
 
-We can use the `scale_x_continuous()` and `scale_y_continuous()` functions to  modify the axis labels.
+We can use the `scale_x_continuous()` and `scale_y_continuous()` functions to modify the axis tick marks and their labels.
 
 The `labs()` function can be used to add labels to the plot, while the `theme()` function allows for manipulation of the details of the labels, like size and angle. 
 
@@ -547,12 +549,12 @@ DONOHUE_DF %>%
 
 ```
 
-Looks like the crime rages vary quite a bit from one state to another. Some states show increased crime over time while others show decreased crime. 
+It looks like the crime rates vary quite a bit from one state to another. Some states show increased crime over time while others show decreased crime. 
 
 
 Now let's take a closer look at some of our other variables.
 
-We can also use the `vis_miss()` function of the `naniar` package to confirm that there are no missing values.
+As we do this, we may start to run into issues with missing data for some of our variables, and it is always good to be aware of missing data in any data analysis. We can use the `vis_miss()` function of the `naniar` package to confirm that there are no missing values.
 
 ```{r}
 DONOHUE_DF %>%
@@ -569,14 +571,14 @@ LOTT_DF %>%
 ```
 Same for the `LOTT_DF`.
 
-We can use the `skim()` of the `skimr` package to get a better sense of the data. This also shows missingness, as well as standard deviations, spread, and means for our data. Also notice that there is a histogram of each variable.
+We can use the `skim()` of the `skimr` package to get a better sense of the data. This also shows missingness, as well as standard deviations, spread, and means for our data. Also notice that there is a small histogram of each variable in the final column.
 
 ```{r}
 skimr::skim(DONOHUE_DF)
 skimr::skim(LOTT_DF)
 
 ```
-We can see from this function, that we have the number of variables of the class types that we expect for each tibble. We can also see that the mean of the variables that should be the same for each tibble are in fact the same. 
+We can see from this function that we have the number of variables of the class types that we expect for each tibble. We can also see that the means of the variables that should be the same for each tibble are in fact the same. 
 We can also tell that the values for the variables are in general what we would expect.
 
 # **Data Analysis**
@@ -586,7 +588,7 @@ We can also tell that the values for the variables are in general what we would 
 
 OK! We are now ready to start analyzing our data!. 
 
-We have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"} . This is a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, in this case we measure multiple individuals over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
+In these data sets, we have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}, a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, with measurements for multiple individuals/units of observation over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
 
 In a panel analysis there are $N$ individual panel members and $T$ time points.  
 
@@ -624,7 +626,7 @@ In an unbalanced panel, the number of observations is less than $N*T$.
 
 
 In our case we have:  
-$N$ = 45 states (recall that we removed those who had adopted a RTC law before 1980)  
+$N$ = 45 states (in the data wrangling process we removed those who had adopted an RTC law before 1980)  
 $T$ =  31 years (1980 - 2010)  
 
 In every year we have measurements for each state (as we just saw above), thus our panel is balanced.
@@ -652,20 +654,17 @@ Overall, they assume that the different individuals are independent, however the
 The main difference between the three sub-types are the assumptions about unobserved differences between individuals.
 
 
-1) **independently pooled panels**  - assumes that there are no individual effects that are independent of time and also no effect of time on all the individuals. In other words, the independent variables are not correlated with any error term. This is essentially an ordinary least squares linear regression. This type of panel regression makes the most assumptions and is therefore typically not used for panel data.
+1) **independently pooled panels**  - assumes that there are no individual effects that are independent of time and also no effect of time on all the individuals. In other words, the independent variables are not correlated with any error term. This is essentially an ordinary least squares linear regression. This type of panel regression makes the most assumptions and is therefore typically not used for panel data. In this case the model formulation is:
+$$Y_{it}=\beta_{0}+\beta_{1}x_{1it}+...+\beta_{K}X_{Kit} + e_{it}$$
+where the intercept $\beta_{0it}=\beta_0$for all $i,t$ and slope $\beta_{kit}=\beta_k$ for all $i,t$.
 
- $$Y_{it}=\beta_{0}+\beta_{1}x_{1it}+...+\beta__KX_{Kit} + e_{it}$$
-Where the intercept $\beta_0it=\beta_0$for all $i,t$ and slope $\beta_kit=\beta_k$ for all $i,t$.
-
-2) **fixed effects** - assumes that there are unknown or unobserved unique aspects about the individuals  or heterogeneity among individuals $B_0i$ that are not explained by the independent variables but influence the outcome variable of interest. They do not vary with time or in other words are fixed over time but may be **correlated** with independent variables $X_{it}$.  
-
+2) **fixed effects** - assumes that there are unknown or unobserved unique aspects about the individuals or heterogeneity among individuals $B_{0i}$ that are not explained by the independent variables but influence the outcome variable of interest. They do not vary with time or in other words are fixed over time but may be **correlated** with independent variables $X_{it}$.  
+ 
 In this case the intercept can be different for each individual $\beta_{0i}$, but the slope is the same across all the individuals.
-
-
+ 
 These individual $a_i$ effects can be correlated with the independent variables $X$.
-
-$$Y_{it}=\beta_{0i}+\beta_{1}X_{1it}+...\beta_{k}X_{kit}+e_it$$
-This type of panel regression makes the least assumptions.
+$$Y_{it}=\beta_{0i}+\beta_{1}X_{1it}+...\beta_{k}X_{kit}+e_{it}$$
+This type of panel regression makes the fewest assumptions.
 
 
 3) **random effects** - assumes that there are unknown or unobserved unique qualities about the individuals that influences the outcome variable of interest that are **not correlated** with the independent variables. 
@@ -676,7 +675,7 @@ $$Y_{it} =\beta_0 X_{it} +\beta_{1}X_{1it}+... \beta_k X_{kt} + e_{t}$$
 So each individual has the same slope and the same overall error term ($\beta + e_{t}$). 
 
 
-See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.htm) for more information about these different models.
+See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html) for more information about these different models.
 
 We will be performing a fixed effect panel regression analysis, as we do in fact think that some of the unobserved qualities about the different states that may be correlated with some of our independent variables. For example, the level of economic opportunity might be an unobserved feature about the states that influences violent crime rate and would be possibly correlated with poverty rate and unemployment. 
 
@@ -685,7 +684,7 @@ To perform our analysis we will be using the `plm` package. This stands for Pane
 
 We need to use a special type of data to use this package, called a `pdata.frame` which is short for panel data frame. This allows us to specify that we are using panel data and what the panel structure looks like. 
 
-We need to indicate variable should be used to identify the individuals in our panel, and what variable should be used to identify the time periods in our panel. In our case the `STATE` variable identifies the individuals and the `YEAR` variable identifies the time periods.
+We need to indicate which variable should be used to identify the individuals in our panel, and what variable should be used to identify the time periods in our panel. In our case the `STATE` variable identifies the individuals and the `YEAR` variable identifies the time periods.
 
 We can specify this structure using the `pdata.frame()` function of the `plm` package, by using the `index` argument, where the individual variable is specified first followed by the time variable, like so: `index=c("Individual_Variable_NAME", "Time_Period_Variable_NAME").
 
