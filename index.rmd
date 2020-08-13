@@ -658,20 +658,22 @@ The main difference between the three sub-types are the assumptions about unobse
 $$Y_{it}=\beta_{0}+\beta_{1}x_{1it}+...+\beta_{K}X_{Kit} + e_{it}$$
 where the intercept $\beta_{0it}=\beta_0$for all $i,t$ and slope $\beta_{kit}=\beta_k$ for all $i,t$.
 
-2) **fixed effects** - assumes that there are unknown or unobserved unique aspects about the individuals or heterogeneity among individuals $B_{0i}$ that are not explained by the independent variables but influence the outcome variable of interest. They do not vary with time or in other words are fixed over time but may be **correlated** with independent variables $X_{it}$.  
+2) **fixed effects** - assumes that there are unknown or unobserved unique aspects about the individuals or heterogeneity among individuals $a_i$ that are not explained by the independent variables but influence the outcome variable of interest. They do not vary with time or in other words are fixed over time but may be **correlated** with independent variables $X_{it}$.  
  
-In this case the intercept can be different for each individual $\beta_{0i}$, but the slope is the same across all the individuals.
+In this case the intercept can be different for each individual $\beta_{0i}$, but the other coefficients are assumed to be the same across all the individuals.
  
-These individual $a_i$ effects can be correlated with the independent variables $X$.
-$$Y_{it}=\beta_{0i}+\beta_{1}X_{1it}+...\beta_{k}X_{kit}+e_{it}$$
+These individual $a_i$ effects can be correlated with the independent variables $X$. This model can be expressed as
+$$Y_{it}=\beta_{0}+\beta_{1}X_{1it}+...\beta_{K}X_{Kit}+ a_i +e_{it}$$
+or alternatively the individual effects can be absorbed into an individual-specific intercept term $\beta_{0i}$:
+$$Y_{it}=\beta_{0i}+\beta_{1}X_{1it}+...\beta_{k}X_{kit} +e_{it}$$
 This type of panel regression makes the fewest assumptions.
 
 
-3) **random effects** - assumes that there are unknown or unobserved unique qualities about the individuals that influences the outcome variable of interest that are **not correlated** with the independent variables. 
+3) **random effects** - assumes that there are unknown or unobserved unique qualities about the individuals that influence the outcome variable of interest that are **not correlated** with the independent variables. 
 
 Thus, the random effects model actually makes **more assumptions** than the fixed effect model.
 
-$$Y_{it} =\beta_0 X_{it} +\beta_{1}X_{1it}+... \beta_k X_{kt} + e_{t}$$
+$$Y_{it} =\beta_0 X_{it} +\beta_{1}X_{1it}+... \beta_k X_{kit} + e_{t}$$
 So each individual has the same slope and the same overall error term ($\beta + e_{t}$). 
 
 
@@ -743,7 +745,7 @@ DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
 
 To see the results we can use the base `summary()` function. We can view this output in tidy format using the `tidy()` function of the `broom` package.
 
-We will add an `analysis` variable is a label for plots.
+We will add an `analysis` variable as a label for plots.
 
 ```{r}
 summary(DONOHUE_OUTPUT)
@@ -1011,7 +1013,7 @@ When seemingly independent variables are highly related to one another, the rela
 
 In regression analysis, this distortion is often a by-product of a violation of the independence assumption. This distortion, if large enough, can impact statistical inference. 
 
-The phenomenon called multicollinearity occurs when independent variables are highly related to one another
+The phenomenon called multicollinearity occurs when independent variables are highly related to one another.
 
 There are several ways we can diagnose multicollinearity.
 
@@ -1074,15 +1076,15 @@ We can see that for the non-demographic variables, there is very little correlat
 
 #### Heatmaps
 
-Another way to look at correlation if we have many variables is to use heatmaps.
+Another way to look at correlation if we have many variables is to use heatmaps where the intensity of the color indicates the strength of the correlation between two variables.
 
-Let's to this now for the demographic variables for each analysis.
+Let's do this now for the demographic variables for each analysis.
 
-The `ggcorrplot()` function of the `ggpcorplot` package is one way to create such a heatmap.
+The `ggcorrplot()` function of the `ggpcorrplot` package is one way to create such a heatmap.
 
 This requires first calculating the correlation values using the `cor()` function of the `stats` package.
 
-We will add a legend title to include $\rho$ by using the base `expression()` function, which will convert the written for of `"rho"` to the Greek symbol.
+We will add a legend title to include $\rho$ by using the base `expression()` function, which will convert the written form of `"rho"` to the Greek symbol.
 
 ```{r}
 cor_DONOHUE_dem <- cor(DONOHUE_DF %>% dplyr::select(contains("_years")))
