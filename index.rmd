@@ -588,7 +588,7 @@ We can also tell that the values for the variables are in general what we would 
 
 OK! We are now ready to start analyzing our data!. 
 
-In these data sets, we have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}, a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, with measurements for multiple individuals/units of observation over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
+In these data sets, we have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}, a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, with measurements for multiple individuals/units of observation over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
 
 In a panel analysis there are $N$ individual panel members and $T$ time points.  
 
@@ -654,7 +654,7 @@ Overall, they assume that the different individuals are independent, however the
 The main difference between the three sub-types are the assumptions about unobserved differences between individuals.
 
 
-1) **independently pooled panels**  - assumes that there are no individual effects that are independent of time and also no effect of time on all the individuals. In other words, the independent variables are not correlated with any error term. This is essentially an ordinary least squares linear regression. This type of panel regression makes the most assumptions and is therefore typically not used for panel data. In this case the model formulation is:
+1) **independently pooled panels**  - assumes that there are no individual effects that are independent of time and also no effect of time on all the individuals. In other words, the independent variables are not correlated with any error term. This is essentially an ordinary least squares linear regression. In our setting, it would mean treating each year-state observation as unrelated to the others, which probably does not make sense, since we expect observations within a state to be related to one another. This type of panel regression makes the most assumptions and is therefore typically not used for panel data. In this case the model formulation is:
 $$Y_{it}=\beta_{0}+\beta_{1}x_{1it}+...+\beta_{K}X_{Kit} + e_{it}$$
 where the intercept $\beta_{0it}=\beta_0$for all $i,t$ and slope $\beta_{kit}=\beta_k$ for all $i,t$.
 
@@ -669,22 +669,17 @@ $$Y_{it}=\beta_{0i}+\beta_{1}X_{1it}+...\beta_{k}X_{kit} +e_{it}$$
 This type of panel regression makes the fewest assumptions.
 
 
-3) **random effects** - assumes that there are unknown or unobserved unique qualities about the individuals that influence the outcome variable of interest that are **not correlated** with the independent variables. 
+3) **random effects** - assumes that there are unknown or unobserved unique qualities about the individuals that influence the outcome variable of interest that are **not correlated** with the independent variables. Thus, the random effects model actually makes **more assumptions** than the fixed effect model. We will not consider this model here.
 
-Thus, the random effects model actually makes **more assumptions** than the fixed effect model.
-
-$$Y_{it} =\beta_0 X_{it} +\beta_{1}X_{1it}+... \beta_k X_{kit} + e_{t}$$
-So each individual has the same slope and the same overall error term ($\beta + e_{t}$). 
-
-
+There is quite a lot of discussion in econometrics around which model is appropriate to use and when, but we are not going to dwell on this topic here, as our main focus in this case study is on multicollinearity. However, here are some additional references on these topics for further reading:
 See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html) for more information about these different models.
 
-We will be performing a fixed effect panel regression analysis, as we do in fact think that some of the unobserved qualities about the different states that may be correlated with some of our independent variables. For example, the level of economic opportunity might be an unobserved feature about the states that influences violent crime rate and would be possibly correlated with poverty rate and unemployment. 
+In our setting, we will be performing a fixed effect panel regression analysis, as we do in fact think that some of the unobserved qualities about the different states may be correlated with some of our independent variables. For example, the level of economic opportunity might be an unobserved feature about the states that influences violent crime rate and would be possibly correlated with poverty rate and unemployment. There are statistical tests for evaluating which model is the most appropriate, which are implemented in the `plm` package that we will be using.
 
 
 To perform our analysis we will be using the `plm` package. This stands for Panel Linear Model.
 
-We need to use a special type of data to use this package, called a `pdata.frame` which is short for panel data frame. This allows us to specify that we are using panel data and what the panel structure looks like. 
+We need to use a special type of data to use this package, called a `pdata.frame` which is short for panel data frame. This allows us to specify that we are using panel data and what the panel structure looks like, i.e., how the different observations are meant to be grouped together, both by state and by time. 
 
 We need to indicate which variable should be used to identify the individuals in our panel, and what variable should be used to identify the time periods in our panel. In our case the `STATE` variable identifies the individuals and the `YEAR` variable identifies the time periods.
 
@@ -704,7 +699,7 @@ OK, now we are ready to run our panel linear model on our panel data frame.
 
 To do so we will use the `plm()` function and we will specify the formula for our model, where the dependent variable `Viol_crime_rate_1k_log` will be on the left of our `~` sign and all of the independent variables will be listed on the right with `+` signs in between each.
 
-We also need to specify what type of `effect` we would like to model and what type of `model` we would like to use.
+As discussed above, there are different types of panel data analysis, and which type of model is fit is controlled by the `effect` and `model` arguments to `plm()`. So we need to specify what type of `effect` we would like to model and what type of `model` we would like to use.
 
 There are three main options for the `effect` argument:
 1) individual  - model for the effect of individual identity
@@ -719,11 +714,11 @@ There are four main options for the `model` argument:
 
 Typically it is best to think about what you are trying to evaluate with your data in trying to choose how to model your data. However, there are also some tests that can help to assess this which we will briefly cover.
 
-We are interested in how violence in each state varied over time, thus we are interested in within `STATE`variation, so we will perform our plm with the `model = within` argument to perform this particular type of fixed effects model. 
+We are interested in how violence in each state varied over time, thus we are interested in within `STATE`variation, so we will perform our PLM analysis with the `model = within` argument to perform this particular type of fixed effects model. 
 
-We also speculate that there is an effect of individual `STATE` identity and time on violent crime rate. In other words, we expect some states to have high rates of crime, and others to have low rates of crime. We also expect crime to change over time. 
+We also speculate that there is an effect of individual `STATE` identity and time on violent crime rate. In other words, we expect some states to have high rates of crime, and others to have low rates of crime. We also expect crime to change over time. This means we want to use the `effect = "twoways"` argument to `plm()`.
 
-If we were to perform this type of analysis we would use the `effect = "twoways"` argument in our `plm()` function like so:
+Here is how we would implement this for the Donohue data:
 
 ```{r}
 DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
@@ -757,126 +752,16 @@ DONOHUE_OUTPUT_TIDY
 DONOHUE_OUTPUT_TIDY$Analysis <- "Analysis 1"
 ```
 
-We will now perform a test to determine if we could have simply used a pooled model. This test evaluates if the coefficients (including the intercepts) are equal.  To perform this test we will use the `pooltest()` function of the `plm` package to compare the pooled model to the fixed effect within model.
+As discussed above, we are choosing to use a fixed effects model because we believe it is most appropriate for our data. However, there are statistical tests implemented in the `plm` package that would allow us to test whether one of the other models would be as appropriate for our data. For example, we could perform a test to determine if we could have simply used a pooled model, i.e., the test evaluates whether the coefficients (including the intercepts) are equal across individuals. This test is implemented in the `pooltest()` function of the `plm` package and performs a comparison between the pooled model to the fixed effect within model. To test if using a random effect model would be more appropriate compared to the fixed effect model, one could use the [Hausman test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} (also called the Durbin-Wu-Hausman test). This test is implemented using the `phtest()` function of the `plm` package.
 
-```{r}
-pooltest(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag, 
-         data = d_panel_DONOHUE, 
-         model = "within")
-
-```
-
-The `p-value` is less than a significance threshold of .05, thus we reject the null that our coefficients are all equal. Thus the `within` fixed effects model fit the data better.
-
-
-We can also perform a test to evaluate if there is indeed an individual effect and a time effect in our model.
-
-We can use the `plmtest()` function of the `plm` package. This performs a Lagrange Multiplier Test. To do so, we need to get the output for a simple pooled model.
-
-```{r}
-
-DONOHUE_pool_model <-plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                        model = "pooling",
-                        data=d_panel_DONOHUE)
-
-plmtest(DONOHUE_pool_model, effect = c("twoways"))
-
-```
-
-Again, the p-value is much smaller than the significance threshold of < 0.05. Therefore we reject the null that there are no effects, and we can feel confident with proceeding with a twoway effect model.
-
-
-
-
-
-There is one more test that we could perform. To test if using a random effect model would be more appropriate compared to the fixed effect model, one could use the [Hausman test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} for this (also called the Durbin-Wu-Hausman test). This can be implemented using the `phtest()` function of the `plm` package.
-
-```{r}
-
-DONOHUE_random_model <-  plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                      effect = "twoways",
-                      model = "random",
-                      data=d_panel_DONOHUE)
-
-DONOHUE_within_model <-  plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                       effect = "twoways",
-                       model = "within",
-                       data=d_panel_DONOHUE)
-
-phtest(DONOHUE_within_model, DONOHUE_random_model)
-
-```
-
-This test evaluates if there are errors $u_i$ that are correlated with any of the independent variables. 
-
-We reject the null hypothesis, that there are no inconsistencies, and are confirmed in our plan to used a fixed effects model.
-
-
+Finally, we could also perform a test to evaluate if there is indeed an individual effect and a time effect in our model using the `plmtest()` function of the `plm` package. 
 
 For more information on these tests and this package, see [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
-
-avocado-  what do you think about referencing these slides from Princeton?
-
-
-A final note about the fixed and random effects terminology and how this is slightly different than other definitions:
-
-According to the documentation for the [PLM package](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html):
->The fixed/random effects terminology in econometrics is often recognized to be misleading, as both are treated as random variates in modern econometrics (see, e.g., Wooldridge (2002) 10.2.1). It has been recognized since Mundlak’s classic paper (Mundlak (1978)) that the fundamental issue is whether the unobserved effects are correlated with the regressors or not. In this last case, they can safely be left in the error term, and the serial correlation they induce is cared for by means of appropriate GLS transformations. On the contrary, in the case of correlation, “fixed effects” methods such as least squares dummy variables or time-demeaning are needed, which explicitly, although inconsistently27, estimate a group– (or time–) invariant additional parameter for each group (or time period).
-
->Thus, from the point of view of model specification, having fixed effects in an econometric model has the meaning of allowing the intercept to vary with group, or time, or both, while the other parameters are generally still assumed to be homogeneous. Having random effects means having a group– (or time–, or both) specific component in the error term.
-
->In the mixed models literature, on the contrary, fixed effect indicates a parameter that is assumed constant, while random effects are parameters that vary randomly around zero according to a joint multivariate normal distribution.
 
 
 ## Mustard and Lott
 
-Ok, now we will do the same for the Mustard and Lott analysis. In this case we would have a very large formula to write. So instead, we can use the `as.formula()` function of the `stats` package and the base `paste()` function to combine all of our explanatory variables into one formula without making a mistake. First we will create an object where we select only for the explanatory variables. 
-
-avocado I tried using glue or dplyr::collapse to make this tidyverse but this didn't work
+Ok, now we will do the same for the Mustard and Lott analysis. In this case we would have a very large formula to write. So instead, we can use the `as.formula()` function of the `stats` package and the base `paste()` function to combine all of our explanatory variables into one formula without making a mistake. First we will create an object where we select only the explanatory variables. 
 
 ```{r}
 LOTT_variables <- LOTT_DF %>%
@@ -900,7 +785,7 @@ LOTT_fmla
 
 That is quite the formula!
 
-OK, now again we will make a panel data frame and we will perform fit a fixed effect two-way model for time and individuals (`STATE`) with this data as well.
+OK, now again we will make a panel data frame and we will fit a fixed effect two-way model for time and individuals (`STATE`) with this data as well.
 
 ```{r}
 
@@ -933,9 +818,9 @@ comparing_analyses <- DONOHUE_OUTPUT_TIDY %>%
 comparing_analyses
 ```
 
-We can see that for the first analysis (similar to the [Donohue et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} study) the coefficient estimate for the presence of a permissive Right-to-carry law is positive, while for the second analysis (similar to the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} study) the coefficient estimate is negative. Thus in the first analysis we could conclude that the effect of adopting permissive right-to-carry laws  may be associated with increases in violent crime (although this was not a significant result (in contrast with the real [Donohue et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} study )); while in the other analysis we could conclude that the laws may be associated with decreases in violent crime.
+We can see that for the first analysis (similar to the [Donohue et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} study) the coefficient estimate for the presence of a permissive right-to-carry law is positive, while for the second analysis (similar to the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} study) the coefficient estimate is negative. Thus in the first analysis we could conclude that the effect of adopting permissive right-to-carry laws  may be associated with increases in violent crime (although this was not a significant result (in contrast with the real [Donohue et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} study )); while in the other analysis we could conclude that the laws may be associated with decreases in violent crime.
 
-Let's make a plot of this finding. We will show error bars for the coefficient estimates for both analyses using the `geom_errorbar()` function of the `ggplot2` package. This requires specifying the minimum and maximum for our error bar, which in our case we would like to be the low and high values of our confidence intervals for the coefficient estimates. We will also add a horizontal line at y = 0 using the `geom_hline()` function of the `ggplot2` package. 
+Let's make a plot of this finding. We will show error bars for the coefficient estimates for both analyses using the `geom_errorbar()` function of the `ggplot2` package. This requires specifying the minimum and maximum for our error bar, which in our case will be the low and high values of our confidence intervals for the coefficient estimates. We will also add a horizontal line at y = 0 using the `geom_hline()` function of the `ggplot2` package. 
 
 Finally we will add arrows to emphasize the difference in the direction of the findings using the `geom_segment()` function of the `ggplot2` package. Using the `arrow()` function, we can specify details about the arrow we would like to add.
 
@@ -968,16 +853,16 @@ comparing_analyses_plot <- ggplot(comparing_analyses) +
 comparing_analyses_plot
 ```
 
-We can see that most of the possible range of values for the estimate in analysis 1 are positive, while they are all negative for analysis 2.
+We can see that the confidence interval from analysis 1 is mostly covering positive values, while the entire confidence interval is negative for analysis 2.
 
 # **Multicollinearity analysis**
 ***
 
 How did the above happen?
 
-The analysis data frames are very similar yet rendered very different results. 
+The analysis data frames are very similar yet yielded very different results. 
 
-Recall that the only difference is the number of demographic variables. The number of rows or observations is the same. We can use the `all_equal()` function of the `dplyr` package to compare the number of columns of our Donohue-like data and our Mustard and Lott-like data.
+Recall that the only difference between the two models is the number of demographic variables included as covariates. The number of rows or observations is the same, as are the outcome and the other covariates included in the model. We can use the `all_equal()` function of the `dplyr` package to compare the number of columns of our Donohue-like data and our Mustard and Lott-like data.
 
 ```{r}
 all_equal(target = DONOHUE_DF,
@@ -1039,15 +924,11 @@ Thus collinearity describes linear prediction or association between variables. 
 
 The issue with this in linear regression, is that linear regression aims to determine how a one unit change in a regressor influences a one unit change in the dependent variable. In fact, this is what the coefficient estimates aim to tell us for each regressor.
 
-However, if our regressors are also linearly related, than it becomes difficult to determine the effect of each regressor on the dependent variable and multicollinearity can cause instability in the estimation of [coefficient estimates](https://statisticsbyjim.com/glossary/regression-coefficient/){target="_blank"}, making them unreliable. Coefficients may be inflated, deflated, or their signs may change.
+However, if our regressors are also linearly related, than it becomes difficult to determine the effect of each regressor on the dependent variable and multicollinearity can cause instability in our [coefficient estimates](https://statisticsbyjim.com/glossary/regression-coefficient/){target="_blank"}, making them unreliable. Coefficients may be inflated, deflated, or their signs may change.
 
-avocado... what if the regressors have a nonlinear relationship??
+If you want to read further on this topic, [here](https://blog.clairvoyantsoft.com/correlation-and-collinearity-how-they-can-make-or-break-a-model-9135fbe6936a){target="_blank"} and [here](https://medium.com/swlh/multicollinearity-and-variance-inflation-factor-bc74af36b1c9){target="_blank"} are a couple of interesting discussions.
 
-
-avocado: I really liked these explanations - not sure if we want to include these as resources:
-https://blog.clairvoyantsoft.com/correlation-and-collinearity-how-they-can-make-or-break-a-model-9135fbe6936a
-
-https://medium.com/swlh/multicollinearity-and-variance-inflation-factor-bc74af36b1c9
+In the next sections, we will describe ways to detect multi-collinearity in our covariates both using visual displays of data and using computational techniques.
 
 #### Scatter plots
 
@@ -1076,15 +957,15 @@ We can see that for the non-demographic variables, there is very little correlat
 
 #### Heatmaps
 
-Another way to look at correlation if we have many variables is to use heatmaps where the intensity of the color indicates the strength of the correlation between two variables.
+Another way to look at correlation if we have many variables is to show the strength of correlation between pairs of variables using a heatmap, where the intensity of the color indicates the strength of the correlation between two variables.
 
 Let's do this now for the demographic variables for each analysis.
 
 The `ggcorrplot()` function of the `ggpcorrplot` package is one way to create such a heatmap.
 
-This requires first calculating the correlation values using the `cor()` function of the `stats` package.
+As input to the plotting function, we first need to calculate the correlation values, which we will do using the `cor()` function of the `stats` package.
 
-We will add a legend title to include $\rho$ by using the base `expression()` function, which will convert the written form of `"rho"` to the Greek symbol.
+To label our legend with the Greek letter $\rho$, we will use the base `expression()` function, which will convert the written form of `"rho"` to the Greek letter.
 
 ```{r}
 cor_DONOHUE_dem <- cor(DONOHUE_DF %>% dplyr::select(contains("_years")))
@@ -1116,7 +997,7 @@ corr_mat_LOTT <- ggcorrplot(cor_LOTT_dem,
 
 corr_mat_LOTT
 ```
-We can see that many of the demographic variables are highly correlated with one another. 
+We can see that many of the demographic variables are highly correlated with one another, either positively or negatively. In this case, the sign does not matter, in terms of the effect the collinearity could have on our modeling results. 
 
 
 The presence of correlation between variables suggests that we might have multicollinearity. However it does not necessarily mean that we do. So how can we assess this?
@@ -1124,7 +1005,7 @@ The presence of correlation between variables suggests that we might have multic
 
 ### Coefficient estimate instability
 
-One way to look at the possible influence of multicollinearity is to look at the stability of the coefficient estimates.
+One way to look at the possible influence of multicollinearity is to look at the stability of the coefficient estimates under perturbations of the data.
 
 We will focus on the `RTC_LAW` variable coefficient estimate, as this is of particular interest in our case.
 
@@ -1137,12 +1018,12 @@ We will use the `loo_cv()` function which stands for **leave one out** [cross va
 
 This function will however only prepare the data to be split.
 
-To actually get the remaining data after the removal of the observation that is left out when need to use a function called `training()`. This is because these functions are often used for in machine learning applications where the data is split between a larger training set and a smaller testing set. Thus we want the larger $n-1$ subset, as opposed to the single value that is removed, (which we could get with the `testing()` function)
+To get the remaining data after the removal of the observation that is left out we will use a function called `training()`. These function names arise from the fact that these functions are often used for in machine learning applications where the data is split between a larger training set and a smaller testing set. Thus we want the larger $n-1$ subset, as opposed to the single value that is removed, (which we could get with the `testing()` function).
 
 
 <details> <summary> Click here to see an example of how this works. </summary>
 
-First we will make a toy dataset that is very simple called test using the `tibble()` function of the `tidyr` package:
+First we will make a toy dataset that is very simple called `test` using the `tibble()` function of the `tidyr` package:
 ```{r}
 test <-tidyr::tibble(x = c(1,2,3))
 test
@@ -1154,7 +1035,7 @@ test_samples <- test %>% loo_cv()
 test_samples
 ```
 
-We can take a look at one individual split using the `pull()` function:
+We can take a look at a single split of the data using the `pull()` function:
 
 ```{r}
 pull(test_samples, splits)
@@ -1179,9 +1060,9 @@ We can see that there are 3 possible subsets that leave one value out. All 3 pos
 </details>
 
 
-Now we will use this method with the data from our Donohue-like analysis, since this data has `dim(d_panel_DONOHUE)[1]` rows, `dim(d_panel_DONOHUE)[1]` subsets will be created that leave out one row.
+Now we will use this method with the data from our Donohue-like analysis, and since this data has `r dim(d_panel_DONOHUE)[1]` rows, `r dim(d_panel_DONOHUE)[1]` subsets will be created that leave out one row. The idea is to fit our panel regression model on each subset of the data, and then examine how the coefficient estimates from each of these model fits vary as the sample changes slightly. With collinear predictors, we expect that our coefficient estimates may be unstable and subject to change under even small perturbations of the data.
 
-First we will create the splits using the `loo_cv()` function:
+First we will create the splits using the `loo_cv()` function. Notice that since this process involves randomly sampling data points from our data set, we use the `set.seed()` function to ensure reproducibility of the results.
 ```{r}
 set.seed(124)
 DONOHUE_splits <- d_panel_DONOHUE %>% loo_cv()
@@ -1198,7 +1079,7 @@ glimpse(DONOHUE_subsets[[1]])
 length(DONOHUE_subsets)
 ```
 
-As expected the first subset has 1,394 rows and there are 1395 subsets.
+As expected the first subset has 1394 rows and there are 1395 subsets.
 
 Let's see what observation was left out in the first subset:
 
@@ -1214,9 +1095,7 @@ DONOHUE_removed[[1]]
 
 It looks like the Texas data from 1988 was removed from the first split.
 
-
-OK, so now let's fit our panel regression on the first subset of data like we did previously. Note that this causes our data to be an unbalanced panel.
-This does not require any adjustment to the code to model the data, but you will notice that the output will now say "unbalanced".
+OK, so now let's fit our panel regression on the first subset of data like we did previously. Note that this causes our data to be an **unbalanced** panel. This does not require any adjustment to the code to model the data, but you will notice that the output will now say "unbalanced".
 
 ```{r}
  subset_1_result<-plm(Viol_crime_rate_1k_log ~
@@ -1240,7 +1119,7 @@ summary(subset_1_result)
 
 Indeed, we can see that now we have an unbalanced panel with N = 1394 observations instead of 1395, as expected.
 
-Now that we have our subsets, we want to write a function to fit a panel regression using `plm()`on each subsets. See [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"}  for more information on writing functions.
+Now that we have our subsets, we want to write a function to fit a panel regression using `plm()`on each subset. See [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more information on writing functions.
 
 ```{r}
 fit_nls_on_bootstrap_DONOHUE <- function(subset){
@@ -1329,7 +1208,7 @@ load(here::here("data", "LOTT_simulations.rda"))
 ```
 
 
-Now we will combine the output so that we can make a plot to visualize the results that we obtained. First let's name each subset that we created.
+Now we will combine the output so that we can make a plot to visualize the results that we obtained, i.e., to look at how the variation in our coefficient estimates across data subsets varies between the Donohue and the Lott and Mustard models. First let's name each subset that we created.
 
 ```{r}
 names(subsets_models_DONOHUE) <-     paste0("DONOHUE_",1:length(subsets_models_DONOHUE))
@@ -1393,7 +1272,36 @@ simulation_plot
 
 ```
 
-AVOCADO: Is it possible to reorder the variables so they are more consistent between the two panels? I would like the variables that are exactly shared to be grouped together on one side or the other in the same order, and the demographic variables grouped together, more or less in the same order (i.e., black, white and then other, for example).
+For our display purposes, we would like to order the covariates so that they are displayed similarly across the two panels. This will allow us to better observe how the coefficients of the same covariate behave in the different analyses. We use the `mutate` function to convert the `term` variable to a factor, where we assign the non-demographic variables to be the first levels, with the sorted (in alphabetical order) demographic variables coming afterwards.
+
+```{r}
+
+simulations <- simulations %>%
+                  mutate(term = factor(term, 
+                                       levels=c(str_subset(unique(pull(simulations, term)), "years", negate=TRUE), 
+                                                sort(str_subset(unique(pull(simulations, term)), "years")))))
+
+
+simulation_plot <- simulations %>%
+  ggplot(aes(x = term, y = estimate)) + 
+  geom_jitter(alpha = 0.25,
+              width = 0.1) + 
+  facet_grid(.~Analysis, scale = "free_x", space = "free", drop = TRUE) +
+  labs(title = "Coefficient instability",
+       subtitle = "Estimates sensitive to observation deletions",
+       x = "Term",
+       y = "Coefficient",
+       caption = "Results from simulations") + 
+  theme_linedraw() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_text(angle = 70, hjust = 1),
+        strip.text.x = element_text(size = 14, face = "bold"))
+
+simulation_plot
+
+
+```
+
 
 We can see that the range of coefficient estimates when only one observation is removed is much larger in Analysis 2 for nearly all variables, but particularly for many of the additional demographic variables.
 
@@ -1584,6 +1492,21 @@ Since VIF values are calculated using only the independent variables, we don't n
 Then we will create nicer looking output of the data using the `as_tibble()`function of the `tibble` package to create a tibble and add the variable names as another column.
 
 ```{r}
+
+DONOHUE_pool_model <-plm(Viol_crime_rate_1k_log ~
+                        RTC_LAW +
+                        White_Male_15_to_19_years +
+                        White_Male_20_to_39_years +
+                        Black_Male_15_to_19_years +
+                        Black_Male_20_to_39_years +
+                        Other_Male_15_to_19_years +
+                        Other_Male_20_to_39_years +
+                        Unemployment_rate +
+                        Poverty_rate + 
+                        Population_log + 
+                        police_per_100k_lag,
+                        model = "pooling",
+                        data=d_panel_DONOHUE)
 
 vif_DONOHUE <- vif(DONOHUE_pool_model)
 vif_DONOHUE 
