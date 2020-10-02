@@ -1241,7 +1241,7 @@ head(simulations)
 tail(simulations)
 ```
 
-Now we will make a jitter plot using the `geom_jitter()` function of the coefficient estimates of the `RTC_LAWTRUE` variable for each simulation.
+Now we will make a set of parallel boxplots using the `geom_boxplot()` function of the coefficient estimates of the `RTC_LAWTRUE` variable for each simulation.
 
 Since there are many variables in both analyses, we will use the `facet_grid()` function of the `ggplot2` package to allow us to separate the data for each analysis into subplots. The argument `scale = "free_x"` and `drop = TRUE` allow us to only include the variables that were present in Analysis 1, as opposed to empty spots for the variables that were in Analysis 2 but not in Analysis 1. The `space = "free"` argument removes the extra space from the dropped variables. 
 
@@ -1255,11 +1255,10 @@ What happens if don't use the `drop = TRUE` argument or the `space = "free"` arg
 ```{r}
 simulation_plot <- simulations %>%
   ggplot(aes(x = term, y = estimate)) + 
-  geom_jitter(alpha = 0.25,
-              width = 0.1) + 
+  geom_boxplot() +
   facet_grid(.~Analysis, scale = "free_x", space = "free", drop = TRUE) +
-  labs(title = "Coefficient instability",
-       subtitle = "Estimates sensitive to observation deletions",
+  labs(title = "Coefficient estimates",
+       subtitle = "Estimates across leave-one-out analyses",
        x = "Term",
        y = "Coefficient",
        caption = "Results from simulations") + 
@@ -1271,6 +1270,8 @@ simulation_plot <- simulations %>%
 simulation_plot
 
 ```
+
+Here, we can start to see that there is a bit more variability in the coefficient estimates from the leave-one-out results for Analysis 2.
 
 For our display purposes, we would like to order the covariates so that they are displayed similarly across the two panels. This will allow us to better observe how the coefficients of the same covariate behave in the different analyses. We use the `mutate` function to convert the `term` variable to a factor, where we assign the non-demographic variables to be the first levels, with the sorted (in alphabetical order) demographic variables coming afterwards.
 
@@ -1284,11 +1285,10 @@ simulations <- simulations %>%
 
 simulation_plot <- simulations %>%
   ggplot(aes(x = term, y = estimate)) + 
-  geom_jitter(alpha = 0.25,
-              width = 0.1) + 
+  geom_boxplot() +
   facet_grid(.~Analysis, scale = "free_x", space = "free", drop = TRUE) +
-  labs(title = "Coefficient instability",
-       subtitle = "Estimates sensitive to observation deletions",
+  labs(title = "Coefficient estimates",
+       subtitle = "Estimates across leave-one-out analyses",
        x = "Term",
        y = "Coefficient",
        caption = "Results from simulations") + 
@@ -1315,19 +1315,21 @@ coeff_sd <-simulations %>%
   summarise("SD" = sd(estimate))
 ```
 
+First, we will display an interactive table of these standard deviations. Try searching for "RTC", and you can compare the standard deviations of the coefficients for the `RTC_LAWTRUE` variable across the two analyses.
+
 ```{r}
 library(DT)
 DT::datatable(coeff_sd)
 ```
 
-Now we will make a plot of this data.
+Now we will make a plot of this data, including SDs from all coefficients in each model.
 
 ```{r}
 simulation_plot <- coeff_sd %>%
   ggplot(aes(x = Analysis, y = SD)) + 
  geom_jitter(width = 0.1, alpha = 0.5, size = 2) + 
-  labs(title = "Coefficient instability",
-       subtitle = "Coefficient estimates are unstable",
+  labs(title = "Coefficient variability",
+       subtitle = "SDs of coefficient estimates from leave-one-out analysis",
        x = "Term",
        y = "Coefficient Estimate \n Standard Deviations",
        caption = "Results from simulations") + 
@@ -1339,94 +1341,7 @@ simulation_plot
 
 ```
 
-AVOCADO: What terms are shown in this plot? All of them? A particular one?
-
-Here we can clearly see that overall the coefficient estimates are much less stable in Analysis 2. This is a clear indication that we have multicollinearity.
-
-from Michael
-```{r, eval = FALSE}
-sims <- 250
-
-# DONOHUE
-samps_DONOHUE <- lapply(rep(dim(DONOHUE_DF)[1]/2, sims),
-       function(x)DONOHUE_DF[sample(nrow(DONOHUE_DF),
-                                     size = x, replace = FALSE),])
-
-fit_nls_on_bootstrap_DONOHUE <- function(split){
-  plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-      data = data.frame(split),
-      index = c("STATE","YEAR"),
-      model = "within",
-      effect = "twoways")
-}
-  
-samps_models_DONOHUE <- lapply(samps_DONOHUE, fit_nls_on_bootstrap_DONOHUE)
-
-samps_models_DONOHUE <- samps_models_DONOHUE %>%
-  map(tidy)
-
-names(samps_models_DONOHUE) <- paste0("DONOHUE_",1:length(samps_models_DONOHUE))
-
-simulations_DONOHUE <- samps_models_DONOHUE %>%
-  bind_rows(.id = "ID") %>%
-  mutate(Analysis = "Analysis 1")
-
-## Mustard and Lott
-
-samps_LOTT <- lapply(rep(round(dim(LOTT_DF)[1]/2), sims),
-       function(x) LOTT_DF[sample(nrow(LOTT_DF),
-                                  size = x, replace = FALSE),])
-
-fit_nls_on_bootstrap_LOTT <- function(split){
-  plm(LOTT_fmla,
-      data = data.frame(split),
-      index = c("STATE","YEAR"),
-      model = "within",
-      effect = "twoways")
-}
-  
-samps_models_LOTT <- lapply(samps_LOTT, fit_nls_on_bootstrap_LOTT)
-
-samps_models_LOTT <- samps_models_LOTT %>%
-  map(tidy)
-
-names(samps_models_LOTT) <- paste0("LOTT_",1:length(samps_models_LOTT))
-
-simulations_LOTT <- samps_models_LOTT %>%
-  bind_rows(.id = "Analysis") %>%
-  mutate(Analysis = "Analysis 2")
-
-simulations <- bind_rows(simulations_DONOHUE,
-                         simulations_LOTT)
-
-simulation_plot <- simulations %>%
-  filter(term=="RTC_LAWTRUE") %>%
-  ggplot(aes(x = Analysis, y = estimate)) + 
-  geom_boxplot(alpha = 0.25,
-              width = 0.1) + 
-  labs(title = "Coefficient instability",
-       subtitle = "Estimates sensitive to observation deletions",
-       x = "Term",
-       y = "Coefficient",
-       caption = "Results from simulations") + 
-  theme_minimal() +
-  theme(axis.title.x = element_blank())
-
-simulation_plot
-```
-
-
+Here we can clearly see that overall the coefficient estimates are much less stable in Analysis 2. This is an indication that we may have multicollinearity in our data.
 
 
 ### VIF
@@ -1441,14 +1356,14 @@ According to [Wikipedia](https://en.wikipedia.org/wiki/Variance_inflation_factor
 
 VIF values can be calculated for each explanatory variable in a model by performing the following calculation:
 
-1) Run another ordinary least squares (OLS) linear regression with one of the explanatory  variables of your model of interest ($X_i$) as the dependent variable and keep the remaining explanatory variables as explanatory variables.
+1) Run another ordinary least squares (OLS) linear regression with one of the explanatory variables of your model of interest ($X_i$) as the dependent variable and keep the remaining explanatory variables as explanatory variables.
 
 So generically speaking say this is our model:
 
 $$Y = β_0 + β_1X_1 + β_2X_2 + β_3X_3 $$
 We have three explanatory variables ($X_1$, $X_2$, and $X_3$).
 
-If we want to calculate the VIF value for $X_1$ we would need to perform another OLS model, where $X1$ is now the dependent variable explained by the other explanatory variables.
+If we want to calculate the VIF value for $X_1$ we would need to perform another OLS model, where $X_1$ is now the dependent variable explained by the other explanatory variables.
 
 $$X_1 = β_0 +  β_2X_2 + β_3X_3 $$
 
@@ -1463,7 +1378,7 @@ VIF values are typically calculated for each explanatory variable when evaluatin
 
 Thus overall the calculation is:
 $$VIF_i = \frac{1}{1-R_i^{2}}$$
-Where $i$ corresponds to each explanatory variable.
+Where $i$ is the index of each explanatory variable.
 
 
 Recall that according to [Wikipedia](https://en.wikipedia.org/wiki/Variance_inflation_factor){target="_blank"}:
@@ -1474,93 +1389,24 @@ The $R^2$ value ranges from 0 to 1. Thus, if the variation of one variable is hi
 
 Thus, **higher VIF vales** indicate **more severe multicollinearity**. Typically a threshold of a tolerance of less than 0.10 and/or a VIF of 10 and above is used as a rule of thumb to determine if the presence of multicollinearity might be problematic.
 
-AVOCADO: Is there a good reference for the above statement?
-
 Please see this [article](https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf){target="_blank"} for a thorough explanation of how to interpret VIF values and how to decide what to do if your model has high multicollinearity.
 
 So how do we calculate VIF values in R?
 
-We could do this manually creating many linear regressions, but that would obviously be time consuming. Luckily, the `car` package has a function called `vif()` that will calculate VIF values.
+We could do this manually creating many linear regressions, but that would obviously be time consuming. Luckily, the `car` package has a function called `vif()` that will calculate VIF values. However, there is one wrinkle: the `vif()` function is not compatible with the output of the `plm` function. There is however a workaround that allows us to fit a similar model using the standard `lm()` function on data where we have removed the within-individual means. While this won't give us exactly the same results in terms of the standard errors of our estimates, it will give us some idea of the VIF values for the covariates in our model. We are following the steps outlined [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html){target="_blank"}, a really nice summary of panel data modeling in R.
 
-
-avocado: Idk if this is true or if we need to do what Michael did?
-https://stackoverflow.com/questions/20281055/test-for-multicollinearity-in-panel-data-r
-AVOCADO: When I read that entry, it looks like as long as you are using model="pooling" for the plm call, you are OK (not that I really know what is going on here -- I'll try to figure it out more)
-
-Since VIF values are calculated using only the independent variables, we don't need to worry about the effect of time and individuals in our calculation, thus we will use the pooled model. Otherwise, the `vif()` function is incompatible with the output from the `plm()` function.
-
-Then we will create nicer looking output of the data using the `as_tibble()`function of the `tibble` package to create a tibble and add the variable names as another column.
-
-```{r}
-
-DONOHUE_pool_model <-plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                        model = "pooling",
-                        data=d_panel_DONOHUE)
-
-vif_DONOHUE <- vif(DONOHUE_pool_model)
-vif_DONOHUE 
-
-vif_DONOHUE <- vif_DONOHUE %>%
-  as_tibble() %>%
-  cbind(., names(vif_DONOHUE))
-  
-colnames(vif_DONOHUE) <- c("VIF", "Variable")
-
-vif_DONOHUE
-```
-
-Now we will do the same for the Mustard and Lott data:
-
-```{r}
-LOTT_pool_model <-plm(LOTT_fmla,
-                        model = "pooling",
-                        data=d_panel_LOTT)
-
-vif_LOTT <- vif(LOTT_pool_model)
-
-
-vif_LOTT <- vif_LOTT %>%
-  as_tibble() %>%
-  cbind(., names(vif_LOTT))
-colnames(vif_LOTT) <- c("VIF", "Variable")
-```
+Once we have calculated our VIF values, we will create nicer looking output of the data using the `as_tibble()`function of the `tibble` package to create a tibble and add the variable names as another column.
 
 
 ```{r}
-
-DT::datatable(vif_LOTT)
-```
-
-We can see that some of the VIF values are very high!
-
-
-
-avocado:From Michael: he calculated the time-demeaned response variable based on this link:
-http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html
-
-Idk if we need to/should do this. The values are different.- lower in general.If so though this is how one would do it.
-
-This `vif()` function is not compatible with the `plm` package panel data frames and linear model outputs, thus we need to create a design matrix with the `plm` package using the `Within()` function and then use the `lm()` function of the `stats` package to fit the model.
-
-```{r, eval = FALSE}
+# replace our outcome variable with de-meaned outcome within state
 design.matrix <- as.data.frame(model.matrix(DONOHUE_OUTPUT))
-#design.matrix<-DONOHUE_OUTPUT[["model"]]
 design.matrix$Viol_crime_rate_1k_log <- plm::Within(
   d_panel_DONOHUE$Viol_crime_rate_1k_log)
 
+# fit linear model on de-meaned data
 lm_DONOHUE <- lm(Viol_crime_rate_1k_log ~
-                        RTC_LAWTRUE + # logical class changes variable name after inital model
+                        RTC_LAWTRUE + 
                         White_Male_15_to_19_years +
                         White_Male_20_to_39_years +
                         Black_Male_15_to_19_years +
@@ -1586,7 +1432,7 @@ vif_DONOHUE <- vif_DONOHUE %>%
 colnames(vif_DONOHUE) <- c("VIF", "Variable")
 ```
 
-```{r, eval = FALSE}
+```{r}
 design.matrix <- as.data.frame(model.matrix(LOTT_OUTPUT))
 
 design.matrix$Viol_crime_rate_1k_log <- plm::Within(
@@ -1624,6 +1470,12 @@ colnames(vif_LOTT) <- c("VIF", "Variable")
 max_vif_LOTT <- max(vif(lm_LOTT))
 ```
 
+```{r}
+
+DT::datatable(vif_LOTT)
+```
+
+We can see that some of the VIF values are very high!
 
 Now we will make a plot of the VIF values for both analyses:
 
@@ -1641,7 +1493,7 @@ vif_plot <- vif_df %>%
   geom_hline(yintercept = 10, color = "red") +
   scale_y_continuous(trans = 'log10',
                      limits = c(1,1000)) +
-  labs(title = "Variance inflation factors") + 
+  labs(title = "Variance inflation factors", y= "log VIF") + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
          axis.text.x = element_text(color = "black"),
@@ -1651,13 +1503,11 @@ vif_plot
 ```
 We can see that both analyses have some variables with relatively high multicollinearity, however analysis 2 has variables with very high multicollinearity.
 
-AVOCADO: change y-axis label  to log VIF
-
 In many cases it would be advisable to remove one or more of these variables and reassess the VIF values. There are also other options, such as [ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization){target="_blank"}. However, both of these options need to be done with care as they can also introduce bias into the model.
 
-In any case the presence of multicollinearity should encourage further investigation about the design of the model, as the results may not be reliable due to the increased level of instability of the coefficients estimates.
+In any case the presence of multicollinearity should encourage further investigation about the design of the model, as the results may not be reliable due to the increased level of instability of the coefficient estimates.
 
-See this this [article](https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf){target="_blank"} for a detailed discussion about what to consider when your model has variables with high VIF values. 
+See this [article](https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf){target="_blank"} for a detailed discussion about what to consider when your model has variables with high VIF values. 
 
 
 # **Data Visualization**
@@ -1767,22 +1617,22 @@ First we will create a plot object that just has the formula.
 
 To do so we are going to create a plot with a large label in the middle containing the formula. Then we will use the `theme_void()` function again to remove the axis labels and background.
 
-To create our plot we will first plot values from 1-10 for both the x and y axis, allowing us to center the formula at x and y values of 5.
+To create our plot we will first plot values from 1-10 for both the x and y axis, allowing us to center the formula at the x and y values of 5.
 
-To type the formal we need to use [LaTeX mathematical notation](https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html){target="_blank"}.
+To type the formula we will use [LaTeX mathematical notation](https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html){target="_blank"}.
 
 The start and end of inline mathematical formulas are specified using dollar signs (`$`).   
 Subscripts are written by using an underscore (`_`) and brackets (`{}`) indicate the start and end of the subscript.   
 
-Fractions are indicated using `\frac{nominator}{denominator}`.
+Fractions are indicated using `\frac{numerator}{denominator}`.
 
-Superscripts are created using the carrot symbol (`^`) and brackets (`{}`) indicate the start and end of the superscript.   
+Superscripts are created using the carrot symbol (`^`) and brackets (`{}`) indicate the start and end of the superscript. 
 
-Greek letters  are created by using `\beta`
+Greek letters  are created by using, for example, `\beta`.
 
 In the case of the fraction and Greek letters an additional `\` is needed in the `Tex()` function.
 
-We will use the `TeX()` function of the `latex2exp` package to convert our LaTeX string to a [plotmath expression](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html){target="_blank"} (a mathematical notation in R to be used in plots.)
+We will use the `TeX()` function of the `latex2exp` package to convert our LaTeX string to a [plotmath expression](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html){target="_blank"} (a mathematical notation in R to be used in plots).
 
 ```{r}
 empty_df <- cbind(c(1:10),c(1:10)) %>%
@@ -1799,7 +1649,7 @@ plot_B1 <- ggplot(empty_df, aes(x = X, y = Y)) +
    annotate("text",
            x=5.9,
            y=5.5,
-           label = TeX("$R^{2}$"),
+           label = TeX("$R_1^{2}$"),
            size = 7)+ ylim(0,10)+xlim(0,10)+
 geom_segment(aes(x = 5, y = 6, xend = 5, yend = 4.5),
                arrow = arrow(angle = 45, ends = "last", type = "open"),
@@ -1810,7 +1660,7 @@ geom_segment(aes(x = 5, y = 6, xend = 5, yend = 4.5),
   annotate("text",
            x=5,
            y=2,
-           label = TeX("$VIF_{i} = \\frac{1}{1-R_{i}^{2}}$"),
+           label = TeX("$VIF_{1} = \\frac{1}{1-R_{1}^{2}}$"),
            size = 7)
 
   
@@ -1914,119 +1764,6 @@ mainplot
 
 ```
 
-from Michael
-```{r, eval = FALSE}
-plot_A1 <- corr_mat_DONOHUE
-
-plot_A2 <- corr_mat_LOTT
-
-row_A <- plot_grid(plot_A1,
-                   plot_A2,
-                   nrow = 1)
-
-title_A <- ggdraw() + 
-  draw_label(
-    "Correlation between variables can induce multicollinearity",
-    fontface = 'bold',
-    size=14,
-    x = 0,
-    hjust = -.01
-  ) +
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
-  )
-
-legend_A <- get_legend(corr_mat_LOTT)
-
-plot_A <- plot_grid(title_A,
-                    row_A,
-                    ncol = 1,
-                    rel_heights = c(0.1,1))
-
-empty_df <- cbind(c(1:10),c(1:10)) %>%
-  as.data.frame()
-
-colnames(empty_df) <- c("X", "Y")
-
-plot_B1 <- ggplot(empty_df, aes(x = X, y = Y)) +
-  annotate("text",
-           x=5,
-           y=5,
-           label = TeX("$VIF_{i} = \\frac{1}{1-R_{i}^{2}}$"),
-           size = 8) +
-  theme_void()
-
-plot_B2 <- vif_plot +
-  theme(axis.title.x = element_text(size=8))
-
-row_B <- plot_grid(plot_B1,
-                       plot_B2,
-                       nrow = 1)
-
-title_B <- ggdraw() + 
-  draw_label(
-    "Variance inflation factors can be used to identify multicollinearity when present",
-    fontface = 'bold',
-    size=14,
-    x = 0,
-    hjust = 0
-  ) +
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
-  )
-
-plot_B <- plot_grid(title_B,
-                    row_B,
-                    ncol = 1,
-                    rel_heights = c(0.1,1))
-
-plot_C1 <- comparing_analyses_plot + 
-  theme(axis.text.x = element_text(size = 8),
-        axis.title.x = element_blank()) +
-  labs(title = "Introduces bias to estimates",
-       subtitle = "Bias introduced can change direction of estimate")
-
-plot_C2 <- simulation_plot +
-  labs(title = "Reduces precision in estimates")
-
-row_C <- plot_grid(plot_C1,
-                       plot_C2,
-                       nrow = 1)
-
-title_C <- ggdraw() + 
-  draw_label(
-    "Multicollinearity can have a negative effect on statistical inference",
-    fontface = 'bold',
-    size=14,
-    x = 0,
-    hjust = 0
-  ) +
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
-  )
-
-plot_C <- plot_grid(title_C,
-                    row_C,
-                    ncol = 1,
-                    rel_heights = c(0.1,1))
-
-plots <- plot_grid(plot_A,
-                   plot_B,
-                   plot_C,
-          ncol = 1,
-          rel_heights = c(1,1,1))
-
-mainplot <- plot_grid(title_plots,
-                       forward,
-                       plots,
-                       #legend_uw,
-                       ncol = 1,
-                       rel_heights = c(0.05,
-                                       0.05,
-                                       1))
-
-mainplot
-```
 
 
 
