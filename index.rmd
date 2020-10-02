@@ -463,7 +463,7 @@ First we will plot the rate of violent crime over time to get a sense of the gen
 To do so we need to summarise the data for each year across all of the states. 
 Thus we will use the `group_by()` function and the `summarise()` functions to calculate an overall number of violent crimes relative to the total population for each year. In fact, we will calculate the log of the number of violent crimes per 100,000 individuals, as this will make it easier to see the trend in the data. In addition, by looking at the rate per 100,000 individuals, we can more directly compare crime statistics across groups like states with different populations, as you will see below.
 
-AVOCADO: is there another good motivation for converting the units like this? I think it is worth explaining as transformations/interpretability are important components of data science.
+AVOCADO: is there another good motivation for converting the units like this? I think it is worth explaining as transformations/interpretability are important components of data science. MAT: I think it is fine as is for now.
 
 Then we will use the `ggplot2` package to plot the data. The first step in creating a plot with this package is to use the `ggplot()` function and the `aes()` argument to specify what data should be plotted on the x-axis and what data should be plotted in on the y-axis. Then we select what type of plot we would like to make using one of the `geom_*()` functions. Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details.
 
@@ -1826,7 +1826,7 @@ The articles used to motivate this case study are:
 [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"}     
 [See here for a list of studies on this topic ](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"}  
 
-avocadoPossible tutorials about plm: (not sure if we want to include or not)  
+avocadoPossible tutorials about plm: (not sure if we want to include or not -- MAT: I think we should, the latter is very good)  
 https://rpubs.com/rslbliss/fixed_effects  
 http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html  
 
