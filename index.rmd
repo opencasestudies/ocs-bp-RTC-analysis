@@ -99,7 +99,7 @@ knitr::include_graphics(here("img", "Educational_Graphic1.jpg"))
 ```
 
 AVOCADO: I like the graphic! Should we mention this process is actually investigating the replicability (e.g. this paper https://www.nature.com/articles/s41562-019-0629-z) of the study as starting with the data are different? 
-Hmm, bummer this is not in PMC for a free version....
+Hmm, bummer this is not in PMC for a free version.... MAT: I think we just remove this comment for now?
 
 However, we will focus particularly on multicollinearity and how it can influence the results we get from linear regression. 
 Specifically, this analysis will demonstrate how methodological details can be critically influential for our overall conclusions and can result in important policy related consequences. The [Donohue, et al. article]((https://www.nber.org/papers/w23510.pdf){target="_blank"}) will provide the motivation and illustration. 
@@ -125,7 +125,7 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 
 ###### *ML is abbreviated as LM in the source article
 
-**Note**: We are not attempting to re-create the analyses from the original authors. Instead, we aim to use a subset of the listed explanatory variables in this case study to demonstrate multicollinearity. These variables will be consistent for both analyses that we will perform, with the exception that one analysis will have 6 demographic variables as in the analysis in the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} article and the other will have 36 demographic variables as in the analysis in the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} article.
+**Note**: We are not attempting to re-create the analyses from the original authors. Instead, we aim to use a subset of the listed explanatory variables in this case study to demonstrate multicollinearity. These variables will be consistent for both analyses that we will perform, with the exception that one analysis will have 6 demographic variables as in the analysis in the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} article and the other will have 36 demographic variables, grouping individuals into more specific categories, as in the analysis in the [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} article.
 
 
 # **Main Question**
@@ -156,15 +156,10 @@ Specifically, we will consider the two ways to define the demographic variables 
 
 <u>**Data science Learning Objectives:**</u>
 
-1. Data import of many different file types with special cases (`readr`, `readxl`, `pdftools`).
-2. Joining data from multiple sources (`dplyr`).
-3. Working with character strings (`stringr`).
-4. Data comparisons (`dplyr` and `janitor`).
-5. Reshaping data into different formats (`tidyr`).
-6. Data visualizations (`ggplot2`).
-7. Sampling subsets of data (`rsample`).
+1. Data visualizations (`ggplot2`, `cowplot`).
+2. Sampling subsets of data (`rsample`).
 
-AVOCADO: Should these data science learning objectives be updated now that we have split the case studies? I know some  of these are covered in the other one (I think items 1-5), so perhaps we can indicate that with a different  font, or an asterisk and refer the reader to the other case study?
+AVOCADO: I removed items 1-5 from the data science learning objectives, but was wondering if you should include a link to the wrangling case study here?
 
 We will especially focus on using packages and functions from the [`tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as `dplyr` and `ggplot2`. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
 AVOCADO: Change "efficient" to whatever Mike Love suggested?
@@ -278,9 +273,6 @@ Recall that these are the categories of right to carry laws:
 knitr::include_graphics(here("img", "RTC.png"))
 ```
 
-```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "RTC_map.png"))
-```
 States with laws of the category rights restricted - very limited issue (red) are considered as not having a permissive right-to-carry law. Recall that no states currently have a rights infringed/non-issue law.
 
 States of all other categories (shall issue, discretionary/reasonable issue, and no permit required, all shades of blue) are considered the same in our analysis, as having a permissive right-to-carry law.
@@ -640,7 +632,7 @@ We will be performing a **panel linear regression model analysis**.
 
 In such an analysis we will model our data according to this generic model:
 
-$$Y_{it}=β_{0}+β_{1}X_{1it}+...+β_{K}X_{Kit}$$
+$$Y_{it}=β_{0}+β_{1}X_{1it}+...+β_{K}X_{Kit}+e_{it}$$
 
 Where $i$ is the individual dimension (in our case individual states) and $t$ is the time dimension.
 
@@ -1517,7 +1509,7 @@ Now lets make a plot that summarizes all of our findings.
 
 We will use the `cowplot` package to put our plots together. 
 
-We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to a combined plot of our existing plots we can use `ggdraw()` to start and then the `draw_label()` function to add text.
+We will use the `ggdraw()` function of this package. This allows you to add labels and other plot aspects on top of existing plots. Thus if we want to add a title element to our overall plot that we will add to our combined plot we can use `ggdraw()` to start and then the `draw_label()` function to add text.
 
 
 ```{r, fig.height=10, echo=FALSE, message=FALSE, warning=FALSE}
@@ -1644,7 +1636,7 @@ plot_B1 <- ggplot(empty_df, aes(x = X, y = Y)) +
    annotate("text",
            x=5,
            y=8,
-           label = TeX("$X_{1} = \\beta_{0} + \\beta_{2}X_{2} + \\beta_{3}X_{3}...+\\beta_{k}X_{k}$"),
+           label = TeX("$X_{1} = \\beta_{0} + \\beta_{2}X_{2} + \\beta_{3}X_{3}...+\\beta_{k}X_{k}+e$"),
            size = 7)+ ylim(0,10)+xlim(0,10)+
    annotate("text",
            x=5.9,
@@ -1711,8 +1703,8 @@ Now for the third row we want to include the `comparing_analyses_plot` and the `
 plot_C1 <- comparing_analyses_plot + 
   theme(axis.text.x = element_text(size = 8),
         axis.title.x = element_blank()) +
-  labs(title = "Introduces bias to estimates",
-       subtitle = "Bias introduced can change direction of estimate")
+  labs(title = "Results in different estimates",
+       subtitle = "Different demographic groupings can change direction of estimate")
 
 plot_C2 <- simulation_plot +
   labs(title = "Reduces precision in estimates")
@@ -1723,7 +1715,7 @@ row_C <- plot_grid(plot_C1,
 
 title_C <- ggdraw() + 
   draw_label(
-    "Multicollinearity can have a negative effect on statistical inference",
+    "Multicollinearity can have an effect on statistical inference",
     fontface = 'bold',
     size=14,
     x = 0,
@@ -1779,7 +1771,7 @@ ggsave(here::here("img", "mainplot.png"))
 
 This case study has introduced the concept of multicollinearity by exploring data related to violent crimes and right-to-carry gun laws. We also introduced the topic of panel data as a special type of longitudinal data that includes data of 2 or more individuals or groups over 2 or more time points. We learned that we can use the `plm` package to perform panel linear regression analysis. We learned that the fixed effect model in panel analysis actually makes the least assumptions, and is therefore often the most appropriate test.
 
-By evaluating two analyses that were identical except for the inclusion of extra demographic variables, analysis 1 included 6, while analysis 2 included 36, we discovered that redundant and collinear variables can change the directionality and magnitude of our findings. 
+By evaluating two analyses that were identical except for the inclusion of extra demographic variables (Analysis 1 included 6, while Analysis 2 included 36), we discovered that redundant and collinear variables can change the directionality and magnitude of our findings. 
 
 We learned that by looking at the correlation between pairs of explanatory variables we can get a sense about whether multicollinearity may exist in our data.
 
@@ -1789,7 +1781,7 @@ We learned that often a rule of thumb of >10 is used as a threshold for raising 
 
 Overall we learned that multicollinearity can bias our regression findings and it is good practice to check for multicollinearity when performing regression analysis.  It is something to keep in mind when we encounter coefficient estimates that are unexpected. 
 
-Importantly this case study showcases how methodological details, like how we decide to parse our demographic variables can have great consequences on the results of our analyses. 
+Importantly this case study showcases how methodological details, like how we decide to parse our demographic variables, can have great consequences on the results of our analyses. 
 
 
 # **Homework**
