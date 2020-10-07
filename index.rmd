@@ -98,8 +98,6 @@ In fact, nearly every aspect of the data analysis process was different between 
 knitr::include_graphics(here("img", "Educational_Graphic1.jpg"))
 ```
 
-AVOCADO: I like the graphic! Should we mention this process is actually investigating the replicability (e.g. this paper https://www.nature.com/articles/s41562-019-0629-z) of the study as starting with the data are different? 
-Hmm, bummer this is not in PMC for a free version.... MAT: I think we just remove this comment for now?
 
 However, we will focus particularly on multicollinearity and how it can influence the results we get from linear regression. 
 Specifically, this analysis will demonstrate how methodological details can be critically influential for our overall conclusions and can result in important policy related consequences. The [Donohue, et al. article]((https://www.nber.org/papers/w23510.pdf){target="_blank"}) will provide the motivation and illustration. 
@@ -134,11 +132,10 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 #### {.main_question_block}
 <b><u> Our main question: </u></b>
 
-What is the effect of multicollinearity on linear regression models when analyzing right to carry laws and violence rates?
+What is the effect of multicollinearity on coefficient estimates from linear regression models when analyzing right to carry laws and violence rates?
 
 ####
 
-AVOCADO: perhaps change main question to What is the effect of multicollinearity on coefficient estimates from linear regression models when analyzing right to carry laws and violence rates?
 
 Specifically, we will consider the two ways to define the demographic variables (as described above) and investigate how the inclusion of different numbers of age groups influences the results of an analysis of right to carry laws and violence rates.
 
@@ -146,23 +143,27 @@ Specifically, we will consider the two ways to define the demographic variables 
 # **Learning Objectives** 
 *** 
 
+The skills, methods, and concepts that students will be familiar with by the end of this case study are:
+
+<u>**Data science Learning Objectives:**</u>  
+
+1. Create correlation scatterplots and heatmaps (`GGally`, `ggcorrplot`)  
+2. Creating interactive tables (`DT`)  
+3. Sampling subsets of data (`rsample`)  
+4. Combining multiple plots (`cowplot`)  
+5. Data visualizations with equations and text(`ggplot2` and `latex2exp`)  
+
 <u>**Statistical Learning Objectives:**</u> 
 
-1. Provide an illustration of what multicollinearity is and how it can influence linear regression coefficients.
-2. Demonstrate how to look for the presence of multicollinarity and determine its severity.
-3. Illustrate the difference between multicollinearity and correlation.
-4. Provide tools and guidance on the implementation of panel regression analysis (`plm` package).
-5. Define and show how to calculate a variance inflation factor (VIF) (`car` package).
+1. Understanding of what multicollinearity is and how it can influence linear regression coefficients
+2. Know how to look for the presence of multicollinarity and determine its severity
+3. Illustrate the difference between multicollinearity and correlation 
+4. How to implement panel regression analysis in R (`plm`)
+5. Define variance inflation factor (VIF) and know how to calculate in R (`car`)  
 
-<u>**Data science Learning Objectives:**</u>
+To see another case study about how the original raw data was imported and wrangled please see [here](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"}.
 
-1. Data visualizations (`ggplot2`, `cowplot`).
-2. Sampling subsets of data (`rsample`).
-
-AVOCADO: I removed items 1-5 from the data science learning objectives, but was wondering if you should include a link to the wrangling case study here?
-
-We will especially focus on using packages and functions from the [`tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as `dplyr` and `ggplot2`. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
-AVOCADO: Change "efficient" to whatever Mike Love suggested?
+We will especially focus on using packages and functions from the [`tidyverse`](https://www.tidyverse.org/){target="_blank"}, such as `dplyr` and `ggplot2`. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially legible and intuitive.
 
 ```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
@@ -217,44 +218,20 @@ You can see that no state in the US currently has a "Rights Infringed/Non-Issue"
 However the level of restrictions is dramatically different from one state to another.
 
 
-AVOCADO: I put this next section in a details clickable box. My sense is that we should delete this information entirely from the case study, but keeping it for now and will come back and decide at the end if we want to keep it after I look through the whole thing. I agree this part can be dropped (MAT)
-
-<details> <summary> Click here for more information on right-to-carry policies over time. </summary>
-
-Here, you can see how these laws have changed over time around the country:
-```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Right_to_Carry%2C_timeline.gif/620px-Right_to_Carry%2C_timeline.gif")
-```
+<details> <summary> Click here for more information about how restrictions vary from one state to another. </summary>
 
 There is variation from state to state even within the same general category:
 
-For example here are the [current carry laws in Idaho](https://www.nraila.org/gun-laws/state-gun-laws/idaho/) which is considered an "Unrestricted - no permit required" state:
+For example here is an abriged version of the [current carry laws in Idaho](https://www.nraila.org/gun-laws/state-gun-laws/idaho/) which is considered an "Unrestricted - no permit required" state:
 
-> Idaho permits the open carrying of firearms.
-
-> Idaho law permits both residents and non-residents who are at least 18 years old to carry concealed weapons, without a carry license, outside the limits of or confines of any city, provided the person is not otherwise disqualified from being issued a license to carry.
-
-> A person may also carry concealed weapons on or about his or her person, without a license, in the person’s own place of abode or fixed place of business, on property in which the person has any ownership or leasehold interest, or on private property where the person has permission to carry from any person who has an ownership or leasehold interest in that property. 
-
-> State law also allows any resident of Idaho or a current member of the armed forces of the United States to carry a concealed handgun without a license to carry, provided the person is over 18 years old and not disqualified from being issued a license to carry concealed weapons under state law. An amendment to state law that takes effect on July 1, 2020 changes the reference in the above law from “a resident of Idaho” to “any citizen of the United States.”  
+> State law ... allows any resident of Idaho or a current member of the armed forces of the United States to carry a concealed handgun without a license to carry, provided the person is over 18 years old and not disqualified from being issued a license to carry concealed weapons under state law. An amendment to state law that takes effect on July 1, 2020 changes the reference in the above law from “a resident of Idaho” to “any citizen of the United States.”  
 
 
-And here are the [current carry laws in Arizona](https://www.nraila.org/gun-laws/state-gun-laws/arizona/) which is also considered an "Unrestricted - no permit required" state:
+And here are is an abriged version of the [current carry laws in Arizona](https://www.nraila.org/gun-laws/state-gun-laws/arizona/) which is also considered an "Unrestricted - no permit required" state:
 
-> Arizona respects the right of law abiding citizens to openly carry a handgun.
-
-> Any person 21 years of age or older, who is not prohibited possessor, may carry a weapon openly or concealed without the need for a license. Any person carrying without a license must acknowledge and comply with the demands of a law enforcement officer when asked if he/she is carrying a concealed deadly weapon, if the officer has initiated an "investigation" such as a traffic stop.
+> Any person 21 years of age or older, who is not prohibited possessor, may carry a weapon openly or concealed without the need for a license...
 
 Notice that citizens in Idaho only need to be 18 to carry a firearm, whereas they must be 21 in Arizona. 
-
-
-In contrast, here is an example of [current carry laws in Maryland](https://www.nraila.org/gun-laws/state-gun-laws/maryland/) which is considered a "Rights Restricted-Very Limited Issue" state:
-
-> Carrying and Transportation in Vehicles
-It is unlawful for any person without a permit to wear or carry a handgun, openly or concealed, upon or about his person.  It is also unlawful for any person to knowingly transport a handgun in any vehicle traveling on public roads, highways, waterways or airways, or upon roads or parking lots generally used by the public. This does not apply to any person wearing, carrying or transporting a handgun within the confines of real estate owned or leased by him, or on which he resides, or within the confines of a business establishment owned or leased by him.
-
-> Permit To Carry
-Application for a permit to carry a handgun is made to the Secretary of State Police. In addition to the printed application form, the applicant should submit a notarized letter stating the reasons why he is applying for a permit.
 
 </details>
 
@@ -279,67 +256,59 @@ States of all other categories (shall issue, discretionary/reasonable issue, and
 
 3) Because our analysis is an oversimplification, the results presented here should not be used for determining policy changes; instead we suggest that users interested in such a determination consult with a specialist.
 
-avocado - this is from Michael and very important... not sure how we want to word this...
-I have tried editing it some more, but I agree that we should have someone else take a look at it as well. (MAT)
+avocado:
+4) The inclusion of race as an explanatory variable in an epidemiological study can be useful in certain circumstances. However, there are limitations and issues around defining, determining, and reporting race, as well as in interpreting differences in public health outcomes by race. For more information on this topic, we have included a [link](https://academic.oup.com/epirev/article/22/2/187/456942) to a paper on the use of race as a measure in epidemiology. We include race in this analysis to demonstrate and consider the limitations of what the previous papers have done to analyze the influence of RTC laws on violent crime, with a focus on multicolinearity. Thus in our analysis we have also defined race as was previously performed in these papers. furthermore, we want to point out that reporting analyses about crime with race as a variable can have very unexpected consequences and thus care should be taken. See [here](https://journals.sagepub.com/doi/full/10.1177/0963721418763931) for suggestions. Any association of demographic variables about the proportion of the population of specific races and age groups in our analysis with violent crime does not necessarily indicate that the two are linked causally, as aside from the issues presented in the [article]((https://academic.oup.com/epirev/article/22/2/187/456942)), this may instead indicate higher rates of police engagement with certian racial groups due to [racial profling](https://www.aclu.org/other/racial-profiling-definition).
 
-4) It is important to note that we do not treat race as an objective measure. While we recognize the limitations around determining and reporting race, and interpretation of any observed difference by race, we believe including race as an explanatory variable in an epidemiological study can be useful to advance scientific inquiry. For more information on this topic, we have included a link to a [paper on the use of race as a measure in epidemiology](https://academic.oup.com/epirev/article/22/2/187/456942). 
+The ACLU defines racial profiling as:
+
+>"Racial Profiling" refers to the discriminatory practice by law enforcement officials of targeting individuals for suspicion of crime based on the individual's race, ethnicity, religion or national origin.
+
+***
+
 
 
 We will begin by loading the packages that we will need:
 
 ```{r}
 library(here)
-library(readxl)
-library(readr)
-library(pdftools)
 library(dplyr)
 library(magrittr)
-library(tidyr)
-library(stringr)
 library(purrr)
-library(forcats)
 library(tibble)
-library(car) # vif function
-library(plm) # fixed effect model, linear regression
-library(broom) # tidy output
-library(cowplot) # to produce plot of plots 
-library(GGally)
+library(ggplot2)
 library(ggrepel)
-library(scales)
-library(latex2exp)
-library(viridis)
+library(plm)
+library(broom)
+library(GGally)
 library(ggcorrplot)
 library(rsample)
-
-set.seed(999)
+library(DT)
+library(car)
+library(stringr)
+library(cowplot)
+library(latex2exp)
 ```
 
 
- Package   | Use                                                                         
+  Package   | Use in this case study                                                                        
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
-[readxl](https://readxl.tidyverse.org/){target="_blank"}      | to import the data in the excel files 
-[readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data
-[pdftools](https://github.com/ropensci/pdftools){target="_blank"} | to import data from a pdf file
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
 [magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
-[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to rearrange data in wide and long formats 
+[purrr](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
+[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
+[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
+[plm](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
+[broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
+[GGally](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
+[ggcorrplot](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
+[rsample](https://rsample.tidymodels.org){target="_blank"} | to split our sample for the simulation analysis   
+[DT](https://rstudio.github.io/DT/){target="_blank"}  | to create interactive and searchable tables  
+[car](https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf){target="_blank"}  | to calculate VIF values on linear model output  
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the character strings within the data  
-[purrr](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently
-[forcats](https://forcats.tidyverse.org/){target="_blank"}    | to allow for reordering of factors in plots
-[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`
-[car](https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf){target="_blank"}  | to calculate VIF values on linear model output
-[plm](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models
-[broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
-[GGally](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots
-[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap
-[scales](https://cran.r-project.org/web/packages/scales/scales.pdf){target="_blank"}    | to allow us to look at the colors within the viridis package and to override some ggplot2 defaults for scales and legends
-[latex2exp](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions
-[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"}    | to make plots with a color palette that is compatible with color blindness
-[ggcorrplot](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix
-[rsample](https://rsample.tidymodels.org){target="_blank"} | a tidyverse package for easily resampling data 
-
+[latex2exp](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions  
 
 The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
 
@@ -364,9 +333,8 @@ knitr::include_graphics(here("img", "ourdata.png"))
 
 # **Data Import and  Wrangling**
 ***
-avocado:add link below
 
-See [this case study](needlink){target="_blank"} for details about data import and wrangling. We include data sources here for completeness, but will start from processed data in this case study.
+See [this case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} for details about data import and wrangling. We include data sources here for completeness, but will start from processed data in this case study.
 
 ## Demographic and population data
 
@@ -385,22 +353,22 @@ The  data was downloaded from the [US Census Bureau](https://www.census.gov/geog
 
 ## Police staffing data
 
-The following data was downloaded from the [Federal Bureau of Investigation](https://crime-data-explorer.fr.cloud.gov/downloads-and-docs). 
+The following data was downloaded from the [Federal Bureau of Investigation](https://crime-data-explorer.fr.cloud.gov/downloads-and-docs){target="_blank"}. 
 
 ## Unemployment data
 
-The following data was downloaded from the [U.S. Bureau of Labor Statistics](https://data.bls.gov/cgi-bin/dsrv?la). 
+The following data was downloaded from the [U.S. Bureau of Labor Statistics](https://data.bls.gov/cgi-bin/dsrv?la){target="_blank"}. 
 
 ## Poverty data
-Extracted from Table 21 from [US Census Bureau Poverty Data ](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html)
+Extracted from Table 21 from [US Census Bureau Poverty Data ](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html){target="_blank"}.
 
 ## Violent crime
 
-Violent crime data was obtained from [here](https://www.ucrdatatool.gov/Search/Crime/State/StatebyState.cfm). 
+Violent crime data was obtained from [here](https://www.ucrdatatool.gov/Search/Crime/State/StatebyState.cfm){target="_blank"}. 
 
 ## Right-to-carry data
 
-This data is extracted from table in [Donohue paper](https://www.nber.org/papers/w23510.pdf) {target="_blank"}. 
+This data is extracted from table in [Donohue paper](https://www.nber.org/papers/w23510.pdf){target="_blank"}. 
 
 
 
@@ -420,7 +388,7 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 
 We can see that only the percentage of males that were from age 15-39 of the race groups (black, white, and other) were used in the Donohue analysis, whereas the Mustard and Lott paper, individuals from ages 10 to over 65 were used.
 
-The final products from our data wrangling are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two data sets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the data sets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multi-collinearity on our modeling results, which is the main objective of this case study.
+The final products from our data wrangling which is described in [another case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two datasets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the datasets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multi-collinearity on our modeling results, which is the main objective of this case study.
 
 We will load this data now, which is located in the `data` directory. We can use the `here()` function of the `here` package to easily locate it.
 
@@ -462,8 +430,6 @@ First we will plot the rate of violent crime over time to get a sense of the gen
 
 To do so we need to summarise the data for each year across all of the states. 
 Thus we will use the `group_by()` function and the `summarise()` functions to calculate an overall number of violent crimes relative to the total population for each year. In fact, we will calculate the log of the number of violent crimes per 100,000 individuals, as this will make it easier to see the trend in the data. In addition, by looking at the rate per 100,000 individuals, we can more directly compare crime statistics across groups like states with different populations, as you will see below.
-
-AVOCADO: is there another good motivation for converting the units like this? I think it is worth explaining as transformations/interpretability are important components of data science. MAT: I think it is fine as is for now.
 
 Then we will use the `ggplot2` package to plot the data. The first step in creating a plot with this package is to use the `ggplot()` function and the `aes()` argument to specify what data should be plotted on the x-axis and what data should be plotted in on the y-axis. Then we select what type of plot we would like to make using one of the `geom_*()` functions. Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details.
 
@@ -576,11 +542,9 @@ We can also tell that the values for the variables are in general what we would 
 # **Data Analysis**
 ***
 
-## Donohue, et al.
+## Panel Analysis
 
-OK! We are now ready to start analyzing our data!. 
-
-In these data sets, we have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}, a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, with measurements for multiple individuals/units of observation over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
+In these datasets, we have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}, a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, with measurements for multiple individuals/units of observation over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
 
 In a panel analysis there are $N$ individual panel members and $T$ time points.  
 
@@ -666,7 +630,12 @@ This type of panel regression makes the fewest assumptions.
 There is quite a lot of discussion in econometrics around which model is appropriate to use and when, but we are not going to dwell on this topic here, as our main focus in this case study is on multicollinearity. However, here are some additional references on these topics for further reading:
 See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html) for more information about these different models.
 
-In our setting, we will be performing a fixed effect panel regression analysis, as we do in fact think that some of the unobserved qualities about the different states may be correlated with some of our independent variables. For example, the level of economic opportunity might be an unobserved feature about the states that influences violent crime rate and would be possibly correlated with poverty rate and unemployment. There are statistical tests for evaluating which model is the most appropriate, which are implemented in the `plm` package that we will be using.
+
+## Donohue, et al.
+
+OK! We are now ready to start analyzing our data! 
+
+In our case, we will be performing a fixed effect panel regression analysis, as we do in fact think that some of the unobserved qualities about the different states may be correlated with some of our independent variables. For example, the level of economic opportunity might be an unobserved feature about the states that influences violent crime rate and would be possibly correlated with poverty rate and unemployment. There are statistical tests for evaluating which model is the most appropriate, which are implemented in the `plm` package that we will be using.
 
 
 To perform our analysis we will be using the `plm` package. This stands for Panel Linear Model.
@@ -1015,15 +984,15 @@ To get the remaining data after the removal of the observation that is left out 
 
 <details> <summary> Click here to see an example of how this works. </summary>
 
-First we will make a toy dataset that is very simple called `test` using the `tibble()` function of the `tidyr` package:
+First we will make a toy dataset that is very simple called `test` using the `tibble()` function of the `tibble` package:
 ```{r}
-test <-tidyr::tibble(x = c(1,2,3))
+test <-tibble::tibble(x = c(1,2,3))
 test
 ```
 
 Now we will use the `loo_cv()` to create leave one out splits:
 ```{r}
-test_samples <- test %>% loo_cv()
+test_samples <- test %>% rsample::loo_cv()
 test_samples
 ```
 
@@ -1037,7 +1006,7 @@ Here you can see that 2 values are intended for the training set (also called An
 
 Now we will use the `training()` function to get the data without the observation that is set aside. Here is the data for the first subset:
 ```{r}
-training(pull(test_samples, splits)[[1]])
+rsample::training(pull(test_samples, splits)[[1]])
 ```
 
 Now we will use the `map()` function of `purrr` to get all possible `training` subset of the data.
@@ -1265,15 +1234,38 @@ simulation_plot
 
 Here, we can start to see that there is a bit more variability in the coefficient estimates from the leave-one-out results for Analysis 2.
 
-For our display purposes, we would like to order the covariates so that they are displayed similarly across the two panels. This will allow us to better observe how the coefficients of the same covariate behave in the different analyses. We use the `mutate` function to convert the `term` variable to a factor, where we assign the non-demographic variables to be the first levels, with the sorted (in alphabetical order) demographic variables coming afterwards.
+For our display purposes, we would like to order the covariates so that they are displayed similarly across the two panels. This will allow us to better observe how the coefficients of the same covariate behave in the different analyses. We use the `mutate` function to convert the `term` variable to a factor, where we assign the non-demographic variables to be the first levels, with the sorted (in alphabetical order using the base `sort()` function) demographic variables coming afterwards.
+
+You might notice that the names of the demographic variable values in the `term` variable of the `simulations` data all have the word "years". We can use the `str_subset()` function of the `stringr` package to select just the demographic variables based on the word "years. In contrast, we can use the `negate = TRUE` argument to select all the other variables, the non-demographic variable values. We can use the `unique()` base function to grab just the unique values of the `term` variable.
+
+```{r}
+str_subset(unique(pull(simulations, term)), "years", negate = TRUE)
+```
+
+```{r}
+str_subset(unique(pull(simulations, term)), "years")
+```
+
+Now we can create the order of the values of the `term` variable using the `factor` argument and the `levels` argument.
 
 ```{r}
 
 simulations <- simulations %>%
                   mutate(term = factor(term, 
-                                       levels=c(str_subset(unique(pull(simulations, term)), "years", negate=TRUE), 
-                                                sort(str_subset(unique(pull(simulations, term)), "years")))))
+                                       levels = c(str_subset(unique(pull(simulations, term)), "years", negate=TRUE), 
+                                              sort(str_subset(unique(pull(simulations, term)), "years")))))
 
+levels(pull(simulations, term))
+
+
+```
+
+Looks good!
+
+
+Now we just need to run the same code again to create the plot, but now the order of the x axis values will be different. 
+
+```{r}
 
 simulation_plot <- simulations %>%
   ggplot(aes(x = term, y = estimate)) + 
@@ -1307,10 +1299,9 @@ coeff_sd <-simulations %>%
   summarise("SD" = sd(estimate))
 ```
 
-First, we will display an interactive table of these standard deviations. Try searching for "RTC", and you can compare the standard deviations of the coefficients for the `RTC_LAWTRUE` variable across the two analyses.
+First, we will display an interactive table of these standard deviations. Try searching for "RTC", and you can compare the standard deviations of the coefficients for the `RTC_LAWTRUE` variable across the two analyses. To take a better look at our data we will use the `datatable()` function of the `DT` package which will create an interactive searchable table.
 
 ```{r}
-library(DT)
 DT::datatable(coeff_sd)
 ```
 
@@ -1353,15 +1344,16 @@ VIF values can be calculated for each explanatory variable in a model by perform
 So generically speaking say this is our model:
 
 $$Y = β_0 + β_1X_1 + β_2X_2 + β_3X_3 $$
+
 We have three explanatory variables ($X_1$, $X_2$, and $X_3$).
 
 If we want to calculate the VIF value for $X_1$ we would need to perform another OLS model, where $X_1$ is now the dependent variable explained by the other explanatory variables.
 
-$$X_1 = β_0 +  β_2X_2 + β_3X_3 $$
+$$X_1 = β_0 +  β_2X_2 + β_3X_3 $$ 
 
 The [$R^2$ coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination){target="_blank"}(also called R squared value) from this regression is then used to calculate the VIF as follows:
 
-$$\frac{1}{1-R^{2}}$$
+$$\frac{1}{1-R^{2}}$$ 
 
 The $R^2$ value is in this case the proportion of variance in $X_1$ explained by the other variables ($X_2$ and $X_3$).
 
@@ -1387,16 +1379,59 @@ So how do we calculate VIF values in R?
 
 We could do this manually creating many linear regressions, but that would obviously be time consuming. Luckily, the `car` package has a function called `vif()` that will calculate VIF values. However, there is one wrinkle: the `vif()` function is not compatible with the output of the `plm` function. There is however a workaround that allows us to fit a similar model using the standard `lm()` function on data where we have removed the within-individual means. While this won't give us exactly the same results in terms of the standard errors of our estimates, it will give us some idea of the VIF values for the covariates in our model. We are following the steps outlined [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html){target="_blank"}, a really nice summary of panel data modeling in R.
 
-Once we have calculated our VIF values, we will create nicer looking output of the data using the `as_tibble()`function of the `tibble` package to create a tibble and add the variable names as another column.
+Once we have calculated our VIF values, we will create nicer looking output of the data using the `as_tibble()` function of the `tibble` package to create a tibble and add the variable names as another column.
 
+avocado - how does this look after I explained it more... the reference above seems to do VIF for a oneway model ... I tried to enforce twoways with the outcome variable but it doesn't seem to change the result (which might be a good thing?)
+
+Recall that we previously created the `DONOHUE_OUTPUT` object like so:
+```{r}
+DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
+                        RTC_LAW +
+                        White_Male_15_to_19_years +
+                        White_Male_20_to_39_years +
+                        Black_Male_15_to_19_years +
+                        Black_Male_20_to_39_years +
+                        Other_Male_15_to_19_years +
+                        Other_Male_20_to_39_years +
+                        Unemployment_rate +
+                        Poverty_rate + 
+                        Population_log + 
+                        police_per_100k_lag,
+                        effect = "twoways",
+                        model = "within",
+                        data = d_panel_DONOHUE)
+```
+
+What we have modeled is how a state's violent crime rate has chnaged over chages in RTC law status and time relative to itself and how this compares to that of another state relative to itself. 
+
+The coefficients from this then are in an oversimplifed explanation centered across all states and across all time points. This is called "demeaned" data.
+
+We will now use this to create a data frame of demeaned data (where the effect of time is accounted for and the within-individuals effects (in this case the different states).  We will make a model matrix using this data by using the `model.matrix()` function of the `stats` package and then we will create a data frame from this using the base `as.data.frame()` function.
 
 ```{r}
-# replace our outcome variable with de-meaned outcome within state
-design.matrix <- as.data.frame(model.matrix(DONOHUE_OUTPUT))
-design.matrix$Viol_crime_rate_1k_log <- plm::Within(
-  d_panel_DONOHUE$Viol_crime_rate_1k_log)
+lm_DONOHUE_data <- as.data.frame(model.matrix(DONOHUE_OUTPUT))
 
-# fit linear model on de-meaned data
+```
+
+```{r}
+glimpse(lm_DONOHUE_data)
+```
+
+Notice that this does not contain any outcome data. We will add this by taking the outcome of the `Within()` function of the `plm` package to get the violent crime data after accounting for the state specific effects. According to the documentation for this package:
+
+>  Within returns a vector containing the values in deviation from the individual means (if effect = "individual", from time means if effect = "time"), the so called demeaned data.
+
+Also recall that the `d_panel_DONOHUE` data is the just the Donohue data in panel format. 
+
+```{r}
+lm_DONOHUE_data %<>%
+  mutate(Viol_crime_rate_1k_log = plm::Within(pull(
+  d_panel_DONOHUE, Viol_crime_rate_1k_log)), effect= "twoways")
+```
+
+
+Now we will fit the demeaned data to the model:
+```{r}
 lm_DONOHUE <- lm(Viol_crime_rate_1k_log ~
                         RTC_LAWTRUE + 
                         White_Male_15_to_19_years +
@@ -1409,48 +1444,57 @@ lm_DONOHUE <- lm(Viol_crime_rate_1k_log ~
                         Poverty_rate + 
                         Population_log +
                police_per_100k_lag,
-             data = design.matrix)
+             data = lm_DONOHUE_data)
 
+
+```
+
+Now we are ready to use the `vif()` function of the `car` package to calculate the VIF values:
+
+```{r}
 
 vif_DONOHUE <- vif(lm_DONOHUE)
 
 vif_DONOHUE
 
+```
+
+Now we will use the `as_tibble()` function of the `tibble` package to nicely put this together. 
+
+```{r}
 vif_DONOHUE <- vif_DONOHUE %>%
   as_tibble() %>%
   cbind(., names(vif_DONOHUE)) %>%
   as_tibble()
   
 colnames(vif_DONOHUE) <- c("VIF", "Variable")
+
+vif_DONOHUE
 ```
 
+Now we will do the same for the Lott and Mustard data.
+
+We will need to use the `rename()` function, (you may recall this is part of the `dplyr` package) to replace `RTC_LAW` with `RTC_LAWTRUE`, as the variable name got changed when we fit the model becuase it was a logical variable and it is easier to change this rather than rewrite the formula for this data. 
+
+Recall that we already saved the formula for this data:
 ```{r}
-design.matrix <- as.data.frame(model.matrix(LOTT_OUTPUT))
+LOTT_fmla
+```
 
-design.matrix$Viol_crime_rate_1k_log <- plm::Within(
-  d_panel_LOTT$Viol_crime_rate_1k_log)
 
-LOTT_variables_ols <- LOTT_DF %>%
-  dplyr::select(RTC_LAW,
-                contains(c("White","Black","Other")),
-                Unemployment_rate,
-                Poverty_rate,
-                Population_log,
-                police_per_100k_lag) %>%
-  colnames() %>%
-  str_replace("RTC_LAW", "RTC_LAWTRUE") # logical class changes variable name after inital model
+```{r}
+lm_LOTT_data <- as.data.frame(model.matrix(LOTT_OUTPUT))
+lm_LOTT_data %<>%
+  mutate(Viol_crime_rate_1k_log = plm::Within(pull(
+  d_panel_LOTT, Viol_crime_rate_1k_log), effect = "twoways")) %>%
+  rename(RTC_LAW = RTC_LAWTRUE)
 
-LOTT_fmla_ols <- as.formula(paste("Viol_crime_rate_1k_log ~",
-                              paste(LOTT_variables_ols, collapse = " + ")
-                              )
-                        )
-
-lm_LOTT <- lm(LOTT_fmla_ols,
-             data = design.matrix)
-
-vif(lm_LOTT)
+lm_LOTT <- lm(LOTT_fmla,
+             data = lm_LOTT_data)
 
 vif_LOTT <- vif(lm_LOTT)
+
+vif_LOTT
 
 vif_LOTT <- vif_LOTT %>%
   as_tibble() %>%
@@ -1458,9 +1502,17 @@ vif_LOTT <- vif_LOTT %>%
   as_tibble()
   
 colnames(vif_LOTT) <- c("VIF", "Variable")
-
-max_vif_LOTT <- max(vif(lm_LOTT))
 ```
+
+Now to have consistent variable names in the VIF data sets we will rename `RTC_LAW` back to `RTC_LAWTRUE` using the `str_replace()` function of the `stringr` package. This function replaces a pattern.
+```{r}
+vif_LOTT %>% mutate(Variable = str_replace(string = Variable, 
+                                          pattern = "RTC_LAW", 
+                                        replacement = "RTC_LAWTRUE"))
+vif_LOTT
+
+```
+
 
 ```{r}
 
@@ -1469,23 +1521,29 @@ DT::datatable(vif_LOTT)
 
 We can see that some of the VIF values are very high!
 
-Now we will make a plot of the VIF values for both analyses:
+Now we will make a plot of the VIF values for both analyses. We will add text to a specific location on the plot using the `geom_text()` function. Typically a threshold of 10 is used to identify if the VIF are problematically high.
 
 ```{r}
 
-vif_DONOHUE$Analysis <- "Analysis 1"
-vif_LOTT$Analysis <- "Analysis 2"
+vif_DONOHUE %<>%
+  mutate(Analysis ="Analysis 1")
+vif_LOTT %<>%
+  mutate(Analysis = "Analysis 2")
 
-vif_df <- rbind(vif_DONOHUE,
+vif_df <- bind_rows(vif_DONOHUE,
                 vif_LOTT)
+datatable(vif_df)
+```
 
+
+```{r}
 vif_plot <- vif_df %>%
   ggplot(aes(x = Analysis, y = VIF)) +
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
-  scale_y_continuous(trans = 'log10',
-                     limits = c(1,1000)) +
-  labs(title = "Variance inflation factors", y= "log VIF") + 
+  geom_text(aes(.7,18,label = "typical cutoff of 10")) +
+  labs(title = "Variance inflation factors", y= "VIF") + 
+  #scale_y_continuous(trans ="log10") +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
          axis.text.x = element_text(color = "black"),
@@ -1493,7 +1551,27 @@ vif_plot <- vif_df %>%
 
 vif_plot
 ```
-We can see that both analyses have some variables with relatively high multicollinearity, however analysis 2 has variables with very high multicollinearity.
+
+We can see that analysis 2 has variables with much higher multicollinearity.
+
+
+Let's make this plot a little easier to see using the `scale_y_continuous()` function of the `ggplot2` package with the `trans ="log10"` argument. This does not change the values, but adjusts the y axis. 
+
+```{r, echo = FALSE}
+
+vif_plot <- vif_df %>%
+  ggplot(aes(x = Analysis, y = VIF)) +
+  geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
+  geom_hline(yintercept = 10, color = "red") +
+  scale_y_continuous(trans ="log10") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+         axis.text.x = element_text(color = "black"),
+         axis.text.y = element_text(color = "black"))
+
+vif_plot
+```
+
 
 In many cases it would be advisable to remove one or more of these variables and reassess the VIF values. There are also other options, such as [ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization){target="_blank"}. However, both of these options need to be done with care as they can also introduce bias into the model.
 
@@ -1798,8 +1876,6 @@ Ask the students to discuss how this possibly changed the results.
 ## Helpful Links
 
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}  
-[Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}   
-Also see [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more information on writing functions      
 Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`     
 [Longitudinal studies](https://www.bmj.com/about-bmj/resources-readers/publications/epidemiology-uninitiated/7-longitudinal-studies){target="_blank"}   
 [Panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}    
@@ -1826,13 +1902,29 @@ The articles used to motivate this case study are:
 [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"}     
 [See here for a list of studies on this topic ](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"}  
 
-avocadoPossible tutorials about plm: (not sure if we want to include or not -- MAT: I think we should, the latter is very good)  
-https://rpubs.com/rslbliss/fixed_effects  
-http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html  
+For tutorials about using fixed effect models in panel analysis with the `plm` package, see [here](https://rpubs.com/rslbliss/fixed_effects) 
+and [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html)  
 
 
-avocado possible discussion about if and when high vif values are a problem:
-https://statisticalhorizons.com/multicollinearity
+  Package   | Use in this case study                                                                        
+---------- |-------------
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
+[magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
+[purrr](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
+[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
+[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
+[plm](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
+[broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
+[GGally](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
+[ggcorrplot](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
+[rsample](https://rsample.tidymodels.org){target="_blank"} | to split our sample for the simulation analysis   
+[DT](https://rstudio.github.io/DT/){target="_blank"}  | to create interactive and searchable tables  
+[car](https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf){target="_blank"}  | to calculate VIF values on linear model output  
+[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the character strings within the data  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
+[latex2exp](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions  
 
 ## Session Info
 
@@ -1842,7 +1934,7 @@ sessionInfo()
 
 ## Acknowledgements
 
-We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study.
+We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study. We would also like to thank [Elizabeth Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart) for reviewing the case study. 
 
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
 

@@ -35,7 +35,7 @@ Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hi
 
 ### Acknowledgements
 
-We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study.
+We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study. We would also like to thank [Elizabeth Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart) for reviewing the case study. 
 
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
 
@@ -57,7 +57,7 @@ In this case study we use data peform simplified analyses similar to those of re
 
 ### Motivating question
 
-1) How does the inclusion of different numbers of age groups influence the results of an analysis of right to carry laws and violence rates?
+What is the effect of multicollinearity on coefficient estimates from linear regression models when analyzing right to carry laws and violence rates?
 
 ### Data   
 
@@ -127,8 +127,6 @@ This case study covers balanced panel regression model data analysis with fixed 
 ### Other notes and resources 
 
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}  
-[Writing functions](https://r4ds.had.co.nz/functions.html){target="_blank"}   
-Also see [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more information on writing functions      
 Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`     
 [Longitudinal studies](https://www.bmj.com/about-bmj/resources-readers/publications/epidemiology-uninitiated/7-longitudinal-studies){target="_blank"}   
 [Panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}    
@@ -155,6 +153,27 @@ The articles used to motivate this case study are:
 [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"}     
 [See here for a list of studies on this topic ](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"}  
 
+ Package   | Use in this case study                                                                        
+---------- |-------------
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
+[magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
+
+[purrr](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently
+[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
+[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
+[plm](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models
+[broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
+[GGally](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
+[ggcorrplot](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
+[rsample](https://rsample.tidymodels.org){target="_blank"} | to split our sample for the simulation analysis   
+[DT](https://rstudio.github.io/DT/){target="_blank"}  | to create interactive and searchable tables  
+[car](https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf){target="_blank"}  | to calculate VIF values on linear model output
+[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the character strings within the data  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
+[latex2exp](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions
+
 #### For users 
 
 There is a [`Makefile`](Makefile) in this folder that allows you to type `make` to knit the case study contained in the `index.Rmd` to `index.html` and it will also knit the [`README.Rmd`](README.Rmd) to a markdown file (`README.md`). 
@@ -165,7 +184,7 @@ If instructors want more details about the data import and wrangling for the dat
 
 #### Target audience 
 
-For individuals or classes with some familiarity with regression. See this [case study](https://opencasestudies.github.io/ocs-bp-diet/){target="_blank"} for an introduction to regression. 
+For individuals or classes with some familiarity with regression and `ggplot2`. See this [case study](https://opencasestudies.github.io/ocs-bp-diet/){target="_blank"} for an introduction to regression. 
 
 #### Suggested homework
 

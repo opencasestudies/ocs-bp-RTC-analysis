@@ -40,7 +40,10 @@ Laws (Version v1.0.0).
 
 We would like to acknowledge [Daniel
 Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster)
-for assisting in framing the major direction of the case study.
+for assisting in framing the major direction of the case study. We would
+also like to thank [Elizabeth
+Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart)
+for reviewing the case study.
 
 We would also like to acknowledge the [Bloomberg American Health
 Initiative](https://americanhealth.jhu.edu/) for funding this work.
@@ -83,9 +86,9 @@ our analysis are:
 
 ### Motivating question
 
-1.  How does the inclusion of different numbers of age groups influence
-    the results of an analysis of right to carry laws and violence
-    rates?
+What is the effect of multicollinearity on coefficient estimates from
+linear regression models when analyzing right to carry laws and violence
+rates?
 
 ### Data
 
@@ -216,10 +219,6 @@ simulations to evaluate the stability of coefficient estimates.
 ### Other notes and resources
 
 <a href="https://www.tidyverse.org/" target="_blank">Tidyverse</a>  
-<a href="https://r4ds.had.co.nz/functions.html" target="_blank">Writing functions</a>  
-Also see
-<a href="https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/" target="_blank">this case study</a>
-for more information on writing functions  
 Please see
 <a href="https://opencasestudies.github.io/ocs-bp-co2-emissions/" target="_blank">this case study</a>
 for more details on using `ggplot2`  
@@ -262,6 +261,60 @@ The articles used to motivate this case study are:
 <a href="https://www.nber.org/papers/w23510.pdf" target="_blank">Donohue, et al.</a>  
 <a href="https://en.wikipedia.org/wiki/More_Guns,_Less_Crime" target="_blank">See here for a list of studies on this topic</a>
 
+<table>
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>Use in this case study</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/jennybc/here_here" target="_blank">here</a></td>
+<td>to easily load and save data</td>
+</tr>
+<tr class="even">
+<td><a href="https://dplyr.tidyverse.org/" target="_blank">dplyr</a></td>
+<td>to arrange/filter/select/compare specific subsets of the data</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html" target="_blank">magrittr</a></td>
+<td>to use the compound assignment pipe operator <code>%&lt;&gt;%</code></td>
+</tr>
+</tbody>
+</table>
+
+<a href="https://purrr.tidyverse.org/" target="_blank">purrr</a> | to
+import the data in all the different excel and csv files efficiently
+<a href="https://tibble.tidyverse.org/" target="_blank">tibble</a> | to
+create data objects that we can manipulate with
+`dplyr`/`stringr`/`tidyr`/`purrr`
+<a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a> |
+to create plots  
+<a href="https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html" target="_blank">ggrepel</a>
+| to allow labels in figures not to overlap  
+<a href="https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html" target="_blank">plm</a>
+| to work with panel data fitting fixed effects and linear regression
+models
+<a href="https://cran.r-project.org/web/packages/broom/vignettes/broom.html" target="_blank">broom</a>
+| to create nicely formatted model output  
+<a href="https://github.com/ggobi/ggally" target="_blank">GGally</a> |
+to extend ggplot2 functionality to easily create more complex plots  
+<a href="https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3" target="_blank">ggcorrplot</a>
+| to easily visualize a correlation matrix  
+<a href="https://rsample.tidymodels.org" target="_blank">rsample</a> |
+to split our sample for the simulation analysis  
+<a href="https://rstudio.github.io/DT/" target="_blank">DT</a> | to
+create interactive and searchable tables  
+<a href="https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf" target="_blank">car</a>
+| to calculate VIF values on linear model output
+<a href="https://stringr.tidyverse.org/articles/stringr.html" target="_blank">stringr</a>
+| to manipulate the character strings within the data  
+<a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a>
+| to allow plots to be combined
+<a href="https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html" target="_blank">latex2exp</a>
+| to convert latex math formulas to R’s plotmath expressions
+
 #### For users
 
 There is a [`Makefile`](Makefile) in this folder that allows you to type
@@ -277,8 +330,8 @@ study](https://github.com/opencasestudies/ocs-bp-RTC-wrangling).
 
 #### Target audience
 
-For individuals or classes with some familiarity with regression. See
-this
+For individuals or classes with some familiarity with regression and
+`ggplot2`. See this
 <a href="https://opencasestudies.github.io/ocs-bp-diet/" target="_blank">case study</a>
 for an introduction to regression.
 
