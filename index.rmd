@@ -66,7 +66,7 @@ Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hi
 # **Motivation**
 *** 
 
-This case study will introduce the topic of [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity){target="_blank"}, which occurs in regression when one or more independent variables can be predicted by other independent varaibles. 
+This case study will introduce the topic of [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity){target="_blank"}, which occurs in regression when one or more independent variables can be predicted by other independent variables. 
 
 We will do so by showcasing a real world example where multicollinearity in part resulted in historically controversial and conflicting findings about the influence of the adoption of right-to-carry (RTC) concealed handgun laws on violent crime rates in the United States. 
 
@@ -156,7 +156,7 @@ The skills, methods, and concepts that students will be familiar with by the end
 <u>**Statistical Learning Objectives:**</u> 
 
 1. Understanding of what multicollinearity is and how it can influence linear regression coefficients
-2. Know how to look for the presence of multicollinarity and determine its severity
+2. Know how to look for the presence of multicollinearity and determine its severity
 3. Illustrate the difference between multicollinearity and correlation 
 4. How to implement panel regression analysis in R (`plm`)
 5. Define variance inflation factor (VIF) and know how to calculate in R (`car`)  
@@ -222,12 +222,12 @@ However the level of restrictions is dramatically different from one state to an
 
 There is variation from state to state even within the same general category:
 
-For example here is an abriged version of the [current carry laws in Idaho](https://www.nraila.org/gun-laws/state-gun-laws/idaho/) which is considered an "Unrestricted - no permit required" state:
+For example here is an abridged version of the [current carry laws in Idaho](https://www.nraila.org/gun-laws/state-gun-laws/idaho/) which is considered an "Unrestricted - no permit required" state:
 
 > State law ... allows any resident of Idaho or a current member of the armed forces of the United States to carry a concealed handgun without a license to carry, provided the person is over 18 years old and not disqualified from being issued a license to carry concealed weapons under state law. An amendment to state law that takes effect on July 1, 2020 changes the reference in the above law from “a resident of Idaho” to “any citizen of the United States.”  
 
 
-And here are is an abriged version of the [current carry laws in Arizona](https://www.nraila.org/gun-laws/state-gun-laws/arizona/) which is also considered an "Unrestricted - no permit required" state:
+And here are is an abridged version of the [current carry laws in Arizona](https://www.nraila.org/gun-laws/state-gun-laws/arizona/) which is also considered an "Unrestricted - no permit required" state:
 
 > Any person 21 years of age or older, who is not prohibited possessor, may carry a weapon openly or concealed without the need for a license...
 
@@ -257,7 +257,7 @@ States of all other categories (shall issue, discretionary/reasonable issue, and
 3) Because our analysis is an oversimplification, the results presented here should not be used for determining policy changes; instead we suggest that users interested in such a determination consult with a specialist.
 
 avocado:
-4) The inclusion of race as an explanatory variable in an epidemiological study can be useful in certain circumstances. However, there are limitations and issues around defining, determining, and reporting race, as well as in interpreting differences in public health outcomes by race. For more information on this topic, we have included a [link](https://academic.oup.com/epirev/article/22/2/187/456942) to a paper on the use of race as a measure in epidemiology. We include race in this analysis to demonstrate and consider the limitations of what the previous papers have done to analyze the influence of RTC laws on violent crime, with a focus on multicolinearity. Thus in our analysis we have also defined race as was previously done in these papers. Furthermore, we want to point out that reporting analyses about crime with race as a variable can have very unexpected consequences and thus care should be taken. See [here](https://journals.sagepub.com/doi/full/10.1177/0963721418763931) for suggestions. Any association between demographic variables (indicating the proportion of the population from specific race and age groups) and violent crime does not necessarily indicate that the two are linked causally, as aside from the issues presented in the [article]((https://academic.oup.com/epirev/article/22/2/187/456942)), this may instead indicate higher rates of police engagement with certian racial groups due to [racial profling](https://www.aclu.org/other/racial-profiling-definition).
+4) The inclusion of race as an explanatory variable in an epidemiological study can be useful in certain circumstances. However, there are limitations and issues around defining, determining, and reporting race, as well as in interpreting differences in public health outcomes by race. For more information on this topic, we have included a [link](https://academic.oup.com/epirev/article/22/2/187/456942) to a paper on the use of race as a measure in epidemiology. We include race in this analysis to demonstrate and consider the limitations of what the previous papers have done to analyze the influence of RTC laws on violent crime, with a focus on multicollinearity. Thus in our analysis we have also defined race as was previously done in these papers. Furthermore, we want to point out that reporting analyses about crime with race as a variable can have very unexpected consequences and thus care should be taken. See [here](https://journals.sagepub.com/doi/full/10.1177/0963721418763931) for suggestions. Any association between demographic variables (indicating the proportion of the population from specific race and age groups) and violent crime does not necessarily indicate that the two are linked causally, as aside from the issues presented in the [article]((https://academic.oup.com/epirev/article/22/2/187/456942)), this may instead indicate higher rates of police engagement with certain racial groups due to [racial profling](https://www.aclu.org/other/racial-profiling-definition).
 
 The ACLU defines racial profiling as:
 
@@ -388,7 +388,7 @@ knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
 
 We can see that only the percentage of males that were from age 15-39 of the race groups (black, white, and other) were used in the Donohue analysis, whereas the Mustard and Lott paper, individuals from ages 10 to over 65 were used.
 
-The final products from our data wrangling which is described in [another case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two datasets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the datasets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multi-collinearity on our modeling results, which is the main objective of this case study.
+The final products from our data wrangling which is described in [another case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two datasets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the datasets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multicollinearity on our modeling results, which is the main objective of this case study.
 
 We will load this data now, which is located in the `data` directory. We can use the `here()` function of the `here` package to easily locate it.
 
@@ -428,7 +428,7 @@ Let's do some quick visualizations to get a sense of our outcome of interest, th
  
 First we will plot the rate of violent crime over time to get a sense of the general trend.
 
-To do so we need to summarise the data for each year across all of the states. 
+To do so we need to summarize the data for each year across all of the states. 
 Thus we will use the `group_by()` function and the `summarise()` functions to calculate an overall number of violent crimes relative to the total population for each year. In fact, we will calculate the log of the number of violent crimes per 100,000 individuals, as this will make it easier to see the trend in the data. In addition, by looking at the rate per 100,000 individuals, we can more directly compare crime statistics across groups like states with different populations, as you will see below.
 
 Then we will use the `ggplot2` package to plot the data. The first step in creating a plot with this package is to use the `ggplot()` function and the `aes()` argument to specify what data should be plotted on the x-axis and what data should be plotted in on the y-axis. Then we select what type of plot we would like to make using one of the `geom_*()` functions. Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details.
@@ -722,7 +722,7 @@ For more information on these tests and this package, see [here](https://cran.r-
 
 ## Mustard and Lott
 
-Ok, now we will do the same for the Mustard and Lott analysis. In this case we would have a very large formula to write. So instead, we can use the `as.formula()` function of the `stats` package and the base `paste()` function to combine all of our explanatory variables into one formula without making a mistake. First we will create an object where we select only the explanatory variables. 
+OK, now we will do the same for the Mustard and Lott analysis. In this case we would have a very large formula to write. So instead, we can use the `as.formula()` function of the `stats` package and the base `paste()` function to combine all of our explanatory variables into one formula without making a mistake. First we will create an object where we select only the explanatory variables. 
 
 ```{r}
 LOTT_variables <- LOTT_DF %>%
@@ -889,7 +889,7 @@ However, if our regressors are also linearly related, than it becomes difficult 
 
 If you want to read further on this topic, [here](https://blog.clairvoyantsoft.com/correlation-and-collinearity-how-they-can-make-or-break-a-model-9135fbe6936a){target="_blank"} and [here](https://medium.com/swlh/multicollinearity-and-variance-inflation-factor-bc74af36b1c9){target="_blank"} are a couple of interesting discussions.
 
-In the next sections, we will describe ways to detect multi-collinearity in our covariates both using visual displays of data and using computational techniques.
+In the next sections, we will describe ways to detect multicollinearity in our covariates both using visual displays of data and using computational techniques.
 
 #### Scatter plots
 
@@ -1381,7 +1381,6 @@ We could do this manually creating many linear regressions, but that would obvio
 
 Once we have calculated our VIF values, we will create nicer looking output of the data using the `as_tibble()` function of the `tibble` package to create a tibble and add the variable names as another column.
 
-avocado - how does this look after I explained it more... the reference above seems to do VIF for a oneway model ... I tried to enforce twoways with the outcome variable but it doesn't seem to change the result (which might be a good thing?). Reply from MAT: Yeah, I was not sure about the oneway vs twoway difference, but the coefficient estimate is the same in any case. So I had added a little language to hedge ("some idea of the VIF") and hope that it will be OK. 
 
 Recall that we previously created the `DONOHUE_OUTPUT` object like so:
 ```{r}
@@ -1404,7 +1403,7 @@ DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
 
 What we have modeled is how a state's violent crime rate has changed with modifications of RTC law status and over time, relative to itself, and how this compares to similar changes in violent crime of another state relative to itself. 
 
-The coefficients from this model then are an oversimplifed explanation centered across all states and across all time points. This is called "demeaned" data.
+The coefficients from this model then are, in an oversimplified explanation, centered across all states and across all time points. This is called "demeaned" data.
 
 We will now use this model output to create a data frame of demeaned data (where the effect of time is accounted for as are the within-individuals effects, in this case the different states).  We will make a model matrix of this data by using the `model.matrix()` function of the `stats` package and then we will create a data frame from this using the base `as.data.frame()` function.
 
@@ -1421,7 +1420,7 @@ Notice that this does not contain any outcome data. We will add this by taking t
 
 >  Within returns a vector containing the values in deviation from the individual means (if effect = "individual", from time means if effect = "time"), the so called demeaned data.
 
-Also recall that the `d_panel_DONOHUE` data is the just the Donohue data in panel format. 
+Also recall that the `d_panel_DONOHUE` data is just the Donohue data in panel format. 
 
 ```{r}
 lm_DONOHUE_data %<>%
@@ -1546,7 +1545,6 @@ vif_plot <- vif_df %>%
   geom_hline(yintercept = 10, color = "red") +
   geom_text(aes(.7,18,label = "typical cutoff of 10")) +
   labs(title = "Variance inflation factors", y= "VIF") + 
-  #scale_y_continuous(trans ="log10") +
   theme_minimal() +
   theme(axis.title.x = element_blank(),
          axis.text.x = element_text(color = "black"),
@@ -1558,16 +1556,17 @@ vif_plot
 We can see that analysis 2 has variables with much higher multicollinearity.
 
 
-Let's make this plot a little easier to see using the `scale_y_continuous()` function of the `ggplot2` package with the `trans ="log10"` argument. This does not change the values, but adjusts the y axis. 
+Let's make this plot a little easier to see using the `coord_trans()` function of the `ggplot2` package with the `y ="log10"` argument. This does not change the values, but adjusts the way the y axis is displayed with diminishing distance between grid lines. 
 
-```{r, echo = FALSE}
+```{r}
 
 vif_plot <- vif_df %>%
   ggplot(aes(x = Analysis, y = VIF)) +
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
-  scale_y_continuous(trans ="log10") +
-  labs(title = "Variance inflation factors", y= "log10 VIF") + 
+  geom_text(aes(.75,13,label = "typical cutoff of 10")) +
+  coord_trans(y = "log10") +
+  labs(title = "Variance inflation factors") + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
          axis.text.x = element_text(color = "black"),
