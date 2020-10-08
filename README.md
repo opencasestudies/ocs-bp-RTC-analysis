@@ -32,9 +32,9 @@ To cite this case study:
 
 Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub,
 Margaret and Hicks, Stephanie. (2020).
-<a href="https://github.com/opencasestudies/ocs-bp-RTC-analysis" class="uri">https://github.com/opencasestudies/ocs-bp-RTC-analysis</a>.
-Influence of Multicollinearity on Measured Impact of Right-to-Carry Gun
-Laws (Version v1.0.0).
+<https://www.opencasestudies.org/ocs-bp-RTC-analysis/>. Influence of
+Multicollinearity on Measured Impact of Right-to-Carry Gun Laws (Version
+v1.0.0).
 
 ### Acknowledgements
 
@@ -57,21 +57,21 @@ Laws Part 2
 
 The influence of the implementation of less restrictive right-to-carry
 gun laws on violent crime is a historically controversial topic. One
-reason for the contriversy, is concern that some earlier reports examing
-this topic may have used methods that were inappropriate.
+reason for the controversy, is concern that some earlier reports
+examining this topic may have used methods that were inappropriate.
 
 One of the major concerns is that an earlier report included multiple
 demographic variables that were collinear with one another. This
 resulted in different a very coefficient estimate for right-to-carry gun
-law adoption than other reports that did not include colinear varaibles.
-This phenomenon is called
+law adoption than other reports that did not include collinear
+variables. This phenomenon is called
 [multicollinearity](https://en.wikipedia.org/wiki/Multicollinearity),
-and it can result in abberant findings for particular explanatory
+and it can result in aberrant findings for particular explanatory
 variables, despite not altering the overall predictive power of a model.
 
-In this case study we use data peform simplified analyses similar to
+In this case study we use data perform simplified analyses similar to
 those of reports on this topic to explore the influence of
-multicolinearity on coeffcient estimate stability. We however, do not
+multicollinearity on coefficient estimate stability. We however, do not
 recreate the previous analyses. The reports that we use as a guide for
 our analysis are:
 
@@ -97,7 +97,7 @@ In this case study, we perform analyses similar to those in
 article and the
 <a href="https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&amp;context=law_and_economics" target="_blank">Lott and Mustard</a>
 article, however **we do not try to recreate them**, instead we perform
-simplified analyses to allow us to focus on multicolinearity.
+simplified analyses to allow us to focus on multicollinearity.
 
 Therefore we use a subset of the **explanatory variables** used by each
 article including:
@@ -171,26 +171,30 @@ crime data was downloaded from the
 The skills, methods, and concepts that students will be familiar with by
 the end of this case study are:
 
-<u>**Statistical Learning Objectives:**</u>
-
-1.  what multicollinearity is and how it can influence linear regression
-    coefficients  
-2.  how to look for the presence of multicollinarity and determine the
-    severity
-3.  the difference between multicollinearity and correlation
-4.  implementation of panel regression analysis (`plm`)
-5.  calcuation of VIF (`car`)
-
 <u>**Data science Learning Objectives:**</u>
 
-1.  data import of many different file types with special cases
-    (`readr`, `readxl`, `pdftools`)
-2.  joining data from multiple sources (`dplyr`)  
-3.  working with character strings (`stringr`)
-4.  data comparisons (`dplyr` and `janitor`)
-5.  reshaping data into different formats (`tidyr`)  
-6.  visualizations (`ggplot2`)
-7.  perform iterative simulations (`rsample`)
+1.  Create correlation scatterplots and heatmaps (`GGally`,
+    `ggcorrplot`)  
+2.  Creating interactive tables (`DT`)  
+3.  Sampling subsets of data (`rsample`)  
+4.  Combining multiple plots (`cowplot`)  
+5.  Data visualizations with equations and text(`ggplot2` and
+    `latex2exp`)
+
+<u>**Statistical Learning Objectives:**</u>
+
+1.  Understanding of what multicollinearity is and how it can influence
+    linear regression coefficients
+2.  Know how to look for the presence of multicollinearity and determine
+    its severity
+3.  Illustrate the difference between multicollinearity and correlation
+4.  How to implement panel regression analysis in R (`plm`)
+5.  Define variance inflation factor (VIF) and know how to calculate in
+    R (`car`)
+
+To see another case study about how the original raw data was imported
+and wrangled please see
+<a href="https://www.opencasestudies.org/ocs-bp-RTC-wrangling/" target="_blank">here</a>.
 
 #### Data import and wrangling
 
@@ -200,7 +204,7 @@ data import and data wrangling details.
 
 #### Data Visualization
 
-This case study demonstrates how to make correaltion plots and scatter
+This case study demonstrates how to make correlation plots and scatter
 plots with error bars. We also show how to add formulas and arrows to
 plots. The instruction about data visualization assumes that students
 have some familiarity with `ggplot2`.
@@ -213,8 +217,8 @@ longitudinal analysis in general, as well as use of the `plm` package.
 We also show how to calculate [Variance inflation factor
 (VIF)](https://en.wikipedia.org/wiki/Variance_inflation_factor) values
 using the `car` package to quantify the severity of multicollinearity.
-As another assesment of multicollinearity, we demonstrate how to perform
-simulations to evaluate the stability of coefficient estimates.
+As another assessment of multicollinearity, we demonstrate how to
+perform simulations to evaluate the stability of coefficient estimates.
 
 ### Other notes and resources
 
@@ -246,13 +250,13 @@ see this
 [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf), and
 [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models).
 
-For more information on implementing panel regession in R using the
+For more information on implementing panel regression in R using the
 `plm` package, see
 <a href="https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html" target="_blank">here</a>
 and
 <a href="http://www.princeton.edu/~otorres/Panel101R.pdf" target="_blank">here</a>.
 
-For more information on multioclinearity and VIF, see this
+For more information on multicollinearity and VIF, see this
 <a href="https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf" target="_blank">article</a>.DOI
 10.1007/s11135-006-9018-6
 
@@ -262,6 +266,10 @@ The articles used to motivate this case study are:
 <a href="https://en.wikipedia.org/wiki/More_Guns,_Less_Crime" target="_blank">See here for a list of studies on this topic</a>
 
 <table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 56%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Package</th>
@@ -281,39 +289,64 @@ The articles used to motivate this case study are:
 <td><a href="https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html" target="_blank">magrittr</a></td>
 <td>to use the compound assignment pipe operator <code>%&lt;&gt;%</code></td>
 </tr>
+<tr class="even">
+<td><a href="https://purrr.tidyverse.org/" target="_blank">purrr</a></td>
+<td>to import the data in all the different excel and csv files efficiently</td>
+</tr>
+<tr class="odd">
+<td><a href="https://tibble.tidyverse.org/" target="_blank">tibble</a></td>
+<td>to create data objects that we can manipulate with <code>dplyr</code>/<code>stringr</code>/<code>tidyr</code>/<code>purrr</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></td>
+<td>to create plots</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html" target="_blank">ggrepel</a></td>
+<td>to allow labels in figures not to overlap</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html" target="_blank">plm</a></td>
+<td>to work with panel data fitting fixed effects and linear regression models</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/broom/vignettes/broom.html" target="_blank">broom</a></td>
+<td>to create nicely formatted model output</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/ggobi/ggally" target="_blank">GGally</a></td>
+<td>to extend ggplot2 functionality to easily create more complex plots</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3" target="_blank">ggcorrplot</a></td>
+<td>to easily visualize a correlation matrix</td>
+</tr>
+<tr class="even">
+<td><a href="https://rsample.tidymodels.org" target="_blank">rsample</a></td>
+<td>to split our sample for the simulation analysis</td>
+</tr>
+<tr class="odd">
+<td><a href="https://rstudio.github.io/DT/" target="_blank">DT</a></td>
+<td>to create interactive and searchable tables</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf" target="_blank">car</a></td>
+<td>to calculate VIF values on linear model output</td>
+</tr>
+<tr class="odd">
+<td><a href="https://stringr.tidyverse.org/articles/stringr.html" target="_blank">stringr</a></td>
+<td>to manipulate the character strings within the data</td>
+</tr>
+<tr class="even">
+<td><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a></td>
+<td>to allow plots to be combined</td>
+</tr>
+<tr class="odd">
+<td><a href="https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html" target="_blank">latex2exp</a></td>
+<td>to convert latex math formulas to R’s plotmath expressions</td>
+</tr>
 </tbody>
 </table>
-
-<a href="https://purrr.tidyverse.org/" target="_blank">purrr</a> | to
-import the data in all the different excel and csv files efficiently
-<a href="https://tibble.tidyverse.org/" target="_blank">tibble</a> | to
-create data objects that we can manipulate with
-`dplyr`/`stringr`/`tidyr`/`purrr`
-<a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a> |
-to create plots  
-<a href="https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html" target="_blank">ggrepel</a>
-| to allow labels in figures not to overlap  
-<a href="https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html" target="_blank">plm</a>
-| to work with panel data fitting fixed effects and linear regression
-models
-<a href="https://cran.r-project.org/web/packages/broom/vignettes/broom.html" target="_blank">broom</a>
-| to create nicely formatted model output  
-<a href="https://github.com/ggobi/ggally" target="_blank">GGally</a> |
-to extend ggplot2 functionality to easily create more complex plots  
-<a href="https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3" target="_blank">ggcorrplot</a>
-| to easily visualize a correlation matrix  
-<a href="https://rsample.tidymodels.org" target="_blank">rsample</a> |
-to split our sample for the simulation analysis  
-<a href="https://rstudio.github.io/DT/" target="_blank">DT</a> | to
-create interactive and searchable tables  
-<a href="https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf" target="_blank">car</a>
-| to calculate VIF values on linear model output
-<a href="https://stringr.tidyverse.org/articles/stringr.html" target="_blank">stringr</a>
-| to manipulate the character strings within the data  
-<a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a>
-| to allow plots to be combined
-<a href="https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html" target="_blank">latex2exp</a>
-| to convert latex math formulas to R’s plotmath expressions
 
 #### For users
 
@@ -339,6 +372,6 @@ for an introduction to regression.
 
 Ask students to remove one or more of the demographic variables with
 high VIF values from the Lott-like panel data and perform the panel
-linear regression analysis again, as well as cacluate the VIF values.
+linear regression analysis again, as well as actuate the VIF values.
 
 Ask the students to discuss how this possibly changed the results.
