@@ -43,6 +43,8 @@ Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster)
 for assisting in framing the major direction of the case study. We would
 also like to thank [Elizabeth
 Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart)
+and [Aboozar
+Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/)
 for reviewing the case study.
 
 We would also like to acknowledge the [Bloomberg American Health
