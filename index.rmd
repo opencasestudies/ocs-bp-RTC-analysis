@@ -609,6 +609,16 @@ Overall, they assume that the different individuals are independent, however the
 
 The main difference between the three sub-types are the assumptions about unobserved differences between individuals.
 
+If you are familiar with fixed and random effects in the context in the statistical literature the following econometric definitions will sound a bit different.
+
+From the `plm` package [vignette](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html):
+
+> In the mixed models literature,...fixed effect indicates a parameter that is assumed constant, while random effects are parameters that vary randomly around zero according to a joint multivariate normal distribution.
+
+> ...Having fixed effects in an **econometric model** has the meaning of allowing the intercept to vary with group, or time, or both, while the other parameters are generally still assumed to be homogeneous. Having random effects means having a group– (or time–, or both) specific component in the error term.
+
+
+OK, so now that we know not to expect the typical mixed model definitions of fixed and random effects, let's get back to the three sub-types of panel regression analysis:
 
 1) **independently pooled panels**  - assumes that there are no individual effects that are independent of time and also no effect of time on all the individuals. In other words, the independent variables are not correlated with any error term. This is essentially an ordinary least squares linear regression. In our setting, it would mean treating each year-state observation as unrelated to the others, which probably does not make sense, since we expect observations within a state to be related to one another. This type of panel regression makes the most assumptions and is therefore typically not used for panel data. In this case the model formulation is:
 $$Y_{it}=\beta_{0}+\beta_{1}x_{1it}+...+\beta_{K}X_{Kit} + e_{it}$$
