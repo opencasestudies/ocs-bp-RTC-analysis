@@ -214,7 +214,7 @@ knitr::include_graphics(here("img", "RTC_map.png"))
 
 ##### [[source]](https://www.nraila.org/gun-laws/){target="_blank"}
 
-You can see that no state in the US currently has a "Rights Infringed/Non-Issue" law (the gray category) -- meaning that all 50 states in the US allow the right to carry firearms at least in some way. 
+You can see that no state in the US currently (this map is from 2020) has a "Rights Infringed/Non-Issue" law (the gray category) -- meaning that all 50 states in the US allow the right to carry firearms at least in some way. 
 However the level of restrictions is dramatically different from one state to another.
 
 
@@ -715,7 +715,7 @@ DONOHUE_OUTPUT_TIDY$Analysis <- "Analysis 1"
 
 As discussed above, we are choosing to use a fixed effects model because we believe it is most appropriate for our data. However, there are statistical tests implemented in the `plm` package that would allow us to test whether one of the other models would be as appropriate for our data. For example, we could perform a test to determine if we could have simply used a pooled model, i.e., the test evaluates whether the coefficients (including the intercepts) are equal across individuals. This test is implemented in the `pooltest()` function of the `plm` package and performs a comparison between the pooled model to the fixed effect within model. To test if using a random effect model would be more appropriate compared to the fixed effect model, one could use the [Hausman test](https://en.wikipedia.org/wiki/Durbin%E2%80%93Wu%E2%80%93Hausman_test){target="_blank"} (also called the Durbin-Wu-Hausman test). This test is implemented using the `phtest()` function of the `plm` package.
 
-Finally, we could also perform a test to evaluate if there is indeed an individual effect and a time effect in our model using the `plmtest()` function of the `plm` package. 
+Finally, we could also perform a test to evaluate if there is indeed an individual (state) effect and a time effect in our model using the `plmtest()` function of the `plm` package. 
 
 For more information on these tests and this package, see [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
 
@@ -1343,13 +1343,13 @@ VIF values can be calculated for each explanatory variable in a model by perform
 
 So generically speaking say this is our model:
 
-$$Y = β_0 + β_1X_1 + β_2X_2 + β_3X_3 $$
+$$Y = β_0 + β_1X_1 + β_2X_2 + β_3X_3 + e $$
 
 We have three explanatory variables ($X_1$, $X_2$, and $X_3$).
 
 If we want to calculate the VIF value for $X_1$ we would need to perform another OLS model, where $X_1$ is now the dependent variable explained by the other explanatory variables.
 
-$$X_1 = β_0 +  β_2X_2 + β_3X_3 $$ 
+$$X_1 = β_0 +  β_2X_2 + β_3X_3 + e$$ 
 
 The [$R^2$ coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination){target="_blank"} (also called R squared value) from this regression is then used to calculate the VIF as follows:
 
