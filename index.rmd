@@ -148,18 +148,18 @@ The skills, methods, and concepts that students will be familiar with by the end
 <u>**Data science Learning Objectives:**</u>  
 
 1. Create correlation scatterplots and heatmaps (`GGally`, `ggcorrplot`)  
-2. Creating interactive tables (`DT`)  
-3. Sampling subsets of data (`rsample`)  
-4. Combining multiple plots (`cowplot`)  
-5. Data visualizations with equations and text(`ggplot2` and `latex2exp`)  
+2. Create interactive tables (`DT`)  
+3. Sample subsets of data (`rsample`)  
+4. Combine multiple plots (`cowplot`)  
+5. Create data visualizations with equations and text(`ggplot2` and `latex2exp`)  
 
 <u>**Statistical Learning Objectives:**</u> 
 
-1. Understanding of what multicollinearity is and how it can influence linear regression coefficients
-2. Know how to look for the presence of multicollinearity and determine its severity
+1. Understand what multicollinearity is and how it can influence linear regression coefficients
+2. Recognize signs for the presence of multicollinearity and determine its severity
 3. Illustrate the difference between multicollinearity and correlation 
-4. How to implement panel regression analysis in R (`plm`)
-5. Define variance inflation factor (VIF) and know how to calculate in R (`car`)  
+4. Implement panel regression analysis in R (`plm`)
+5. Relate variance inflation factors (VIFs) to multicollinearity and calculate VIFs in R (`car`)
 
 To see another case study about how the original raw data was imported and wrangled please see [here](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"}.
 
@@ -654,7 +654,7 @@ We need to use a special type of data to use this package, called a `pdata.frame
 
 We need to indicate which variable should be used to identify the individuals in our panel, and what variable should be used to identify the time periods in our panel. In our case the `STATE` variable identifies the individuals and the `YEAR` variable identifies the time periods.
 
-We can specify this structure using the `pdata.frame()` function of the `plm` package, by using the `index` argument, where the individual variable is specified first followed by the time variable, like so: `index=c("Individual_Variable_NAME", "Time_Period_Variable_NAME").
+We can specify this structure using the `pdata.frame()` function of the `plm` package, by using the `index` argument, where the individual variable is specified first followed by the time variable, like so: `index=c("Individual_Variable_NAME", "Time_Period_Variable_NAME")`.
 
 ```{r}
 d_panel_DONOHUE <- pdata.frame(DONOHUE_DF, index=c("STATE", "YEAR"))
@@ -895,7 +895,7 @@ Thus collinearity describes linear prediction or association between variables. 
 
 The issue with this in linear regression, is that linear regression aims to determine how a one unit change in a regressor influences a one unit change in the dependent variable. In fact, this is what the coefficient estimates aim to tell us for each regressor.
 
-However, if our regressors are also linearly related, than it becomes difficult to determine the effect of each regressor on the dependent variable and multicollinearity can cause instability in our [coefficient estimates](https://statisticsbyjim.com/glossary/regression-coefficient/){target="_blank"}, making them unreliable. Coefficients may be inflated, deflated, or their signs may change.
+However, if our regressors are also linearly related, then it becomes difficult to determine the effect of each regressor on the dependent variable, and multicollinearity can cause instability in our [coefficient estimates](https://statisticsbyjim.com/glossary/regression-coefficient/){target="_blank"}, making them unreliable. Coefficients may be inflated, deflated, or their signs may change.
 
 If you want to read further on this topic, [here](https://blog.clairvoyantsoft.com/correlation-and-collinearity-how-they-can-make-or-break-a-model-9135fbe6936a){target="_blank"} and [here](https://medium.com/swlh/multicollinearity-and-variance-inflation-factor-bc74af36b1c9){target="_blank"} are a couple of interesting discussions.
 
@@ -985,7 +985,7 @@ To do so we will perform a process called [resampling](https://en.wikipedia.org/
 
 To do this we will use some functions in the `rsample` package which is very useful for splitting data in various ways.
 
-We will use the `loo_cv()` function which stands for **leave one out** [cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics){target="_blank"}. This will allow us to split our data into every possible subset where a unique observation is left out of the data.
+We will use the `loo_cv()` function which stands for **leave one out** [cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)){target="_blank"}. This will allow us to split our data into every possible subset where a unique observation is left out of the data.
 
 This function will however only prepare the data to be split.
 
