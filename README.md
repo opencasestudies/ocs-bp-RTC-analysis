@@ -88,9 +88,9 @@ our analysis are:
 
 ### Motivating question
 
-What is the effect of multicollinearity on coefficient estimates from
-linear regression models when analyzing right to carry laws and violence
-rates?
+1.  What is the effect of multicollinearity on coefficient estimates
+    from linear regression models when analyzing right to carry laws and
+    violence rates?
 
 ### Data
 
@@ -173,7 +173,7 @@ crime data was downloaded from the
 The skills, methods, and concepts that students will be familiar with by
 the end of this case study are:
 
-<u>**Data science Learning Objectives:**</u>
+<u>**Data Science Learning Objectives:**</u>
 
 1.  Create correlation scatterplots and heatmaps (`GGally`,
     `ggcorrplot`)  
