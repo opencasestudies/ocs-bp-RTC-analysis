@@ -30,9 +30,9 @@ United States License.
 
 To cite this case study:
 
-Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub,
-Margaret and Hicks, Stephanie. (2020).
-<https://www.opencasestudies.org/ocs-bp-RTC-analysis/>. Influence of
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret
+and Hicks, Stephanie. (2020).
+<https://github.com//opencasestudies/ocs-bp-RTC-analysis>. Influence of
 Multicollinearity on Measured Impact of Right-to-Carry Gun Laws (Version
 v1.0.0).
 
@@ -266,6 +266,8 @@ The articles used to motivate this case study are:
 <a href="https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&amp;context=law_and_economics" target="_blank">Lott and Mustard</a>  
 <a href="https://www.nber.org/papers/w23510.pdf" target="_blank">Donohue, et al.</a>  
 <a href="https://en.wikipedia.org/wiki/More_Guns,_Less_Crime" target="_blank">See here for a list of studies on this topic</a>
+
+<u>**Packages used in this case study:** </u>
 
 <table>
 <colgroup>

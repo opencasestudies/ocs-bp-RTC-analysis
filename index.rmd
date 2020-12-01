@@ -18,7 +18,7 @@ output:
 
 <style>
 #TOC {
-  background: url("https://opencasestudies.github.io/img/logo.jpg");
+  background: url("https://opencasestudies.github.io/img/icon-bahi.png");
   background-size: contain;
   padding-top: 240px !important;
   background-repeat: no-repeat;
@@ -48,20 +48,25 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 
 ####
 
-## {.disclaimer_block}
+#### {.disclaimer_block}
 
 **Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
 
-## {.license_block}
+####
+
+#### {.license_block}
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
 
-## {.reference_block}
+####
+
+#### {.reference_block}
 
 To cite this case study please use:
 
-Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://www.opencasestudies.org/ocs-bp-RTC-analysis/](https://www.opencasestudies.org/ocs-bp-RTC-analysis/). Influence of Multicollinearity on Measured Impact of Right-to-Carry Gun Laws (Version v1.0.0).
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com//opencasestudies/ocs-bp-RTC-analysis](https://github.com//opencasestudies/ocs-bp-RTC-analysis). Influence of Multicollinearity on Measured Impact of Right-to-Carry Gun Laws (Version v1.0.0).
 
+####
 
 # **Motivation**
 *** 
@@ -145,7 +150,7 @@ Specifically, we will consider the two ways to define the demographic variables 
 
 The skills, methods, and concepts that students will be familiar with by the end of this case study are:
 
-<u>**Data science Learning Objectives:**</u>  
+<u>**Data Science Learning Objectives:**</u>  
 
 1. Create correlation scatterplots and heatmaps (`GGally`, `ggcorrplot`)  
 2. Creating interactive tables (`DT`)  
@@ -289,6 +294,7 @@ library(cowplot)
 library(latex2exp)
 ```
 
+<u>**Packages used in this case study:** </u>  
 
   Package   | Use in this case study                                                                        
 ---------- |-------------
@@ -331,12 +337,13 @@ knitr::include_graphics(here("img", "ourdata.png"))
 ```
 
 
-# **Data Import and  Wrangling**
+# **Data Import and Wrangling**
 ***
 
 See [this case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} for details about data import and wrangling. We include data sources here for completeness, but will start from processed data in this case study.
 
-## Demographic and population data
+## **Demographic and population data**
+***
 
 To obtain information about age, sex, race, and overall population size we will use US Census Bureau data, as was done in both of the articles. The census data is available for different time spans. Here are the links for the years used in our analysis. We will use data from 1977 to 2010.
 
@@ -347,26 +354,33 @@ Data   | Link
 **years 1990 to 1999**  | [link](https://www2.census.gov/programs-surveys/popest/tables/1990-2000/state/asrh/)
 **years 2000 to 2010**  | [link](https://www.census.gov/data/datasets/time-series/demo/popest/intercensal-2000-2010-state.html) <br> [technical documentation](https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2000-2010/intercensal/state/st-est00int-alldata.pdf){target="_blank"}
 
-## State FIPS codes
+## **State FIPS codes**
+***
 
 The  data was downloaded from the [US Census Bureau](https://www.census.gov/geographies/reference-files/2014/demo/popest/2014-geocodes-state.html){target="_blank"}.
 
-## Police staffing data
+## **Police staffing data**
+***
 
 The following data was downloaded from the [Federal Bureau of Investigation](https://crime-data-explorer.fr.cloud.gov/downloads-and-docs){target="_blank"}. 
 
-## Unemployment data
+## **Unemployment data**
+***
 
 The following data was downloaded from the [U.S. Bureau of Labor Statistics](https://data.bls.gov/cgi-bin/dsrv?la){target="_blank"}. 
 
-## Poverty data
+## **Poverty data**
+***
+
 Extracted from Table 21 from [US Census Bureau Poverty Data ](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-people.html){target="_blank"}.
 
-## Violent crime
+## **Violent crime**
+***
 
 Violent crime data was obtained from [here](https://www.ucrdatatool.gov/Search/Crime/State/StatebyState.cfm){target="_blank"}. 
 
-## Right-to-carry data
+## **Right-to-carry data**
+***
 
 This data is extracted from table in [Donohue paper](https://www.nber.org/papers/w23510.pdf){target="_blank"}. 
 
@@ -542,7 +556,8 @@ We can also tell that the values for the variables are in general what we would 
 # **Data Analysis**
 ***
 
-## Panel Analysis
+## **Panel Analysis**
+***
 
 In these datasets, we have what is called [panel data](https://en.wikipedia.org/wiki/Panel_data){target="_blank"}, a special type of longitudinal data. Longitudinal data are data measurements taken over time. Panel data are data repeatedly measured for multiple panel members or individuals over time. This is in contrast with time series data, which measures one individual over time and cross sectional data, which measures multiple individuals at one point in time.  In other words, panel data is a combination of both, with measurements for multiple individuals/units of observation over multiple time periods.  In our case, we have measurements of violent crime and other variables for each state over many years. Therefore we are using measurements about the same states over time.  
 
@@ -641,7 +656,8 @@ There is quite a lot of discussion in econometrics around which model is appropr
 See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html) for more information about these different models.
 
 
-## Donohue, et al.
+## **Donohue, et al.**
+***
 
 OK! We are now ready to start analyzing our data! 
 
@@ -730,7 +746,8 @@ Finally, we could also perform a test to evaluate if there is indeed an individu
 For more information on these tests and this package, see [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
 
 
-## Mustard and Lott
+## **Mustard and Lott**
+***
 
 OK, now we will do the same for the Mustard and Lott analysis. In this case we would have a very large formula to write. So instead, we can use the `as.formula()` function of the `stats` package and the base `paste()` function to combine all of our explanatory variables into one formula without making a mistake. First we will create an object where we select only the explanatory variables. 
 
@@ -775,7 +792,8 @@ LOTT_OUTPUT_TIDY$Analysis <- "Analysis 2"
 ```
 
 
-## RTC coefficient comparison
+## **RTC coefficient comparison**
+***
 
 Now let's make a plot to compare the coefficient estimate for the Right-to-carry law adoption variable in each model.
 
@@ -873,7 +891,8 @@ The phenomenon called multicollinearity occurs when independent variables are hi
 
 There are several ways we can diagnose multicollinearity.
 
-### Correlation
+### **Correlation**
+***
 
 One way we can evaluate the relationships between variables is by examining the correlation between variable pairs.
 
@@ -974,7 +993,8 @@ We can see that many of the demographic variables are highly correlated with one
 The presence of correlation between variables suggests that we might have multicollinearity. However it does not necessarily mean that we do. So how can we assess this?
 
 
-### Coefficient estimate instability
+### **Coefficient estimate instability**
+***
 
 One way to look at the possible influence of multicollinearity is to look at the stability of the coefficient estimates under perturbations of the data.
 
@@ -1337,7 +1357,8 @@ simulation_plot
 Here we can clearly see that overall the coefficient estimates are much less stable in Analysis 2. This is an indication that we may have multicollinearity in our data.
 
 
-### VIF
+### **VIF**
+***
 
 Another way of evaluating the presence and severity of multicollinearity is to calculate the [variance inflation factor (VIF)](https://en.wikipedia.org/wiki/Variance_inflation_factor){target="_blank"} . 
 
@@ -1886,7 +1907,8 @@ Ask the students to discuss how this possibly changed the results.
 # **Additional Information**
 ***
 
-## Helpful Links
+## **Helpful Links**
+***
 
 [Tidyverse](https://www.tidyverse.org/){target="_blank"}  
 Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details on using `ggplot2`     
@@ -1918,6 +1940,7 @@ The articles used to motivate this case study are:
 For tutorials about using fixed effect models in panel analysis with the `plm` package, see [here](https://rpubs.com/rslbliss/fixed_effects) 
 and [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.html)  
 
+<u>**Packages used in this case study:** </u>  
 
   Package   | Use in this case study                                                                        
 ---------- |-------------
@@ -1939,13 +1962,15 @@ and [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
 [latex2exp](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions  
 
-## Session Info
+## **Session Info**
+***
 
 ```{r}
 sessionInfo()
 ```
 
-## Acknowledgements
+## **Acknowledgements**
+***
 
 We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study. We would also like to thank [Elizabeth Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart) and [Aboozar Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/) for reviewing the case study. 
 
