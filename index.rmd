@@ -1899,7 +1899,7 @@ Overall we learned that multicollinearity can bias our regression findings and i
 Importantly this case study showcases how methodological details, like how we decide to parse our demographic variables, can have great consequences on the results of our analyses. 
 
 
-# **Homework**
+# **Suggested Homework**
 *** 
 
 Ask students to remove one or more of the demographic variables with high VIF values from the Mustard and Lott-like panel data and perform the panel linear regression analysis again, as well as calculate the VIF values. 
