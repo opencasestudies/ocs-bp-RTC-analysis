@@ -2,11 +2,6 @@
 OpenCaseStudies
 ===============
 
-<!-- badges: start -->
-[![R build
-status](https://github.com/opencasestudies/ocs-bp-RTC-analysis/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-bp-RTC-analysis/actions)
-<!-- badges: end -->
-
 ### Important links
 
 -   HTML:
