@@ -7,6 +7,19 @@ OpenCaseStudies
 status](https://github.com/opencasestudies/ocs-bp-RTC-analysis/workflows/R-CMD-check/badge.svg)](https://github.com/opencasestudies/ocs-bp-RTC-analysis/actions)
 <!-- badges: end -->
 
+### Important links
+
+-   HTML:
+    <a href="https://www.opencasestudies.org/ocs-bp-RTC-analysis" class="uri">https://www.opencasestudies.org/ocs-bp-RTC-analysis</a>
+-   GitHub:
+    <a href="https://github.com//opencasestudies/ocs-bp-RTC-analysis" class="uri">https://github.com//opencasestudies/ocs-bp-RTC-analysis</a>
+-   Bloomberg American Health Initiative:
+    <a href="https://americanhealth.jhu.edu/open-case-studies" class="uri">https://americanhealth.jhu.edu/open-case-studies</a>
+-   Wrangling HTML:
+    <a href="https://www.opencasestudies.org/ocs-bp-RTC-wrangling" class="uri">https://www.opencasestudies.org/ocs-bp-RTC-wrangling</a>
+-   Wrangling GitHub:
+    <a href="https://github.com//opencasestudies/ocs-bp-RTC-wrangling" class="uri">https://github.com//opencasestudies/ocs-bp-RTC-wrangling</a>
+
 ### Disclaimer
 
 The purpose of the [Open Case
@@ -36,7 +49,7 @@ and Hicks, Stephanie. (2020).
 Multicollinearity on Measured Impact of Right-to-Carry Gun Laws (Version
 v1.0.0).
 
-### Acknowledgements
+### Acknowledgments
 
 We would like to acknowledge [Daniel
 Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster)

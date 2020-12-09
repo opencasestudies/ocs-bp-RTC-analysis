@@ -68,6 +68,9 @@ Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hic
 
 ####
 
+To access the GitHub repository for this case study see here: https://github.com//opencasestudies/ocs-bp-RTC-analysis.   
+This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
+
 # **Motivation**
 *** 
 
@@ -443,7 +446,7 @@ Let's do some quick visualizations to get a sense of our outcome of interest, th
 First we will plot the rate of violent crime over time to get a sense of the general trend.
 
 To do so we need to summarize the data for each year across all of the states. 
-Thus we will use the `group_by()` function and the `summarise()` functions to calculate an overall number of violent crimes relative to the total population for each year. In fact, we will calculate the log of the number of violent crimes per 100,000 individuals, as this will make it easier to see the trend in the data. In addition, by looking at the rate per 100,000 individuals, we can more directly compare crime statistics across groups like states with different populations, as you will see below.
+Thus we will use the `group_by()` function and the `summarize()` functions to calculate an overall number of violent crimes relative to the total population for each year. In fact, we will calculate the log of the number of violent crimes per 100,000 individuals, as this will make it easier to see the trend in the data. In addition, by looking at the rate per 100,000 individuals, we can more directly compare crime statistics across groups like states with different populations, as you will see below.
 
 Then we will use the `ggplot2` package to plot the data. The first step in creating a plot with this package is to use the `ggplot()` function and the `aes()` argument to specify what data should be plotted on the x-axis and what data should be plotted in on the y-axis. Then we select what type of plot we would like to make using one of the `geom_*()` functions. Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}  for more details.
 
@@ -457,7 +460,7 @@ All of these functions are part of the `ggplot2` package.
  
  DONOHUE_DF %>%
   group_by(YEAR) %>%
-  summarise(Viol_crime_count = sum(Viol_crime_count),
+  summarize(Viol_crime_count = sum(Viol_crime_count),
                   Population = sum(Population),
                     .groups = "drop") %>%
   mutate(Viol_crime_rate_100k_log = log((Viol_crime_count*100000)/Population)) %>%
@@ -1326,7 +1329,7 @@ To do this we will calculate the standard deviation of coefficient estimates for
 ```{r}
 coeff_sd <-simulations %>% 
   group_by(Analysis, term) %>% 
-  summarise("SD" = sd(estimate))
+  summarize("SD" = sd(estimate))
 ```
 
 First, we will display an interactive table of these standard deviations. Try searching for "RTC", and you can compare the standard deviations of the coefficients for the `RTC_LAWTRUE` variable across the two analyses. To take a better look at our data we will use the `datatable()` function of the `DT` package which will create an interactive searchable table.
@@ -1969,7 +1972,7 @@ and [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.
 sessionInfo()
 ```
 
-## **Acknowledgements**
+## **Acknowledgments**
 ***
 
 We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study. We would also like to thank [Elizabeth Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart) and [Aboozar Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/) for reviewing the case study. 
