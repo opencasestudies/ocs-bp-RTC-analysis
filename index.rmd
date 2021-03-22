@@ -32,12 +32,13 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = FALSE, fig.width=10, fig.height=7,
-                      fig.align = "center", out.width = '90%')
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = FALSE, fig.width = 10, fig.height = 7,
+  fig.align = "center", out.width = "90%"
+)
 library(here)
 library(knitr)
-
 ```
 
 
@@ -125,7 +126,7 @@ Before we leave this section, we provide a high-level overview of what variables
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
+knitr::include_graphics(here("img", "Donohue_Table2_edited.png"))
 ```
 
 ##### [[source]](https://www.nber.org/papers/w23510.pdf){target="_blank"}
@@ -397,7 +398,7 @@ Here is the table from the [Donohue paper](https://www.nber.org/papers/w23510.pd
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img",'Donohue_Table2_edited.png'))
+knitr::include_graphics(here("img", "Donohue_Table2_edited.png"))
 ```
 
 ##### [[source]](https://www.nber.org/papers/w23510.pdf){target="_blank"}
@@ -409,7 +410,33 @@ We can see that only the percentage of males that were from age 15-39 of the rac
 
 The final products from our data wrangling which is described in [another case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two datasets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the datasets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multicollinearity on our modeling results, which is the main objective of this case study.
 
-We will load this data now, which is located in the `data` directory. We can use the `here()` function of the `here` package to easily locate it.
+If you have trouble accessing the GitHub Repository, the "Wrangled_data.rda" data can be downloaded from [here](https://github.com/opencasestudies/ocs-bp-RTC-analysis/blob/master/data/Wrangled_data.rda).
+
+We will load this data now. 
+
+In our case, we downloaded this data and put it within a "data" directory for our project. If you use an RStudio project, then you can use the `here()` function of the `here` package to make the path for loading this data simpler. The `here` package automatically starts looking for files based on where you have a `.Rproj` file which is created when you start a new RStudio project. We can specify that we want to look for the file within the "data" directory within a directory where our `.Rproj` file is located by separating the name of the "data" directory and the file name using comma.
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects. 
+
+</details>
+
+***
 
 ```{r}
 load(file = here::here("data", "Wrangled_data.rda"))
@@ -426,17 +453,19 @@ As expected the `Lott_DF` is 30 columns larger, due to the 30 additional demogra
 
 ```{r}
 LOTT_DF %>%
-   colnames()
+  colnames()
 
 DONOHUE_DF %>%
-   colnames()
+  colnames()
 ```
 
 Lastly, we will check that the `YEAR` values are the same, i.e., that the two tibbles contain data from the same set of years. We can use the `setequal()` function of the `dplyr` package to see if the values are the same. 
 
 ```{r}
-setequal(DONOHUE_DF %>% distinct(YEAR),
-          LOTT_DF %>% distinct(YEAR))
+setequal(
+  DONOHUE_DF %>% distinct(YEAR),
+  LOTT_DF %>% distinct(YEAR)
+)
 ```
 
 
@@ -459,24 +488,32 @@ The `labs()` function can be used to add labels to the plot, while the `theme()`
 All of these functions are part of the `ggplot2` package.
  
 ```{r}
- 
- DONOHUE_DF %>%
+
+DONOHUE_DF %>%
   group_by(YEAR) %>%
-  summarize(Viol_crime_count = sum(Viol_crime_count),
-                  Population = sum(Population),
-                    .groups = "drop") %>%
-  mutate(Viol_crime_rate_100k_log = log((Viol_crime_count*100000)/Population)) %>%
+  summarize(
+    Viol_crime_count = sum(Viol_crime_count),
+    Population = sum(Population),
+    .groups = "drop"
+  ) %>%
+  mutate(Viol_crime_rate_100k_log = log((Viol_crime_count * 100000) / Population)) %>%
   ggplot(aes(x = YEAR, y = Viol_crime_rate_100k_log)) +
   geom_line() +
-  scale_x_continuous(breaks = seq(1980, 2010, by = 1),
-                     limits = c(1980, 2010),
-                     labels = c(seq(1980, 2010, by = 1))) +
-  scale_y_continuous(breaks = seq(5.75, 6.75, by = 0.25),
-                     limits = c(5.75, 6.75)) +
-  labs(title = "Crime rates fluctuate over time",
-       x = "Year",
-       y = "ln(violent crimes per 100,000 people)") +
-  theme_minimal() + 
+  scale_x_continuous(
+    breaks = seq(1980, 2010, by = 1),
+    limits = c(1980, 2010),
+    labels = c(seq(1980, 2010, by = 1))
+  ) +
+  scale_y_continuous(
+    breaks = seq(5.75, 6.75, by = 0.25),
+    limits = c(5.75, 6.75)
+  ) +
+  labs(
+    title = "Crime rates fluctuate over time",
+    x = "Year",
+    y = "ln(violent crimes per 100,000 people)"
+  ) +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 90))
 ```
 Interesting! It appears that there was an overall national peak in violent crime in the early 1990s that has since then declined.  
@@ -489,41 +526,50 @@ We will use the `ggrepel` package to add text to the plot using the `geom_text_r
 ```{r}
 
 DONOHUE_DF %>%
-  mutate(Viol_crime_rate_100k_log = log((Viol_crime_count*100000)/Population)) %>%
+  mutate(Viol_crime_rate_100k_log = log((Viol_crime_count * 100000) / Population)) %>%
   ggplot(aes(x = YEAR, y = Viol_crime_rate_100k_log, color = STATE)) +
   geom_point(size = 0.5) +
-  geom_line(aes(group=STATE),
-            size = 0.5,
-            show.legend = FALSE) +
-  geom_text_repel(data = DONOHUE_DF %>%
-              mutate(Viol_crime_rate_100k_log = log((Viol_crime_count*100000)/Population)) %>%
-              filter(YEAR == last(YEAR)),
-            aes(label = STATE,
-                x = YEAR,
-                y = Viol_crime_rate_100k_log),
-            size = 3,
-            alpha = 1,
-            nudge_x = 10,
-            direction = "y",
-            hjust = 1,
-            vjust = 1,
-            segment.size = 0.25,
-            segment.alpha = 0.25,
-            force = 1,
-            max.iter = 9999) +
+  geom_line(aes(group = STATE),
+    size = 0.5,
+    show.legend = FALSE
+  ) +
+  geom_text_repel(
+    data = DONOHUE_DF %>%
+      mutate(Viol_crime_rate_100k_log = log((Viol_crime_count * 100000) / Population)) %>%
+      filter(YEAR == last(YEAR)),
+    aes(
+      label = STATE,
+      x = YEAR,
+      y = Viol_crime_rate_100k_log
+    ),
+    size = 3,
+    alpha = 1,
+    nudge_x = 10,
+    direction = "y",
+    hjust = 1,
+    vjust = 1,
+    segment.size = 0.25,
+    segment.alpha = 0.25,
+    force = 1,
+    max.iter = 9999
+  ) +
   guides(color = FALSE) +
-  scale_x_continuous(breaks = seq(1980, 2015, by = 1),
-                     limits = c(1980, 2015),
-                     labels = c(seq(1980, 2010, by = 1), rep("", 5))) +
-  scale_y_continuous(breaks = seq(3.5, 8.5, by = 0.5),
-                     limits = c(3.5, 8.5)) +
-  labs(title = "States have different levels of crime",
-       x = "Year",
-       y = "ln(violent crimes per 100,000 people)") +
+  scale_x_continuous(
+    breaks = seq(1980, 2015, by = 1),
+    limits = c(1980, 2015),
+    labels = c(seq(1980, 2010, by = 1), rep("", 5))
+  ) +
+  scale_y_continuous(
+    breaks = seq(3.5, 8.5, by = 0.5),
+    limits = c(3.5, 8.5)
+  ) +
+  labs(
+    title = "States have different levels of crime",
+    x = "Year",
+    y = "ln(violent crimes per 100,000 people)"
+  ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90))
-
-
 ```
 
 It looks like the crime rates vary quite a bit from one state to another. Some states show increased crime over time while others show decreased crime. 
@@ -536,7 +582,6 @@ As we do this, we may start to run into issues with missing data for some of our
 ```{r}
 DONOHUE_DF %>%
   naniar::vis_miss()
-
 ```
 
 Looks like no missing data! 
@@ -544,17 +589,30 @@ Looks like no missing data!
 ```{r}
 LOTT_DF %>%
   naniar::vis_miss()
-
 ```
 Same for the `LOTT_DF`.
 
 We can use the `skim()` of the `skimr` package to get a better sense of the data. This also shows missingness, as well as standard deviations, spread, and means for our data. Also notice that there is a small histogram of each variable in the final column.
 
-```{r}
+```{r, eval=FALSE}
 skimr::skim(DONOHUE_DF)
-skimr::skim(LOTT_DF)
-
 ```
+
+```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
+knitr::include_graphics(here("img", "skim1.png"))
+knitr::include_graphics(here("img", "skim2.png"))
+```
+
+```{r, eval=FALSE}
+skimr::skim(LOTT_DF)
+```
+
+```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
+knitr::include_graphics(here("img", "skim3.png"))
+knitr::include_graphics(here("img", "skim4.png"))
+knitr::include_graphics(here("img", "skim5.png"))
+```
+
 We can see from this function that we have the number of variables of the class types that we expect for each tibble. We can also see that the means of the variables that should be the same for each tibble are in fact the same. 
 We can also tell that the values for the variables are in general what we would expect.
 
@@ -596,7 +654,7 @@ Time Points ($T$)  | Individuals ($N$)
 1979 | Kansas
 
 
-Overall in a a balanced panel, we have $n$ observations, where $n = N*T$.  
+Overall in a balanced panel, we have $n$ observations, where $n = N*T$.  
 
 In an unbalanced panel, the number of observations is less than $N*T$.
 
@@ -678,7 +736,7 @@ We need to indicate which variable should be used to identify the individuals in
 We can specify this structure using the `pdata.frame()` function of the `plm` package, by using the `index` argument, where the individual variable is specified first followed by the time variable, like so: `index=c("Individual_Variable_NAME", "Time_Period_Variable_NAME")`.
 
 ```{r}
-d_panel_DONOHUE <- pdata.frame(DONOHUE_DF, index=c("STATE", "YEAR"))
+d_panel_DONOHUE <- pdata.frame(DONOHUE_DF, index = c("STATE", "YEAR"))
 
 class(d_panel_DONOHUE)
 
@@ -714,20 +772,21 @@ Here is how we would implement this for the Donohue data:
 
 ```{r}
 DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                        effect = "twoways",
-                        model = "within",
-                        data = d_panel_DONOHUE)
+                      RTC_LAW +
+                      White_Male_15_to_19_years +
+                      White_Male_20_to_39_years +
+                      Black_Male_15_to_19_years +
+                      Black_Male_20_to_39_years +
+                      Other_Male_15_to_19_years +
+                      Other_Male_20_to_39_years +
+                      Unemployment_rate +
+                      Poverty_rate +
+                      Population_log +
+                      police_per_100k_lag,
+                      effect = "twoways",
+                      model = "within",
+                      data = d_panel_DONOHUE
+                      )
 ```
 
 To see the results we can use the base `summary()` function. We can view this output in tidy format using the `tidy()` function of the `broom` package.
@@ -758,22 +817,23 @@ OK, now we will do the same for the Mustard and Lott analysis. In this case we w
 
 ```{r}
 LOTT_variables <- LOTT_DF %>%
-  dplyr::select(RTC_LAW,
-                contains(c("White","Black","Other")),
-                Unemployment_rate,
-                Poverty_rate,
-                Population_log,
-                police_per_100k_lag) %>%
+  dplyr::select(
+    RTC_LAW,
+    contains(c("White", "Black", "Other")),
+    Unemployment_rate,
+    Poverty_rate,
+    Population_log,
+    police_per_100k_lag
+  ) %>%
   colnames()
 
 
-LOTT_fmla <- as.formula(paste("Viol_crime_rate_1k_log ~",
-                              paste(LOTT_variables, collapse = " + ")
-                              )
-                        )
+LOTT_fmla <- as.formula(paste(
+  "Viol_crime_rate_1k_log ~",
+  paste(LOTT_variables, collapse = " + ")
+))
 
 LOTT_fmla
-
 ```
 
 That is quite the formula!
@@ -782,12 +842,13 @@ OK, now again we will make a panel data frame and we will fit a fixed effect two
 
 ```{r}
 
-d_panel_LOTT <- pdata.frame(LOTT_DF, index=c("STATE", "YEAR"))
+d_panel_LOTT <- pdata.frame(LOTT_DF, index = c("STATE", "YEAR"))
 
 LOTT_OUTPUT <- plm(LOTT_fmla,
-                      model = "within",
-                     effect = "twoways",
-                       data = d_panel_LOTT)
+  model = "within",
+  effect = "twoways",
+  data = d_panel_LOTT
+)
 
 summary(LOTT_OUTPUT)
 
@@ -819,30 +880,38 @@ Let's make a plot of this finding. We will show error bars for the coefficient e
 Finally we will add arrows to emphasize the difference in the direction of the findings using the `geom_segment()` function of the `ggplot2` package. Using the `arrow()` function, we can specify details about the arrow we would like to add.
 
 ```{r}
-comparing_analyses_plot <- ggplot(comparing_analyses) + 
+comparing_analyses_plot <- ggplot(comparing_analyses) +
   geom_point(aes(x = Analysis, y = estimate)) +
-  geom_errorbar(aes(x = Analysis, ymin = conf.low, ymax = conf.high), width = 0.25) + 
+  geom_errorbar(aes(x = Analysis, ymin = conf.low, ymax = conf.high), width = 0.25) +
   geom_hline(yintercept = 0, color = "red") +
-  scale_y_continuous(breaks = seq(-0.2, 0.2, by = 0.05),
-                     labels = seq(-0.2, 0.2, by = 0.05),
-                     limits = c(-0.2,0.2)) +
+  scale_y_continuous(
+    breaks = seq(-0.2, 0.2, by = 0.05),
+    labels = seq(-0.2, 0.2, by = 0.05),
+    limits = c(-0.2, 0.2)
+  ) +
   geom_segment(aes(x = 1, y = 0.125, xend = 1, yend = 0.175),
-               arrow = arrow(angle = 45, ends = "last", type = "open"),
-               size = 2,
-               color = "green",
-               lineend = "butt",
-               linejoin = "mitre") +
+    arrow = arrow(angle = 45, ends = "last", type = "open"),
+    size = 2,
+    color = "green",
+    lineend = "butt",
+    linejoin = "mitre"
+  ) +
   geom_segment(aes(x = 2, y = -0.125, xend = 2, yend = -0.175),
-               arrow = arrow(angle = 45, ends = "last", type = "open"),
-               size = 2,
-               color = "red",
-               lineend = "butt",
-               linejoin = "mitre") +
-  theme_minimal() + 
-  theme(axis.title.x = element_blank(),
-        axis.text = element_text(size = 8, color = "black")) +
-  labs(title = "Effect estimate on ln(violent crimes per 100,000 people)",
-       y = "  Effect estimate (95% CI)")
+    arrow = arrow(angle = 45, ends = "last", type = "open"),
+    size = 2,
+    color = "red",
+    lineend = "butt",
+    linejoin = "mitre"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text = element_text(size = 8, color = "black")
+  ) +
+  labs(
+    title = "Effect estimate on ln(violent crimes per 100,000 people)",
+    y = "  Effect estimate (95% CI)"
+  )
 
 comparing_analyses_plot
 ```
@@ -859,10 +928,12 @@ The analysis data frames are very similar yet yielded very different results.
 Recall that the only difference between the two models is the number of demographic variables included as covariates. The number of rows or observations is the same, as are the outcome and the other covariates included in the model. We can use the `all_equal()` function of the `dplyr` package to compare the number of columns of our Donohue-like data and our Mustard and Lott-like data.
 
 ```{r}
-all_equal(target = DONOHUE_DF,
-          current = LOTT_DF,
-          ignore_col_order = TRUE,
-          ignore_row_order = TRUE)
+all_equal(
+  target = DONOHUE_DF,
+  current = LOTT_DF,
+  ignore_col_order = TRUE,
+  ignore_row_order = TRUE
+)
 ```
 
 Using the base `dim()` function we can also look at the number of rows for each and see that the number of observations is the same for both datasets.
@@ -934,18 +1005,22 @@ One way to look at correlation across pairs of variables is to use the `ggpairs(
 ```{r}
 colnames(DONOHUE_DF)
 
-DONOHUE_DF %>% 
-  dplyr::select(RTC_LAW,
-                Viol_crime_rate_1k_log,
-                Unemployment_rate,
-                Poverty_rate,
-                Population_log) %>% 
+DONOHUE_DF %>%
+  dplyr::select(
+    RTC_LAW,
+    Viol_crime_rate_1k_log,
+    Unemployment_rate,
+    Poverty_rate,
+    Population_log
+  ) %>%
   ggpairs(.,
-          columns = c(2:5),
-          lower = list(continuous = wrap("smooth_loess",
-                                         color = "red",
-                                         alpha = 0.5,
-                                         size = 0.1)))
+    columns = c(2:5),
+    lower = list(continuous = wrap("smooth_loess",
+      color = "red",
+      alpha = 0.5,
+      size = 0.1
+    ))
+  )
 ```
 We can see that for the non-demographic variables, there is very little correlation between the pairs of variables. Only the unemployment rate and the poverty rate show relatively strong correlation, as one might expect. 
 
@@ -966,14 +1041,17 @@ To label our legend with the Greek letter $\rho$, we will use the base `expressi
 cor_DONOHUE_dem <- cor(DONOHUE_DF %>% dplyr::select(contains("_years")))
 
 corr_mat_DONOHUE <- ggcorrplot(cor_DONOHUE_dem,
-           tl.cex = 6,
-           hc.order = TRUE,
-           colors = c("red",
-                      "white",
-                      "red"),
-           outline.color = "transparent",
-           title = "Correlation Matrix, Analysis 1",
-           legend.title = expression(rho))
+  tl.cex = 6,
+  hc.order = TRUE,
+  colors = c(
+    "red",
+    "white",
+    "red"
+  ),
+  outline.color = "transparent",
+  title = "Correlation Matrix, Analysis 1",
+  legend.title = expression(rho)
+)
 
 
 corr_mat_DONOHUE
@@ -981,14 +1059,17 @@ corr_mat_DONOHUE
 cor_LOTT_dem <- cor(LOTT_DF %>% dplyr::select(contains("_years")))
 
 corr_mat_LOTT <- ggcorrplot(cor_LOTT_dem,
-           tl.cex = 6,
-           hc.order = TRUE,
-           colors = c("red",
-                      "white",
-                      "red"),
-           outline.color = "transparent",
-           title = "Correlation Matrix, Analysis 2",
-           legend.title = expression(rho))
+  tl.cex = 6,
+  hc.order = TRUE,
+  colors = c(
+    "red",
+    "white",
+    "red"
+  ),
+  outline.color = "transparent",
+  title = "Correlation Matrix, Analysis 2",
+  legend.title = expression(rho)
+)
 
 corr_mat_LOTT
 ```
@@ -1016,12 +1097,12 @@ This function will however only prepare the data to be split.
 
 To get the remaining data after the removal of the observation that is left out we will use a function called `training()`. These function names arise from the fact that these functions are often used for in machine learning applications where the data is split between a larger training set and a smaller testing set. Thus we want the larger $n-1$ subset, as opposed to the single value that is removed, (which we could get with the `testing()` function).
 
-
+***
 <details> <summary> Click here to see an example of how this works. </summary>
 
 First we will make a toy dataset that is very simple called `test` using the `tibble()` function of the `tibble` package:
 ```{r}
-test <-tibble::tibble(x = c(1,2,3))
+test <- tibble::tibble(x = c(1, 2, 3))
 test
 ```
 
@@ -1054,7 +1135,7 @@ test_subsets
 We can see that there are 3 possible subsets that leave one value out. All 3 possible subsets are created using this method. This method will always create the same number of subsets as there are unique values or rows in the data.
 
 </details>
-
+***
 
 Now we will use this method with the data from our Donohue-like analysis, and since this data has `r dim(d_panel_DONOHUE)[1]` rows, `r dim(d_panel_DONOHUE)[1]` subsets will be created that leave out one row. The idea is to fit our panel regression model on each subset of the data, and then examine how the coefficient estimates from each of these model fits vary as the sample changes slightly. With collinear predictors, we expect that our coefficient estimates may be unstable and subject to change under even small perturbations of the data.
 
@@ -1069,7 +1150,7 @@ Now we will use the `training()` function to select the remaining data without t
 
 ```{r}
 # To get all the data subsets
-DONOHUE_subsets <-map(pull(DONOHUE_splits, splits), training)
+DONOHUE_subsets <- map(pull(DONOHUE_splits, splits), training)
 
 glimpse(DONOHUE_subsets[[1]])
 length(DONOHUE_subsets)
@@ -1081,10 +1162,10 @@ Let's see what observation was left out in the first subset:
 
 ```{r}
 d_panel_DONOHUE %>%
-  filter(! rownames(d_panel_DONOHUE)  %in% rownames(DONOHUE_subsets[[1]]))
+  filter(!rownames(d_panel_DONOHUE) %in% rownames(DONOHUE_subsets[[1]]))
 
 # Another way to check is to use:
-DONOHUE_removed <-map(pull(DONOHUE_splits, splits), testing)
+DONOHUE_removed <- map(pull(DONOHUE_splits, splits), testing)
 
 DONOHUE_removed[[1]]
 ```
@@ -1094,22 +1175,23 @@ It looks like the Texas data from 1988 was removed from the first split.
 OK, so now let's fit our panel regression on the first subset of data like we did previously. Note that this causes our data to be an **unbalanced** panel. This does not require any adjustment to the code to model the data, but you will notice that the output will now say "unbalanced".
 
 ```{r}
- subset_1_result<-plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                        data = DONOHUE_subsets[[1]],
-                       index = c("STATE","YEAR"),
-                       model = "within",
-                      effect = "twoways")
+subset_1_result <- plm(Viol_crime_rate_1k_log ~
+RTC_LAW +
+  White_Male_15_to_19_years +
+  White_Male_20_to_39_years +
+  Black_Male_15_to_19_years +
+  Black_Male_20_to_39_years +
+  Other_Male_15_to_19_years +
+  Other_Male_20_to_39_years +
+  Unemployment_rate +
+  Poverty_rate +
+  Population_log +
+  police_per_100k_lag,
+data = DONOHUE_subsets[[1]],
+index = c("STATE", "YEAR"),
+model = "within",
+effect = "twoways"
+)
 summary(subset_1_result)
 ```
 
@@ -1118,25 +1200,25 @@ Indeed, we can see that now we have an unbalanced panel with N = 1394 observatio
 Now that we have our subsets, we want to write a function to fit a panel regression using `plm()`on each subset. See [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more information on writing functions.
 
 ```{r}
-fit_nls_on_bootstrap_DONOHUE <- function(subset){
-                    plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                        data = data.frame(subset),
-                       index = c("STATE","YEAR"),
-                       model = "within",
-                      effect = "twoways")
+fit_nls_on_bootstrap_DONOHUE <- function(subset) {
+  plm(Viol_crime_rate_1k_log ~
+  RTC_LAW +
+    White_Male_15_to_19_years +
+    White_Male_20_to_39_years +
+    Black_Male_15_to_19_years +
+    Black_Male_20_to_39_years +
+    Other_Male_15_to_19_years +
+    Other_Male_20_to_39_years +
+    Unemployment_rate +
+    Poverty_rate +
+    Population_log +
+    police_per_100k_lag,
+  data = data.frame(subset),
+  index = c("STATE", "YEAR"),
+  model = "within",
+  effect = "twoways"
+  )
 }
-
 ```
 
 Now we can apply this function to each of our subsets simultaneously using the `map()` function of the `purrr` package.  
@@ -1147,12 +1229,12 @@ subsets_models_DONOHUE <- map(DONOHUE_subsets, fit_nls_on_bootstrap_DONOHUE)
 
 subsets_models_DONOHUE <- subsets_models_DONOHUE %>%
   map(tidy)
-
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
-save(subsets_models_DONOHUE, 
-     file = here::here("data", "DONOHUE_simulations.rda"))
+save(subsets_models_DONOHUE,
+  file = here::here("data", "DONOHUE_simulations.rda")
+)
 ```
 
 ```{r, echo = FALSE}
@@ -1168,19 +1250,20 @@ set.seed(124)
 LOTT_splits <- d_panel_LOTT %>% loo_cv()
 
 # To get all the data subsets:
-LOTT_subsets <-map(pull(LOTT_splits, splits), training)
+LOTT_subsets <- map(pull(LOTT_splits, splits), training)
 ```
 
 
 We need to create a different function to fit the data to account for the larger number of demographic variables. We will use the formula that we made previously.
 
 ```{r}
-fit_nls_on_bootstrap_LOTT <- function(split){
+fit_nls_on_bootstrap_LOTT <- function(split) {
   plm(LOTT_fmla,
-      data = data.frame(split),
-      index = c("STATE","YEAR"),
-      model = "within",
-      effect = "twoways")
+    data = data.frame(split),
+    index = c("STATE", "YEAR"),
+    model = "within",
+    effect = "twoways"
+  )
 }
 ```
 
@@ -1195,8 +1278,9 @@ subsets_models_LOTT <- subsets_models_LOTT %>%
 
 
 ```{r, eval = FALSE, echo = FALSE}
-save(subsets_models_LOTT, 
-     file = here::here("data", "LOTT_simulations.rda"))
+save(subsets_models_LOTT,
+  file = here::here("data", "LOTT_simulations.rda")
+)
 ```
 
 ```{r, echo = FALSE}
@@ -1207,11 +1291,10 @@ load(here::here("data", "LOTT_simulations.rda"))
 Now we will combine the output so that we can make a plot to visualize the results that we obtained, i.e., to look at how the variation in our coefficient estimates across data subsets varies between the Donohue and the Lott and Mustard models. First let's name each subset that we created.
 
 ```{r}
-names(subsets_models_DONOHUE) <-     paste0("DONOHUE_",1:length(subsets_models_DONOHUE))
+names(subsets_models_DONOHUE) <- paste0("DONOHUE_", seq_len(length(subsets_models_DONOHUE)))
 
-names(subsets_models_LOTT) <- 
-paste0("LOTT_",1:length(subsets_models_LOTT))
-
+names(subsets_models_LOTT) <-
+  paste0("LOTT_", 1:length(subsets_models_LOTT))
 ```
 
 Now we can combine the tibbles within the list of tibbles for the `subsets_models_DONOHUE` and `subsets_models_LOTT` data.
@@ -1230,8 +1313,10 @@ simulations_LOTT <- subsets_models_LOTT %>%
   bind_rows(.id = "ID") %>%
   mutate(Analysis = "Analysis 2")
 
-simulations <- bind_rows(simulations_DONOHUE,
-                         simulations_LOTT)
+simulations <- bind_rows(
+  simulations_DONOHUE,
+  simulations_LOTT
+)
 
 head(simulations)
 tail(simulations)
@@ -1244,27 +1329,30 @@ Since there are many variables in both analyses, we will use the `facet_grid()` 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-What happens if don't use the `drop = TRUE` argument or the `space = "free"` argument? 
+What happens if you don't use the `drop = TRUE` argument or the `space = "free"` argument? 
 
 ####
 
 ```{r}
 simulation_plot <- simulations %>%
-  ggplot(aes(x = term, y = estimate)) + 
+  ggplot(aes(x = term, y = estimate)) +
   geom_boxplot() +
-  facet_grid(.~Analysis, scale = "free_x", space = "free", drop = TRUE) +
-  labs(title = "Coefficient estimates",
-       subtitle = "Estimates across leave-one-out analyses",
-       x = "Term",
-       y = "Coefficient",
-       caption = "Results from simulations") + 
+  facet_grid(. ~ Analysis, scale = "free_x", space = "free", drop = TRUE) +
+  labs(
+    title = "Coefficient estimates",
+    subtitle = "Estimates across leave-one-out analyses",
+    x = "Term",
+    y = "Coefficient",
+    caption = "Results from simulations"
+  ) +
   theme_linedraw() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1),
-        strip.text.x = element_text(size = 14, face = "bold"))
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 70, hjust = 1),
+    strip.text.x = element_text(size = 14, face = "bold")
+  )
 
 simulation_plot
-
 ```
 
 Here, we can start to see that there is a bit more variability in the coefficient estimates from the leave-one-out results for Analysis 2.
@@ -1286,13 +1374,14 @@ Now we can create the order of the values of the `term` variable using the `fact
 ```{r}
 
 simulations <- simulations %>%
-                  mutate(term = factor(term, 
-                                       levels = c(str_subset(unique(pull(simulations, term)), "years", negate=TRUE), 
-                                              sort(str_subset(unique(pull(simulations, term)), "years")))))
+  mutate(term = factor(term,
+    levels = c(
+      str_subset(unique(pull(simulations, term)), "years", negate = TRUE),
+      sort(str_subset(unique(pull(simulations, term)), "years"))
+    )
+  ))
 
 levels(pull(simulations, term))
-
-
 ```
 
 Looks good!
@@ -1303,22 +1392,24 @@ Now we just need to run the same code again to create the plot, but now the orde
 ```{r}
 
 simulation_plot <- simulations %>%
-  ggplot(aes(x = term, y = estimate)) + 
+  ggplot(aes(x = term, y = estimate)) +
   geom_boxplot() +
-  facet_grid(.~Analysis, scale = "free_x", space = "free", drop = TRUE) +
-  labs(title = "Coefficient estimates",
-       subtitle = "Estimates across leave-one-out analyses",
-       x = "Term",
-       y = "Coefficient",
-       caption = "Results from simulations") + 
+  facet_grid(. ~ Analysis, scale = "free_x", space = "free", drop = TRUE) +
+  labs(
+    title = "Coefficient estimates",
+    subtitle = "Estimates across leave-one-out analyses",
+    x = "Term",
+    y = "Coefficient",
+    caption = "Results from simulations"
+  ) +
   theme_linedraw() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_text(angle = 70, hjust = 1),
-        strip.text.x = element_text(size = 14, face = "bold"))
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 70, hjust = 1),
+    strip.text.x = element_text(size = 14, face = "bold")
+  )
 
 simulation_plot
-
-
 ```
 
 
@@ -1329,8 +1420,8 @@ Let's make a plot showing the summary of the overall coefficient instability.
 To do this we will calculate the standard deviation of coefficient estimates for each variable across all of the simulations. Thus  we will group  by  the `Analysis` and  the `term` variables now that our data is in long format. We will use the `sd()` function of the `stats` package to calculate the standard deviation.
 
 ```{r}
-coeff_sd <-simulations %>% 
-  group_by(Analysis, term) %>% 
+coeff_sd <- simulations %>%
+  group_by(Analysis, term) %>%
   summarize("SD" = sd(estimate))
 ```
 
@@ -1344,19 +1435,22 @@ Now we will make a plot of this data, including SDs from all coefficients in eac
 
 ```{r}
 simulation_plot <- coeff_sd %>%
-  ggplot(aes(x = Analysis, y = SD)) + 
- geom_jitter(width = 0.1, alpha = 0.5, size = 2) + 
-  labs(title = "Coefficient variability",
-       subtitle = "SDs of coefficient estimates from leave-one-out analysis",
-       x = "Term",
-       y = "Coefficient Estimate \n Standard Deviations",
-       caption = "Results from simulations") + 
+  ggplot(aes(x = Analysis, y = SD)) +
+  geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
+  labs(
+    title = "Coefficient variability",
+    subtitle = "SDs of coefficient estimates from leave-one-out analysis",
+    x = "Term",
+    y = "Coefficient Estimate \n Standard Deviations",
+    caption = "Results from simulations"
+  ) +
   theme_minimal() +
-  theme(axis.title.x = element_blank(),
-         axis.text.x = element_text(size = 8, color = "black"),
-         axis.text.y = element_text(color = "black"))
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(size = 8, color = "black"),
+    axis.text.y = element_text(color = "black")
+  )
 simulation_plot
-
 ```
 
 Here we can clearly see that overall the coefficient estimates are much less stable in Analysis 2. This is an indication that we may have multicollinearity in our data.
@@ -1421,20 +1515,21 @@ Once we have calculated our VIF values, we will create nicer looking output of t
 Recall that we previously created the `DONOHUE_OUTPUT` object like so:
 ```{r}
 DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
-                        RTC_LAW +
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log + 
-                        police_per_100k_lag,
-                        effect = "twoways",
-                        model = "within",
-                        data = d_panel_DONOHUE)
+RTC_LAW +
+  White_Male_15_to_19_years +
+  White_Male_20_to_39_years +
+  Black_Male_15_to_19_years +
+  Black_Male_20_to_39_years +
+  Other_Male_15_to_19_years +
+  Other_Male_20_to_39_years +
+  Unemployment_rate +
+  Poverty_rate +
+  Population_log +
+  police_per_100k_lag,
+effect = "twoways",
+model = "within",
+data = d_panel_DONOHUE
+)
 ```
 
 What we have modeled is how a state's violent crime rate has changed with modifications of RTC law status and over time, relative to itself, and how this compares to similar changes in violent crime of another state relative to itself. 
@@ -1445,7 +1540,6 @@ We will now use this model output to create a data frame of demeaned data (where
 
 ```{r}
 lm_DONOHUE_data <- as.data.frame(model.matrix(DONOHUE_OUTPUT))
-
 ```
 
 ```{r}
@@ -1461,27 +1555,27 @@ Also recall that the `d_panel_DONOHUE` data is just the Donohue data in panel fo
 ```{r}
 lm_DONOHUE_data %<>%
   mutate(Viol_crime_rate_1k_log = plm::Within(pull(
-  d_panel_DONOHUE, Viol_crime_rate_1k_log)), effect= "twoways")
+    d_panel_DONOHUE, Viol_crime_rate_1k_log
+  )), effect = "twoways")
 ```
 
 
 Now we will fit the demeaned data to the model:
 ```{r}
 lm_DONOHUE <- lm(Viol_crime_rate_1k_log ~
-                        RTC_LAWTRUE + 
-                        White_Male_15_to_19_years +
-                        White_Male_20_to_39_years +
-                        Black_Male_15_to_19_years +
-                        Black_Male_20_to_39_years +
-                        Other_Male_15_to_19_years +
-                        Other_Male_20_to_39_years +
-                        Unemployment_rate +
-                        Poverty_rate + 
-                        Population_log +
-               police_per_100k_lag,
-             data = lm_DONOHUE_data)
-
-
+RTC_LAWTRUE +
+  White_Male_15_to_19_years +
+  White_Male_20_to_39_years +
+  Black_Male_15_to_19_years +
+  Black_Male_20_to_39_years +
+  Other_Male_15_to_19_years +
+  Other_Male_20_to_39_years +
+  Unemployment_rate +
+  Poverty_rate +
+  Population_log +
+  police_per_100k_lag,
+data = lm_DONOHUE_data
+)
 ```
 
 Now we are ready to use the `vif()` function of the `car` package to calculate the VIF values:
@@ -1491,7 +1585,6 @@ Now we are ready to use the `vif()` function of the `car` package to calculate t
 vif_DONOHUE <- vif(lm_DONOHUE)
 
 vif_DONOHUE
-
 ```
 
 Now we will use the `as_tibble()` function of the `tibble` package to nicely put this together. 
@@ -1501,7 +1594,7 @@ vif_DONOHUE <- vif_DONOHUE %>%
   as_tibble() %>%
   cbind(., names(vif_DONOHUE)) %>%
   as_tibble()
-  
+
 colnames(vif_DONOHUE) <- c("VIF", "Variable")
 
 vif_DONOHUE
@@ -1509,7 +1602,7 @@ vif_DONOHUE
 
 Now we will do the same for the Lott and Mustard data.
 
-We will need to use the `rename()` function (you may recall this is part of the `dplyr` package) to replace `RTC_LAW` with `RTC_LAWTRUE`, as the variable name in the model output is appended by `TRUE` because it was a logical variable. Because the model formula for the Lott analysis is so complex, it is easier to change this variable name in our new data frame, rather than rewrite the formula for this data. 
+We will need to use the `rename()` function (you may recall this is part of the `dplyr` package) to replace `RTC_LAWTRUE` with `RTC_LAW`, as the variable name in the model output is appended by `TRUE` because it was a logical variable. Because the model formula for the Lott analysis is so complex, it is easier to change this variable name in our new data frame, rather than rewrite the formula for this data. 
 
 Recall that we already saved the formula for this data:
 ```{r}
@@ -1521,11 +1614,13 @@ LOTT_fmla
 lm_LOTT_data <- as.data.frame(model.matrix(LOTT_OUTPUT))
 lm_LOTT_data %<>%
   mutate(Viol_crime_rate_1k_log = plm::Within(pull(
-  d_panel_LOTT, Viol_crime_rate_1k_log), effect = "twoways")) %>%
+    d_panel_LOTT, Viol_crime_rate_1k_log
+  ), effect = "twoways")) %>%
   rename(RTC_LAW = RTC_LAWTRUE)
 
 lm_LOTT <- lm(LOTT_fmla,
-             data = lm_LOTT_data)
+  data = lm_LOTT_data
+)
 
 vif_LOTT <- vif(lm_LOTT)
 
@@ -1535,17 +1630,18 @@ vif_LOTT <- vif_LOTT %>%
   as_tibble() %>%
   cbind(., names(vif_LOTT)) %>%
   as_tibble()
-  
+
 colnames(vif_LOTT) <- c("VIF", "Variable")
 ```
 
 Now to have consistent variable names in the VIF data sets we will rename `RTC_LAW` back to `RTC_LAWTRUE` using the `str_replace()` function of the `stringr` package. This function replaces a pattern.
 ```{r}
-vif_LOTT %>% mutate(Variable = str_replace(string = Variable, 
-                                          pattern = "RTC_LAW", 
-                                        replacement = "RTC_LAWTRUE"))
+vif_LOTT %>% mutate(Variable = str_replace(
+  string = Variable,
+  pattern = "RTC_LAW",
+  replacement = "RTC_LAWTRUE"
+))
 vif_LOTT
-
 ```
 
 
@@ -1561,12 +1657,14 @@ Now we will make a plot of the VIF values for both analyses. We will add text to
 ```{r}
 
 vif_DONOHUE %<>%
-  mutate(Analysis ="Analysis 1")
+  mutate(Analysis = "Analysis 1")
 vif_LOTT %<>%
   mutate(Analysis = "Analysis 2")
 
-vif_df <- bind_rows(vif_DONOHUE,
-                vif_LOTT)
+vif_df <- bind_rows(
+  vif_DONOHUE,
+  vif_LOTT
+)
 datatable(vif_df)
 ```
 
@@ -1579,12 +1677,14 @@ vif_plot <- vif_df %>%
   ggplot(aes(x = Analysis, y = VIF)) +
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
-  geom_text(aes(.7,18,label = "typical cutoff of 10")) +
-  labs(title = "Variance inflation factors", y= "VIF") + 
+  geom_text(aes(.7, 18, label = "typical cutoff of 10")) +
+  labs(title = "Variance inflation factors", y = "VIF") +
   theme_minimal() +
-  theme(axis.title.x = element_blank(),
-         axis.text.x = element_text(color = "black"),
-         axis.text.y = element_text(color = "black"))
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(color = "black"),
+    axis.text.y = element_text(color = "black")
+  )
 
 vif_plot
 ```
@@ -1600,13 +1700,15 @@ vif_plot <- vif_df %>%
   ggplot(aes(x = Analysis, y = VIF)) +
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
-  geom_text(aes(.75,13,label = "typical cutoff of 10")) +
+  geom_text(aes(.75, 13, label = "typical cutoff of 10")) +
   coord_trans(y = "log10") +
-  labs(title = "Variance inflation factors") + 
+  labs(title = "Variance inflation factors") +
   theme_minimal() +
-  theme(axis.title.x = element_blank(),
-         axis.text.x = element_text(color = "black"),
-         axis.text.y = element_text(color = "black"))
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(color = "black"),
+    axis.text.y = element_text(color = "black")
+  )
 
 vif_plot
 ```
@@ -1630,11 +1732,11 @@ We will use the `ggdraw()` function of this package. This allows you to add labe
 
 
 ```{r, fig.height=10, echo=FALSE, message=FALSE, warning=FALSE}
-title_plots <- ggdraw() + 
+title_plots <- ggdraw() +
   draw_label(
     "Multicollinearity and its effects",
-    fontface = 'bold',
-    size=18,
+    fontface = "bold",
+    size = 18,
     x = 0,
     hjust = -0.01
   ) +
@@ -1652,11 +1754,11 @@ Now we will create a subtitle in the same way.
 
 ```{r}
 
-forward <- ggdraw() + 
+forward <- ggdraw() +
   draw_label(
     "Analysis 1: 6 demographic variables\nAnalysis 2: 36 demographic variables",
-    fontface = 'bold',
-    size=10,
+    fontface = "bold",
+    size = 10,
     x = 0,
     hjust = -0.02
   ) +
@@ -1674,22 +1776,23 @@ Note that because we are layering ggplot2 objects we can't use the `%>%` pipe to
 ```{r}
 
 corr_mat_DONOHUE <- corr_mat_DONOHUE +
-  theme_void() + 
-  theme(plot.title= element_text(size = 8, color = "black")) +
-  labs(title = "Analysis 1") 
+  theme_void() +
+  theme(plot.title = element_text(size = 8, color = "black")) +
+  labs(title = "Analysis 1")
 
 corr_mat_LOTT <- corr_mat_LOTT +
-  theme_void() + 
-  theme(plot.title= element_text(size = 8,color = "black")) +
-  labs(title = "Analysis 2") 
+  theme_void() +
+  theme(plot.title = element_text(size = 8, color = "black")) +
+  labs(title = "Analysis 2")
 ```
 
 OK we want to arrange our correlation plots to be in the top row of our larger plot. Now we will use the `plot_grid()` function to arrange the plots.
 
 ```{r}
 row_A <- plot_grid(corr_mat_DONOHUE,
-                   corr_mat_LOTT,
-                   nrow = 1)
+  corr_mat_LOTT,
+  nrow = 1
+)
 row_A
 ```
 
@@ -1701,11 +1804,11 @@ Now let's add a title for these plots.
 
 ```{r}
 
-title_A <- ggdraw() + 
+title_A <- ggdraw() +
   draw_label(
     "Correlation between variables can induce multicollinearity",
-    fontface = 'bold',
-    size=14,
+    fontface = "bold",
+    size = 14,
     x = 0,
     hjust = -0.01
   ) +
@@ -1714,9 +1817,10 @@ title_A <- ggdraw() +
   )
 
 plot_A <- plot_grid(title_A,
-                    row_A,
-                    ncol = 1,
-                    rel_heights = c(0.1,1))
+  row_A,
+  ncol = 1,
+  rel_heights = c(0.1, 1)
+)
 ```
 
 
@@ -1744,40 +1848,48 @@ In the case of the fraction and Greek letters an additional `\` is needed in the
 We will use the `TeX()` function of the `latex2exp` package to convert our LaTeX string to a [plotmath expression](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html){target="_blank"} (a mathematical notation in R to be used in plots).
 
 ```{r}
-empty_df <- cbind(c(1:10),c(1:10)) %>%
+empty_df <- cbind(c(1:10), c(1:10)) %>%
   as.data.frame()
 
 colnames(empty_df) <- c("X", "Y")
 
 plot_B1 <- ggplot(empty_df, aes(x = X, y = Y)) +
-   annotate("text",
-           x=5,
-           y=8,
-           label = TeX("$X_{1} = \\beta_{0} + \\beta_{2}X_{2} + \\beta_{3}X_{3}...+\\beta_{k}X_{k}+e$"),
-           size = 7)+ ylim(0,10)+xlim(0,10)+
-   annotate("text",
-           x=5.9,
-           y=5.5,
-           label = TeX("$R_1^{2}$"),
-           size = 7)+ ylim(0,10)+xlim(0,10)+
-geom_segment(aes(x = 5, y = 6, xend = 5, yend = 4.5),
-               arrow = arrow(angle = 45, ends = "last", type = "open"),
-               size = 1.8,
-               color = "black",
-               lineend = "butt",
-               linejoin = "mitre") +
   annotate("text",
-           x=5,
-           y=2,
-           label = TeX("$VIF_{1} = \\frac{1}{1-R_{1}^{2}}$"),
-           size = 7)
+    x = 5,
+    y = 8,
+    label = TeX("$X_{1} = \\beta_{0} + \\beta_{2}X_{2} + \\beta_{3}X_{3}...+\\beta_{k}X_{k}+e$"),
+    size = 7
+  ) +
+  ylim(0, 10) +
+  xlim(0, 10) +
+  annotate("text",
+    x = 5.9,
+    y = 5.5,
+    label = TeX("$R_1^{2}$"),
+    size = 7
+  ) +
+  ylim(0, 10) +
+  xlim(0, 10) +
+  geom_segment(aes(x = 5, y = 6, xend = 5, yend = 4.5),
+    arrow = arrow(angle = 45, ends = "last", type = "open"),
+    size = 1.8,
+    color = "black",
+    lineend = "butt",
+    linejoin = "mitre"
+  ) +
+  annotate("text",
+    x = 5,
+    y = 2,
+    label = TeX("$VIF_{1} = \\frac{1}{1-R_{1}^{2}}$"),
+    size = 7
+  )
 
-  
- 
-  
+
+
+
 plot_B1
 
-plot_B1 <-plot_B1+
+plot_B1 <- plot_B1 +
   theme_void()
 
 plot_B1
@@ -1787,16 +1899,17 @@ Now we will combine this with the VIF plot.
 
 ```{r}
 plot_B2 <- vif_plot +
-  theme(axis.text.x = element_text(size=8))
+  theme(axis.text.x = element_text(size = 8))
 
 row_B <- plot_grid(plot_B1,
-                   plot_B2,
-                   nrow = 1)
+  plot_B2,
+  nrow = 1
+)
 
-title_B <- ggdraw() + 
+title_B <- ggdraw() +
   draw_label(
     "Variance inflation factors can be used to identify multicollinearity when present",
-    fontface = 'bold',
+    fontface = "bold",
     size = 14,
     x = 0,
     hjust = -.01,
@@ -1806,9 +1919,10 @@ title_B <- ggdraw() +
   )
 
 plot_B <- plot_grid(title_B,
-                    row_B,
-                    ncol = 1,
-                    rel_heights = c(0.1,1))
+  row_B,
+  ncol = 1,
+  rel_heights = c(0.1, 1)
+)
 
 plot_B
 ```
@@ -1817,24 +1931,29 @@ plot_B
 Now for the third row we want to include the `comparing_analyses_plot` and the `simulation_plot`.
 
 ```{r}
-plot_C1 <- comparing_analyses_plot + 
-  theme(axis.text.x = element_text(size = 8),
-        axis.title.x = element_blank()) +
-  labs(title = "Results in different estimates",
-       subtitle = "Different demographic groupings can change direction of estimate")
+plot_C1 <- comparing_analyses_plot +
+  theme(
+    axis.text.x = element_text(size = 8),
+    axis.title.x = element_blank()
+  ) +
+  labs(
+    title = "Results in different estimates",
+    subtitle = "Different demographic groupings can change direction of estimate"
+  )
 
 plot_C2 <- simulation_plot +
   labs(title = "Reduces precision in estimates")
 
 row_C <- plot_grid(plot_C1,
-                   plot_C2,
-                   nrow = 1)
+  plot_C2,
+  nrow = 1
+)
 
-title_C <- ggdraw() + 
+title_C <- ggdraw() +
   draw_label(
     "Multicollinearity can have an effect on statistical inference",
-    fontface = 'bold',
-    size=14,
+    fontface = "bold",
+    size = 14,
     x = 0,
     hjust = -0.01
   ) +
@@ -1843,9 +1962,10 @@ title_C <- ggdraw() +
   )
 
 plot_C <- plot_grid(title_C,
-                    row_C,
-                    ncol = 1,
-                    rel_heights = c(0.1,1))
+  row_C,
+  ncol = 1,
+  rel_heights = c(0.1, 1)
+)
 
 plot_C
 ```
@@ -1855,22 +1975,24 @@ Now that we have all of our rows we can combine everything together.
 
 ```{r}
 plots <- plot_grid(plot_A,
-                   plot_B,
-                   plot_C,
-          ncol = 1,
-          rel_heights = c(1,1,1))
+  plot_B,
+  plot_C,
+  ncol = 1,
+  rel_heights = c(1, 1, 1)
+)
 
 mainplot <- plot_grid(title_plots,
-                       forward,
-                       plots,
-                       ncol = 1,
-                       rel_heights = c(0.05,
-                                       0.05,
-                                       1))
+  forward,
+  plots,
+  ncol = 1,
+  rel_heights = c(
+    0.05,
+    0.05,
+    1
+  )
+)
 
 mainplot
-
-
 ```
 
 
