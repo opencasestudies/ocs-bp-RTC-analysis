@@ -89,7 +89,7 @@ This case study will introduce the topic of [multicollinearity](https://en.wikip
 
 We will do so by showcasing a real world example where multicollinearity in part resulted in historically controversial and conflicting findings about the influence of the adoption of right-to-carry (RTC) concealed handgun laws on violent crime rates in the United States. 
 
-We will focus on these two articles:
+We will focus on two articles:
 
 1. The first analysis by [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} published in 1996 suggests that RTC laws reduce violent crime. Lott authored a book extending these findings in 1998 called [***More Guns, Less Crime***](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"}.
 
