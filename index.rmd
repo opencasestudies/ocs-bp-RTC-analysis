@@ -41,7 +41,19 @@ library(here)
 library(knitr)
 ```
 
+Translate this page:
 
+<div id="google_translate_element"></div>
+
+<script type="text/javascript" src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+You can translate the content of this page by selecting a language in the select box.
 
 
 #### {.outline }
@@ -199,7 +211,7 @@ However, there are no federal laws about carrying firearms in public.
 
 These laws are created and enforced at the US state level. 
 States vary greatly in their laws about the right to carry firearms. 
-Some require extensive effort to obtain a permit to legally carry a firearm, while other states require very minimal effort to do so.
+Some require extensive effort to obtain a permit to legally carry a firearm, while other states require very minimal effort to do so. An increasing number of states do not require permits at all.
 
 <details> <summary> Click here for more information on history of right-to-carry policies in the US. </summary>
 
@@ -304,23 +316,23 @@ library(latex2exp)
 
   Package   | Use in this case study                                                                        
 ---------- |-------------
-[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
-[magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
-[purrr](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
-[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
-[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
-[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
-[plm](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
-[broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
-[GGally](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
-[ggcorrplot](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
-[rsample](https://rsample.tidymodels.org){target="_blank"} | to split our sample for the simulation analysis   
-[DT](https://rstudio.github.io/DT/){target="_blank"}  | to create interactive and searchable tables  
-[car](https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf){target="_blank"}  | to calculate VIF values on linear model output  
-[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the character strings within the data  
-[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
-[latex2exp](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions  
+[`here`](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
+[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
+[`magrittr`](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
+[`purrr`](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
+[`tibble`](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
+[`ggrepel`](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
+[`plm`](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
+[`broom`](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
+[`GGally`](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
+[`ggcorrplot`](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
+[`rsample`](https://rsample.tidymodels.org){target="_blank"} | to split our sample for the simulation analysis   
+[`DT`](https://rstudio.github.io/DT/){target="_blank"}  | to create interactive and searchable tables  
+[`car`](https://cran.r-project.org/web/packages/car/vignettes/embedding.pdf){target="_blank"}  | to calculate VIF values on linear model output  
+[`stringr`](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the character strings within the data  
+[`cowplot`](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
+[`latex2exp`](https://cran.r-project.org/web/packages/latex2exp/vignettes/using-latex2exp.html){target="_blank"} | to convert latex math formulas to R's plotmath expressions  
 
 The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
 
