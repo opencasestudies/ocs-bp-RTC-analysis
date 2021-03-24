@@ -41,8 +41,6 @@ library(here)
 library(knitr)
 ```
 
-Translate this page:
-
 <div id="google_translate_element"></div>
 
 <script type="text/javascript" src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
@@ -52,8 +50,6 @@ function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
 }
 </script>
-
-You can translate the content of this page by selecting a language in the select box.
 
 
 #### {.outline }
@@ -197,7 +193,7 @@ include_graphics("https://tidyverse.tidyverse.org/logo.png")
 
 So what exactly is a **right-to-carry law**?
 
-It is a law that specifies _if_ and _how_ citizens are allowed to have a firearm on their person or nearby (for example, in a citizen's car) in public. 
+It is a law that specifies _if_ and _how_ citizens are allowed to have a firearm on their person or nearby (for example, in a citizen's car) in public. In this discussion, we will use the [National Rifle Association (NRA)](https://www.nraila.org/gun-laws/){target="_blank"} terminology. Please keep in mind that there are other terms that people use. 
 
 The [Second Amendment](https://en.wikipedia.org/wiki/Second_Amendment_to_the_United_States_Constitution){target="_blank"} to the United States Constitution guarantees the right to "keep and bear arms". The amendment was ratified in 1791 as part of the [Bill of Rights](https://en.wikipedia.org/wiki/United_States_Bill_of_Rights){target="_blank"}.
 
@@ -223,7 +219,7 @@ According to the [Wikipedia entry](https://en.wikipedia.org/wiki/History_of_conc
 
 </details>
 
-There are five broad categories of right-to-carry laws:
+There are five broad categories of right-to-carry laws according to the NRA:
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
 knitr::include_graphics(here("img", "RTC.png"))
@@ -239,6 +235,7 @@ knitr::include_graphics(here("img", "RTC_map.png"))
 
 You can see that no state in the US currently (this map is from 2020) has a "Rights Infringed/Non-Issue" law (the gray category) -- meaning that all 50 states in the US allow the right to carry firearms at least in some way. 
 However the level of restrictions is dramatically different from one state to another.
+For comparison purposes, many authors use the terms "shall issue", "shall issue with discretion", "no permit required", "may issue", and "non-issue" to describe these categories instead of the NRA terminology.
 
 
 <details> <summary> Click here for more information about how restrictions vary from one state to another. </summary>
