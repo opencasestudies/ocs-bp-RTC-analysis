@@ -6,7 +6,7 @@ li.toctree-l2:first-child {
     margin: .2em;
     padding: .2em;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 6px;
     background: black;
     color: white;
     font-weight: bold;
