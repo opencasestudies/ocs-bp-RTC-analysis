@@ -1,10 +1,10 @@
 ---
-title: "Open Case Studies: Influence of Multicollinearity on Measured Impact of Right-to-Carry Gun Laws"
-css: style.css
+title: |
+  ![](https://opencasestudies.github.io/img/icon-bahi.png){width=140px align=left}   
+  Influence of Multicollinearity on Measured Impact of Right-to-Carry Gun Laws
+css: www/style.css
 output:
   html_document:
-    includes:
-      in_header: GA_Script.Rhtml
     self_contained: yes
     code_download: yes
     highlight: tango
@@ -16,32 +16,23 @@ output:
     toc: yes
   word_document:
     toc: yes
----
-
-<style>
-#TOC {
-  background: url("https://opencasestudies.github.io/img/icon-bahi.png");
-  background-size: contain;
-  padding-top: 240px !important;
-  background-repeat: no-repeat;
-}
-</style>
-
-
+runtime: shiny_prerendered
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  include = TRUE, comment = NA, echo = TRUE,
-  message = FALSE, warning = FALSE, cache = FALSE, fig.width = 10, fig.height = 7,
-  fig.align = "center", out.width = "90%"
-)
-library(here)
+knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
+                      message = FALSE, warning = FALSE, cache = FALSE,
+                      fig.align = "center", out.width = '90%')
 library(knitr)
+library(learnr)
 ```
 
-<div id="google_translate_element"></div>
+<p>&nbsp;</p>
+
+Translate this page:
+
+<div id="google_translate_element",></div>
 
 <script type="text/javascript" src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
 
@@ -51,10 +42,11 @@ function googleTranslateElementInit() {
 }
 </script>
 
+You can translate the content of this page by selecting a language in the select box.
 
 #### {.outline }
 ```{r, echo = FALSE, out.width = "800 px"}
-knitr::include_graphics(here::here("img", "mainplot.png"))
+knitr::include_graphics("www/img/mainplot.png")
 ```
 
 ####
@@ -94,7 +86,7 @@ We will focus on two articles:
 1. The first analysis by [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} published in 1996 suggests that RTC laws reduce violent crime. Lott authored a book extending these findings in 1998 called [***More Guns, Less Crime***](https://en.wikipedia.org/wiki/More_Guns,_Less_Crime){target="_blank"}.
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "Lott.png"))
+knitr::include_graphics("www/img/Lott.png")
 ```
 
 ##### [[source]](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"}
@@ -102,7 +94,7 @@ knitr::include_graphics(here("img", "Lott.png"))
 2. The second analysis is a recent article by [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} published in 2017 that suggests that RTC laws increase violent crime. Donohue has also published previous articles with titles such as [***Shooting down the "More Guns, Less Crime" Hypothesis***](https://www.jstor.org/stable/1229603?seq=1){target="_blank"}. 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "Donohue.png"))
+knitr::include_graphics("www/img/Donohue.png")
 ```
 
 ##### [[source]](https://www.nber.org/papers/w23510.pdf){target="_blank"}
@@ -114,7 +106,7 @@ The [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} a
 In fact, nearly every aspect of the data analysis process was different between the [Donohue, et al.](https://www.nber.org/papers/w23510.pdf){target="_blank"} and [Mustard and Lott](https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?article=1150&context=law_and_economics){target="_blank"} analyses.
 
 ```{r, echo=FALSE, out.height = '75%', out.width = '75%', fig.align='center'}
-knitr::include_graphics(here("img", "Educational_Graphic1.jpg"))
+knitr::include_graphics("www/img/Educational_Graphic1.jpg")
 ```
 
 
@@ -134,8 +126,9 @@ Before we leave this section, we provide a high-level overview of what variables
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "Donohue_Table2_edited.png"))
+knitr::include_graphics("www/img/Donohue_Table2_edited.png")
 ```
+
 
 ##### [[source]](https://www.nber.org/papers/w23510.pdf){target="_blank"}
 
@@ -193,7 +186,7 @@ include_graphics("https://tidyverse.tidyverse.org/logo.png")
 
 So what exactly is a **right-to-carry law**?
 
-It is a law that specifies _if_ and _how_ citizens are allowed to have a firearm on their person or nearby (for example, in a citizen's car) in public. In this discussion, we will use the [National Rifle Association (NRA)](https://www.nraila.org/gun-laws/){target="_blank"} terminology. Please keep in mind that there are other terms that people use. 
+It is a law that specifies _if_ and _how_ citizens are allowed to have a firearm on their person or nearby (for example, in a citizen's car) in public. 
 
 The [Second Amendment](https://en.wikipedia.org/wiki/Second_Amendment_to_the_United_States_Constitution){target="_blank"} to the United States Constitution guarantees the right to "keep and bear arms". The amendment was ratified in 1791 as part of the [Bill of Rights](https://en.wikipedia.org/wiki/United_States_Bill_of_Rights){target="_blank"}.
 
@@ -207,7 +200,7 @@ However, there are no federal laws about carrying firearms in public.
 
 These laws are created and enforced at the US state level. 
 States vary greatly in their laws about the right to carry firearms. 
-Some require extensive effort to obtain a permit to legally carry a firearm, while other states require very minimal effort to do so. An increasing number of states do not require permits at all.
+Some require extensive effort to obtain a permit to legally carry a firearm, while other states require very minimal effort to do so.
 
 <details> <summary> Click here for more information on history of right-to-carry policies in the US. </summary>
 
@@ -219,23 +212,22 @@ According to the [Wikipedia entry](https://en.wikipedia.org/wiki/History_of_conc
 
 </details>
 
-There are five broad categories of right-to-carry laws according to the NRA:
+There are five broad categories of right-to-carry laws:
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "RTC.png"))
+knitr::include_graphics("www/img/RTC.png")
 ```
 
 ##### [[source]](https://www.nraila.org/gun-laws/){target="_blank"}
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "RTC_map.png"))
+knitr::include_graphics("www/img/RTC_map.png")
 ```
 
 ##### [[source]](https://www.nraila.org/gun-laws/){target="_blank"}
 
 You can see that no state in the US currently (this map is from 2020) has a "Rights Infringed/Non-Issue" law (the gray category) -- meaning that all 50 states in the US allow the right to carry firearms at least in some way. 
 However the level of restrictions is dramatically different from one state to another.
-For comparison purposes, many authors use the terms "shall issue", "shall issue with discretion", "no permit required", "may issue", and "non-issue" to describe these categories instead of the NRA terminology.
 
 
 <details> <summary> Click here for more information about how restrictions vary from one state to another. </summary>
@@ -267,7 +259,7 @@ There are some important considerations regarding this data analysis to keep in 
 
 Recall that these are the categories of right to carry laws:
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "RTC.png"))
+knitr::include_graphics("www/img/RTC.png")
 ```
 
 States with laws of the category rights restricted - very limited issue (red) are considered as not having a permissive right-to-carry law. Recall that no states currently have a rights infringed/non-issue law.
@@ -341,14 +333,14 @@ Below is a table from the [Donohue, et al.](https://www.nber.org/papers/w23510.p
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "Donohue_AppendixJ.png"))
+knitr::include_graphics("www/img/Donohue_AppendixJ.png")
 ```
 
 We will be using a subset of these variables, which are highlighted in green:
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "ourdata.png"))
+knitr::include_graphics("www/img/ourdata.png")
 ```
 
 
@@ -407,7 +399,7 @@ Here is the table from the [Donohue paper](https://www.nber.org/papers/w23510.pd
 
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "Donohue_Table2_edited.png"))
+knitr::include_graphics("www/img/Donohue_Table2_edited.png")
 ```
 
 ##### [[source]](https://www.nber.org/papers/w23510.pdf){target="_blank"}
@@ -432,13 +424,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics("www/img/New_project.png")
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics("www/img/project_button.png")
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects. 
@@ -447,10 +439,13 @@ See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Project
 
 ***
 
-```{r}
+```{r, eval=FALSE}
 load(file = here::here("data", "Wrangled_data.rda"))
 ```
 
+```{r, echo=FALSE}
+load(file = "www/data/Wrangled_data.rda")
+```
 
 We will check the dimensions of each tibble using the base `dim()` function:
 ```{r}
@@ -603,27 +598,55 @@ Same for the `LOTT_DF`.
 
 We can use the `skim()` of the `skimr` package to get a better sense of the data. This also shows missingness, as well as standard deviations, spread, and means for our data. Also notice that there is a small histogram of each variable in the final column.
 
-```{r, eval=FALSE}
+```{r}
 skimr::skim(DONOHUE_DF)
-```
-
-```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "skim1.png"))
-knitr::include_graphics(here("img", "skim2.png"))
-```
-
-```{r, eval=FALSE}
 skimr::skim(LOTT_DF)
-```
-
-```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "skim3.png"))
-knitr::include_graphics(here("img", "skim4.png"))
-knitr::include_graphics(here("img", "skim5.png"))
 ```
 
 We can see from this function that we have the number of variables of the class types that we expect for each tibble. We can also see that the means of the variables that should be the same for each tibble are in fact the same. 
 We can also tell that the values for the variables are in general what we would expect.
+
+## **Exercise**
+***
+
+``` {r DE_Quiz, echo = FALSE}
+quiz(caption = "",
+  question("Which one of the following terms in the `ggplot()` function is used to specify what data should be plotted on the x-axis and what data should be plotted in on the y-axis?",
+    answer("geom", message = "Geoms define geometric objects."),
+    answer("scale", message = "Scales define how your data will be plotted. For example, continuous, discrete, etc."),
+    answer("labs", message = "`labs()` function defines title, caption, and the axis labels."),
+    answer("aes", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
+Suppose we have a data set called `mydata`. Using functions that we talked about earlier, check if there are missing data for the variables.
+
+```{r DE_Exercise-setup}
+set.seed(100)
+ID <- seq.int(1, 100)
+Var1 <- rnorm(100, 3, 1)
+Var2 <- rnorm(100, 50, 10)
+Var3 <- rnorm(100, -6, 2)
+Var2[85] <- NA
+mydata <- data.frame(ID, Var1, Var2, Var3)
+```
+
+```{r DE_Exercise, exercise = TRUE}
+# check for missing data
+mydata %>%
+```
+
+```{r DE_Exercise-solution}
+# first way
+mydata %>%
+  naniar::vis_miss()
+# second way
+skimr::skim(mydata)
+# So there is missing data in "Var2"
+```
 
 # **Data Analysis**
 ***
@@ -781,21 +804,21 @@ Here is how we would implement this for the Donohue data:
 
 ```{r}
 DONOHUE_OUTPUT <- plm(Viol_crime_rate_1k_log ~
-                      RTC_LAW +
-                      White_Male_15_to_19_years +
-                      White_Male_20_to_39_years +
-                      Black_Male_15_to_19_years +
-                      Black_Male_20_to_39_years +
-                      Other_Male_15_to_19_years +
-                      Other_Male_20_to_39_years +
-                      Unemployment_rate +
-                      Poverty_rate +
-                      Population_log +
-                      police_per_100k_lag,
-                      effect = "twoways",
-                      model = "within",
-                      data = d_panel_DONOHUE
-                      )
+RTC_LAW +
+  White_Male_15_to_19_years +
+  White_Male_20_to_39_years +
+  Black_Male_15_to_19_years +
+  Black_Male_20_to_39_years +
+  Other_Male_15_to_19_years +
+  Other_Male_20_to_39_years +
+  Unemployment_rate +
+  Poverty_rate +
+  Population_log +
+  police_per_100k_lag,
+effect = "twoways",
+model = "within",
+data = d_panel_DONOHUE
+)
 ```
 
 To see the results we can use the base `summary()` function. We can view this output in tidy format using the `tidy()` function of the `broom` package.
@@ -849,8 +872,34 @@ That is quite the formula!
 
 OK, now again we will make a panel data frame and we will fit a fixed effect two-way model for time and individuals (`STATE`) with this data as well.
 
-```{r}
+Try to write the code yourself!
 
+```{r DA_Code1, exercise = TRUE, eval=FALSE}
+# make a panel data frame
+d_panel_LOTT <- 
+
+# fit a fixed effect two-way model
+LOTT_OUTPUT <-
+  
+# you can use summary() to check if you got the same model as below
+```
+
+```{r DA_Code1-solution}
+# make a panel data frame
+d_panel_LOTT <- pdata.frame(LOTT_DF, index = c("STATE", "YEAR"))
+
+# fit a fixed effect two-way model
+LOTT_OUTPUT <- plm(LOTT_fmla,
+  model = "within",
+  effect = "twoways",
+  data = d_panel_LOTT
+)
+```
+
+***
+<details> <summary> Click here to reveal the code </summary>
+
+```{r}
 d_panel_LOTT <- pdata.frame(LOTT_DF, index = c("STATE", "YEAR"))
 
 LOTT_OUTPUT <- plm(LOTT_fmla,
@@ -858,7 +907,13 @@ LOTT_OUTPUT <- plm(LOTT_fmla,
   effect = "twoways",
   data = d_panel_LOTT
 )
+```
 
+</details>
+
+***
+
+```{r}
 summary(LOTT_OUTPUT)
 
 LOTT_OUTPUT_TIDY <- tidy(LOTT_OUTPUT, conf.int = 0.95)
@@ -926,6 +981,34 @@ comparing_analyses_plot
 ```
 
 We can see that the confidence interval from analysis 1 is mostly covering positive values, while the entire confidence interval is negative for analysis 2.
+
+## **Exercise**
+***
+
+``` {r DA_Quiz, echo = FALSE}
+quiz(caption = "",
+  question("Suppose we have a set of data that were collected through measurements of multiple individuals over time, what kind of data do we have?",
+    answer("Time series data", message = "Time series data measures one observation over time."),
+    answer("Cross sectional data", message = "Cross sectional data measures multiple individuals at one point in time."),
+    answer("Panel data", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("In a panel analysis there are N individual panel members and T time points. In an unbalanced panel, we have n observations, where n = N∗T.",
+    answer("True", message = "In a balanced panel, we have n observations, where n = N∗T."),
+    answer("False", correct = TRUE, message = "In a balanced panel, we have n observations, where n = N∗T."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which sub-type of panel regression analysis should we use if it is reasonable to assume that there are no individual effects that are independent of time and also no effect of time on all the individuals?",
+    answer("Fixed effects", message = "Fixed effects model assumes that there are unknown or unobserved unique aspects about the individuals or heterogeneity among individuals that are not explained by the independent variables but influence the outcome variable of interest."),
+    answer("Random effects", message = "Random effects model assumes that there are unknown or unobserved unique qualities about the individuals that influence the outcome variable of interest that are not correlated with the independent variables."),
+    answer("Independently pooled panels", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
 
 # **Multicollinearity analysis**
 ***
@@ -1247,7 +1330,7 @@ save(subsets_models_DONOHUE,
 ```
 
 ```{r, echo = FALSE}
-load(here::here("data", "DONOHUE_simulations.rda"))
+load("www/data/DONOHUE_simulations.rda")
 ```
 
 
@@ -1293,7 +1376,7 @@ save(subsets_models_LOTT,
 ```
 
 ```{r, echo = FALSE}
-load(here::here("data", "LOTT_simulations.rda"))
+load("www/data/LOTT_simulations.rda")
 ```
 
 
@@ -1338,9 +1421,13 @@ Since there are many variables in both analyses, we will use the `facet_grid()` 
 #### {.question_block}
 <b><u> Question Opportunity </u></b>
 
-What happens if you don't use the `drop = TRUE` argument or the `space = "free"` argument? 
+What happens if you don't use the `drop = TRUE` argument or the `space = "free"` argument? Try this out!
 
 ####
+
+```{r MA_Code1, exercise = TRUE}
+# Try this out yourself
+```
 
 ```{r}
 simulation_plot <- simulations %>%
@@ -1611,7 +1698,7 @@ vif_DONOHUE
 
 Now we will do the same for the Lott and Mustard data.
 
-We will need to use the `rename()` function (you may recall this is part of the `dplyr` package) to replace `RTC_LAWTRUE` with `RTC_LAW`, as the variable name in the model output is appended by `TRUE` because it was a logical variable. Because the model formula for the Lott analysis is so complex, it is easier to change this variable name in our new data frame, rather than rewrite the formula for this data. 
+We will need to use the `rename()` function (you may recall this is part of the `dplyr` package) to replace `RTC_LAW` with `RTC_LAWTRUE`, as the variable name in the model output is appended by `TRUE` because it was a logical variable. Because the model formula for the Lott analysis is so complex, it is easier to change this variable name in our new data frame, rather than rewrite the formula for this data. 
 
 Recall that we already saved the formula for this data:
 ```{r}
@@ -1728,6 +1815,28 @@ In many cases it would be advisable to remove one or more of these variables and
 In any case the presence of multicollinearity should encourage further investigation about the design of the model, as the results may not be reliable due to the increased level of instability of the coefficient estimates.
 
 See this [article](https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf){target="_blank"} for a detailed discussion about what to consider when your model has variables with high VIF values. 
+
+### **Exercise**
+***
+
+``` {r MA_Quiz, echo = FALSE}
+quiz(caption = "",
+  question("Multicollinearity often occurs when indivadual obervations are highly related to one another.",
+    answer("True", message = "Multicollinearity often occurs when **independent variables** are highly related to one another."),
+    answer("False", correct = TRUE, message = "Multicollinearity often occurs when **independent variables** are highly related to one another."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which of the following methods can be helpful to assess if there may be multicollinearity? (select all that apply)",
+    answer("Look at correlation between variables using scatter plots", correct = TRUE),
+    answer("Look at correlation between variables using heatmaps", correct = TRUE),
+    answer("Look at stability of the coefficient estimates", correct = TRUE),
+    answer("Calculate the variance inflation factor (VIF)", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
 
 
 # **Data Visualization**
@@ -2007,11 +2116,70 @@ mainplot
 
 
 
-```{r, echo=FALSE, include=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 ggsave(here::here("img", "mainplot.png"))
 ```
 
+## **Exercise**
+***
 
+Use `ggplot` to make a plot that writes
+$$ax^2 + bx + c = 0 \xrightarrow{\text{solve}} x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$
+vertically.
+
+Hint: In LaTex notation, $\pm$ is `\pm` and $\sqrt{\ }$ is `\sqrt`.
+
+```{r DV_Exercise, exercise = TRUE}
+# Start from making an empty data frame
+empty_df <- cbind(c(1:10), c(1:10)) %>%
+  as.data.frame()
+
+colnames(empty_df) <- c("X", "Y")
+
+# Write the code for making the plot!
+plot <- ggplot()
+```
+
+```{r DV_Exercise-solution}
+empty_df <- cbind(c(1:10), c(1:10)) %>%
+  as.data.frame()
+
+colnames(empty_df) <- c("X", "Y")
+
+plot <- ggplot(empty_df, aes(x = X, y = Y)) +
+  annotate("text",
+    x = 5,
+    y = 8,
+    label = TeX("$ax^2 + bx + c = 0$"),
+    size = 7
+  ) +
+  ylim(0, 10) +
+  xlim(0, 10) +
+  annotate("text",
+    x = 5.9,
+    y = 5.5,
+    label = "solve",
+    size = 7
+  ) +
+  ylim(0, 10) +
+  xlim(0, 10) +
+  geom_segment(aes(x = 5, y = 6, xend = 5, yend = 4.5),
+    arrow = arrow(angle = 45, ends = "last", type = "open"),
+    size = 1.8,
+    color = "black",
+    lineend = "butt",
+    linejoin = "mitre"
+  ) +
+  annotate("text",
+    x = 5,
+    y = 2,
+    label = TeX("$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$"),
+    size = 7
+  ) +
+  theme_void()
+
+plot
+```
 
 
 # **Summary**
