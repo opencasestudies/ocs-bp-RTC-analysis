@@ -986,7 +986,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "blue">
 
-It is important to note that multicollinearity and correlation are not one and the same. [Correlation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5079093/) can be thought of as the strength of a linear relationship between variables. On the other hand, collinearity can be thought of as two independent variables having a linear relationship or association. Multicollinearity can be thought of as collinearity among multiple (3+) regressors (independent variables) in a regression analysis, which can occur when regressors are highly correlated.
+It is important to note that multicollinearity and correlation are not one and the same. [Correlation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5079093/) can be thought of as the strength of a linear relationship between variables in general. On the other hand, we usually use the term collinearity in the context of a multiple regression model, where two independent variables are collinear if they have a linear relationship or association. Multicollinearity can be thought of as collinearity among multiple (3+) regressors (independent variables) in a regression analysis, which can occur when regressors are highly correlated.
 
 </div>
 
@@ -999,7 +999,10 @@ Thus collinearity describes linear prediction or association between variables. 
 
 The issue with this in linear regression, is that linear regression aims to determine how a one unit change in a regressor influences a one unit change in the dependent variable. In fact, this is what the coefficient estimates aim to tell us for each regressor.
 
-However, if our regressors are also linearly related, then it becomes difficult to determine the effect of each regressor on the dependent variable, and multicollinearity can cause instability in our [coefficient estimates](https://statisticsbyjim.com/glossary/regression-coefficient/){target="_blank"}, making them unreliable. Coefficients may be inflated, deflated, or their signs may change.
+However, if our regressors are also linearly related or correlated, then it becomes difficult to determine the effect of each regressor on the dependent variable, variable independent of the other regressors, and multicollinearity can cause instability in our [coefficient estimates](https://statisticsbyjim.com/glossary/regression-coefficient/){target="_blank"}, making them unreliable. In the presence of multicollinearity, coefficient estimates may be inflated, deflated, or their signs may change. 
+
+For example, say both waist and hip circumference are included as predictors of BMI in a multiple regression model. As in any multiple regression model, the coefficient of waist circumference represents the average change in BMI for a one unit change in waist circumference, holding the other predictors in the model constant. Since it is not very meaningful to consider variation in waist circumference while holding hip circumference constant (as waist and hip circumference are indeed related to one another), our estimate of this coefficient may be uncertain. 
+
 
 If you want to read further on this topic, [here](https://blog.clairvoyantsoft.com/correlation-and-collinearity-how-they-can-make-or-break-a-model-9135fbe6936a){target="_blank"} and [here](https://medium.com/swlh/multicollinearity-and-variance-inflation-factor-bc74af36b1c9){target="_blank"} are a couple of interesting discussions.
 
@@ -1148,7 +1151,8 @@ We can see that there are 3 possible subsets that leave one value out. All 3 pos
 
 Now we will use this method with the data from our Donohue-like analysis, and since this data has `r dim(d_panel_DONOHUE)[1]` rows, `r dim(d_panel_DONOHUE)[1]` subsets will be created that leave out one row. The idea is to fit our panel regression model on each subset of the data, and then examine how the coefficient estimates from each of these model fits vary as the sample changes slightly. With collinear predictors, we expect that our coefficient estimates may be unstable and subject to change under even small perturbations of the data.
 
-First we will create the splits using the `loo_cv()` function. Notice that since this process involves randomly sampling data points from our data set, we use the `set.seed()` function to ensure reproducibility of the results.
+First we will create the splits using the `loo_cv()` function. This will ultimately make all unique possible subsets leaving one sample out - however the choice of which sample is left for which iteration is a random process (maybe the 12th is left out first then the 3rd etc.).  Thus, we use the `set.seed()` function to ensure reproducibility of the results when we take a look at the first subset, so that it will be the same for everyone who looks at this case study. You can change the seed to play around with this.
+
 ```{r}
 set.seed(124)
 DONOHUE_splits <- d_panel_DONOHUE %>% loo_cv()
@@ -1179,7 +1183,7 @@ DONOHUE_removed <- map(pull(DONOHUE_splits, splits), testing)
 DONOHUE_removed[[1]]
 ```
 
-It looks like the Texas data from 1988 was removed from the first split.
+It looks like the Texas data from 1988 was removed from the first split. Again, if you try different seeds you will see a different sample removed from the first split.
 
 OK, so now let's fit our panel regression on the first subset of data like we did previously. Note that this causes our data to be an **unbalanced** panel. This does not require any adjustment to the code to model the data, but you will notice that the output will now say "unbalanced".
 
