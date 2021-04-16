@@ -986,7 +986,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "blue">
 
-It is important to note that multicollinearity and correlation are not one and the same. [Correlation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5079093/) can be thought of as the strength of a linear relationship between variables in general. On the other hand, we usually use the term collinearity in the context of a multiple regression model, where two independent variables are collinear if they have a linear relationship or association. Multicollinearity can be thought of as collinearity among multiple (3+) regressors (independent variables) in a regression analysis, which can occur when regressors are highly correlated.
+It is important to note that multicollinearity and correlation are not the same concept. [Correlation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5079093/) can be thought of as the strength of a linear relationship between variables in general. On the other hand, we usually use the term collinearity in the context of a multiple regression model, where two independent variables are collinear if they have a linear relationship or association. Multicollinearity can be thought of as collinearity among multiple (3+) regressors (independent variables) in a regression analysis, which can occur when regressors are highly correlated.
 
 </div>
 
