@@ -431,7 +431,7 @@ If you have trouble accessing the GitHub Repository, the "Wrangled_data.rda" dat
 
 We will load this data now. 
 
-In our case, we downloaded this data and put it within a "data" directory for our project. If you use an RStudio project, then you can use the `here()` function of the `here` package to make the path for loading this data simpler. The `here` package automatically starts looking for files based on where you have a `.Rproj` file which is created when you start a new RStudio project. We can specify that we want to look for the file within the "data" directory within a directory where our `.Rproj` file is located by separating the name of the "data" directory and the file name using comma.
+In our case, we downloaded this data and put it within a "wrangled" subdirectory of the "data" directory for our project. If you use an RStudio project, then you can use the `here()` function of the `here` package to make the path for loading this data simpler. The `here` package automatically starts looking for files based on where you have a `.Rproj` file which is created when you start a new RStudio project. We can specify that we want to look for the file within the "wrangled" subdirectory of the "data" directory within a directory where our `.Rproj` file is located by separating the name of the "data" directory and "wrangled" and the file name using commas.
 
 ***
 <details> <summary> Click here to see more about creating new projects in RStudio. </summary>
@@ -456,7 +456,7 @@ See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Project
 ***
 
 ```{r}
-load(file = here::here("data", "Wrangled_data.rda"))
+load(file = here::here("data", "wrangled", "Wrangled_data.rda"))
 ```
 
 
@@ -1252,14 +1252,18 @@ subsets_models_DONOHUE <- subsets_models_DONOHUE %>%
   map(tidy)
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+We will save this data in our `data` directory within a subdirectory called `wrangled` like so:
+
+```{r, eval = FALSE}
 save(subsets_models_DONOHUE,
-  file = here::here("data", "DONOHUE_simulations.rda")
+  file = here::here("data", "wrangled", "DONOHUE_simulations.rda")
 )
 ```
 
-```{r, echo = FALSE}
-load(here::here("data", "DONOHUE_simulations.rda"))
+If you have trouble with the previous step you can load the data like so:
+
+```{r}
+load(here::here("data", "wrangled", "DONOHUE_simulations.rda"))
 ```
 
 
@@ -1297,15 +1301,18 @@ subsets_models_LOTT <- subsets_models_LOTT %>%
   map(tidy)
 ```
 
+Again we will save this in the `wrangled` subdirectory of our `data` directory:
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = FALSE}
 save(subsets_models_LOTT,
-  file = here::here("data", "LOTT_simulations.rda")
+  file = here::here("data", "wrangled", "LOTT_simulations.rda")
 )
 ```
 
-```{r, echo = FALSE}
-load(here::here("data", "LOTT_simulations.rda"))
+If you have trouble with the previous steps you can load this data like so:
+
+```{r}
+load(here::here("data", "wrangled", "LOTT_simulations.rda"))
 ```
 
 
