@@ -52,6 +52,7 @@ function googleTranslateElementInit() {
 </script>
 
 
+
 #### {.outline }
 ```{r, echo = FALSE, out.width = "800 px"}
 knitr::include_graphics(here::here("img", "mainplot.png"))
