@@ -3,6 +3,12 @@
 OpenCaseStudies
 ===============
 
+<!-- badges: start -->
+
+[![render-README](https://github.com/opencasestudies/ocs-bp-RTC-analysis/workflows/render-README/badge.svg)](https://github.com/opencasestudies/ocs-bp-RTC-analysis/actions)
+[![render-index](https://github.com/opencasestudies/ocs-bp-RTC-analysis/workflows/render-index/badge.svg)](https://github.com/opencasestudies/ocs-bp-RTC-analysis/actions)
+<!-- badges: end -->
+
 ### Important links
 
 -   HTML:
