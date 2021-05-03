@@ -305,6 +305,7 @@ library(magrittr)
 library(purrr)
 library(tibble)
 library(ggplot2)
+library(naniar)
 library(ggrepel)
 library(plm)
 library(broom)
@@ -327,7 +328,8 @@ library(latex2exp)
 [`magrittr`](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
 [`purrr`](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
 [`tibble`](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
-[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots 
+[`naniar`](https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html){target="_blank"}  | to quickly visualize missing data     
 [`ggrepel`](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
 [`plm`](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
 [`broom`](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
