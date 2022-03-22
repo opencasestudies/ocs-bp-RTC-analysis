@@ -213,7 +213,8 @@ Ask students to remove one or more of the demographic variables with high VIF va
 
 Ask the students to discuss how this possibly changed the results.
 
-#### RMarkdown Compilation Time
+#### Estimate of RMarkdown Compilation Time:
 
-~ 45 seconds
+~ About 39 - 49 seconds
 
+This compilation time was measured on a PC machine operating on Windows 10. This range should only be used as an estimate as compilation time will vary with different machines and operating systems. 
