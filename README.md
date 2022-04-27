@@ -45,8 +45,8 @@ United States License.
 
 To cite this case study:
 
-Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret
-and Hicks, Stephanie. (2020).
+Wright, Carrie and Ontiveros, Michael and Meng, Qier and Jager, Leah and
+Taub, Margaret and Hicks, Stephanie. (2020).
 <https://github.com//opencasestudies/ocs-bp-RTC-analysis>. Influence of
 Multicollinearity on Measured Impact of Right-to-Carry Gun Laws (Version
 v1.0.0).
@@ -62,8 +62,20 @@ and [Aboozar
 Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/)
 for reviewing the case study.
 
+We would like to acknowledge [Michael
+Breshock](https://mbreshock.github.io/) for his contributions to this
+case study and developing the `OCSdata` package.
+
 We would also like to acknowledge the [Bloomberg American Health
 Initiative](https://americanhealth.jhu.edu/) for funding this work.
+
+### Reading Metrics
+
+The total reading time for this case study was calculated with
+[koRpus](https://github.com/unDocUMeantIt/koRpus): **~ 60 minutes**
+
+The Flesch-Kincaid Readability Index was also calculated with
+[koRpus](https://github.com/unDocUMeantIt/koRpus): **Grade 11, Age 16**
 
 ### Title
 
@@ -394,3 +406,11 @@ high VIF values from the Lott-like panel data and perform the panel
 linear regression analysis again, as well as actuate the VIF values.
 
 Ask the students to discuss how this possibly changed the results.
+
+#### Estimate of RMarkdown Compilation Time:
+
+~ About 39 - 49 seconds
+
+This compilation time was measured on a PC machine operating on Windows
+10. This range should only be used as an estimate as compilation time
+will vary with different machines and operating systems.
