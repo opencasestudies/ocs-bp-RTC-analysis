@@ -40,11 +40,12 @@ knitr::opts_chunk$set(
 library(here)
 library(knitr)
 library(magrittr)
-library(OCSdata)
+remotes::install_github("opencasestudies/OCSdata")
 remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
 remotes::install_github("alistaire47/read.so")
 library(wordcountaddin)
 library(read.so)
+library(OCSdata)
 
 rmarkdown:::perf_timer_reset_all()
 rmarkdown:::perf_timer_start("render")
