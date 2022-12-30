@@ -2197,7 +2197,7 @@ This compilation time was measured on a PC machine operating on Windows 10. This
 ## **Acknowledgments**
 ***
 
-We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study. We would also like to thank [Elizabeth Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart) and [Aboozar Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/) for reviewing the case study. 
+We would like to acknowledge [Daniel Webster](https://www.jhsph.edu/faculty/directory/profile/739/daniel-webster) for assisting in framing the major direction of the case study. We would also like to thank [Elizabeth Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart) and [Aboozar Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/) and [Alexander McCourt](https://publichealth.jhu.edu/faculty/3794/alexander-mccourt) for reviewing the case study. 
 
 We would like to acknowledge [Michael Breshock](https://mbreshock.github.io/) for his contributions to this case study and developing the `OCSdata` package.
 
