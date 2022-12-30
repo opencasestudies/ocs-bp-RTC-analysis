@@ -40,6 +40,7 @@ knitr::opts_chunk$set(
 library(here)
 library(knitr)
 library(magrittr)
+library(OCSdata)
 remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
 remotes::install_github("alistaire47/read.so")
 library(wordcountaddin)
@@ -60,13 +61,13 @@ function googleTranslateElementInit() {
 </script>
 
 
+#### {.outline}
 
-#### {.outline }
 ```{r, echo = FALSE, out.width = "800 px"}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
-####
+#### 
 
 #### {.disclaimer_block}
 
@@ -2059,15 +2060,15 @@ plot_C
 ```
 
 
-Now that we have all of our rows we can combine everything together.
+Now that we have all of our rows we can combine everything together. We will also make the background of the plot white, which would be transparent otherwise.
 
 ```{r}
 plots <- plot_grid(plot_A,
   plot_B,
   plot_C,
   ncol = 1,
-  rel_heights = c(1, 1, 1)
-)
+  rel_heights = c(1, 1, 1)) 
+
 
 mainplot <- plot_grid(title_plots,
   forward,
@@ -2078,7 +2079,8 @@ mainplot <- plot_grid(title_plots,
     0.05,
     1
   )
-)
+) +
+  theme(plot.background = element_rect(fill = "white"))
 
 mainplot
 ```
