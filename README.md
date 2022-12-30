@@ -59,7 +59,9 @@ for assisting in framing the major direction of the case study. We would
 also like to thank [Elizabeth
 Stuart](https://www.jhsph.edu/faculty/directory/profile/1792/elizabeth-a-stuart)
 and [Aboozar
-Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/)
+Hadavand](https://www.minerva.kgi.edu/people/aboozar-hadavand-phd-assistant-professor-computational-sciences/),
+and [Alexander
+McCourt](https://publichealth.jhu.edu/faculty/3794/alexander-mccourt)
 for reviewing the case study.
 
 We would like to acknowledge [Michael
