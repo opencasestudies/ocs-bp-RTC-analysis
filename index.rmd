@@ -120,7 +120,7 @@ knitr::kable(readtime, format="markdown")
 A readability index estimates the reading difficulty level of a particular text. Flesch-Kincaid, FORCAST, and SMOG are three common readability indices that were calculated for this case study via [koRpus](https://github.com/unDocUMeantIt/koRpus). These indices provide an estimation of the minimum reading level required to comprehend this case study by grade and age. 
 
 ```{r, echo=FALSE}
-rt <- wordcountaddin::readability("index.Rmd", quiet=TRUE) # producing readability markdown table
+rt <- suppressWarnings(wordcountaddin::readability("index.Rmd", quiet=TRUE)) # producing readability markdown table
 df <- read.so::read.md(rt) %>% dplyr::select(index, grade, age) %>%  # reading table into dataframe, selecting relevant factors
   tidyr::drop_na() %>% dplyr::mutate(grade = round(as.numeric(grade)), # dropping rows with missing values, rounding age and grade columns
                                      age = round(as.numeric(age))
@@ -253,10 +253,10 @@ It is a law that specifies _if_ and _how_ citizens are allowed to have a firearm
 The [Second Amendment](https://en.wikipedia.org/wiki/Second_Amendment_to_the_United_States_Constitution){target="_blank"} to the United States Constitution guarantees the right to "keep and bear arms". The amendment was ratified in 1791 as part of the [Bill of Rights](https://en.wikipedia.org/wiki/United_States_Bill_of_Rights){target="_blank"}.
 
 ```{r, echo=FALSE, out.height = '50%', out.width = '50%', fig.align='center'}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/7/79/Bill_of_Rights_Pg1of1_AC.jpg")
+knitr::include_graphics("https://tile.loc.gov/storage-services/service/rbc/rbpe/rbpe24/rbpe244/24404400/001dq.gif")
 ```
 
-##### [[source]](https://upload.wikimedia.org/wikipedia/commons/7/79/Bill_of_Rights_Pg1of1_AC.jpg){target="_blank"}
+##### [[source]](https://www.loc.gov/item/rbpe.24404400/){target="_blank"}
 
 However, there are no federal laws about carrying firearms in public. 
 
@@ -607,7 +607,7 @@ DONOHUE_DF %>%
   ggplot(aes(x = YEAR, y = Viol_crime_rate_100k_log, color = STATE)) +
   geom_point(size = 0.5) +
   geom_line(aes(group = STATE),
-    size = 0.5,
+    linewidth = 0.5,
     show.legend = FALSE
   ) +
   geom_text_repel(
@@ -630,7 +630,7 @@ DONOHUE_DF %>%
     force = 1,
     max.iter = 9999
   ) +
-  guides(color = FALSE) +
+  guides(color = "none") +
   scale_x_continuous(
     breaks = seq(1980, 2015, by = 1),
     limits = c(1980, 2015),
@@ -966,16 +966,16 @@ comparing_analyses_plot <- ggplot(comparing_analyses) +
     labels = seq(-0.2, 0.2, by = 0.05),
     limits = c(-0.2, 0.2)
   ) +
-  geom_segment(aes(x = 1, y = 0.125, xend = 1, yend = 0.175),
+  annotate("segment", x = 1, y = 0.125, xend = 1, yend = 0.175,
     arrow = arrow(angle = 45, ends = "last", type = "open"),
-    size = 2,
+    linewidth = 2,
     color = "green",
     lineend = "butt",
     linejoin = "mitre"
   ) +
-  geom_segment(aes(x = 2, y = -0.125, xend = 2, yend = -0.175),
+  annotate("segment", x = 2, y = -0.125, xend = 2, yend = -0.175,
     arrow = arrow(angle = 45, ends = "last", type = "open"),
-    size = 2,
+    linewidth = 2,
     color = "red",
     lineend = "butt",
     linejoin = "mitre"
@@ -1002,22 +1002,10 @@ How did the above happen?
 
 The analysis data frames are very similar yet yielded very different results. 
 
-Recall that the only difference between the two models is the number of demographic variables included as covariates. The number of rows or observations is the same, as are the outcome and the other covariates included in the model. We can use the `all_equal()` function of the `dplyr` package to compare the number of columns of our Donohue-like data and our Mustard and Lott-like data.
+Recall that the only difference between the two models is the number of demographic variables included as covariates. The number of rows or observations is the same, as are the outcome and the other covariates included in the model. We can use the base R `all.equal()` function to compare the Donohue-like data and our Mustard and Lott-like data.
 
 ```{r}
-all_equal(
-  target = DONOHUE_DF,
-  current = LOTT_DF,
-  ignore_col_order = TRUE,
-  ignore_row_order = TRUE
-)
-```
-
-Using the base `dim()` function we can also look at the number of rows for each and see that the number of observations is the same for both datasets.
-
-```{r}
-dim(DONOHUE_DF)[1]
-dim(LOTT_DF)[1]
+all.equal(DONOHUE_DF, LOTT_DF)
 ```
 
 The only difference between the two data frames rests in how the demographic variables were parameterized.
@@ -1268,7 +1256,7 @@ RTC_LAW +
   Poverty_rate +
   Population_log +
   police_per_100k_lag,
-data = DONOHUE_subsets[[1]],
+data = data.frame(DONOHUE_subsets[[1]]),
 index = c("STATE", "YEAR"),
 model = "within",
 effect = "twoways"
@@ -1765,7 +1753,7 @@ vif_plot <- vif_df %>%
   ggplot(aes(x = Analysis, y = VIF)) +
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
-  geom_text(aes(.7, 18, label = "typical cutoff of 10")) +
+  annotate("text", x = .7, y = 18, label = "typical cutoff of 10") +
   labs(title = "Variance inflation factors", y = "VIF") +
   theme_minimal() +
   theme(
@@ -1780,7 +1768,7 @@ vif_plot
 We can see that analysis 2 has variables with much higher multicollinearity.
 
 
-Let's make this plot a little easier to see using the `coord_trans()` function of the `ggplot2` package with the `y ="log10"` argument. This does not change the values, but adjusts the way the y axis is displayed with diminishing distance between grid lines. 
+Let's make this plot a little easier to see using the `coord_transform()` function of the `ggplot2` package with the `y ="log10"` argument. This does not change the values, but adjusts the way the y axis is displayed with diminishing distance between grid lines. 
 
 ```{r}
 
@@ -1788,8 +1776,8 @@ vif_plot <- vif_df %>%
   ggplot(aes(x = Analysis, y = VIF)) +
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
-  geom_text(aes(.75, 13, label = "typical cutoff of 10")) +
-  coord_trans(y = "log10") +
+  annotate("text", x = .75, y = 13, label = "typical cutoff of 10") +
+  coord_transform(y = "log10") +
   labs(title = "Variance inflation factors") +
   theme_minimal() +
   theme(
@@ -1958,9 +1946,9 @@ plot_B1 <- ggplot(empty_df, aes(x = X, y = Y)) +
   ) +
   ylim(0, 10) +
   xlim(0, 10) +
-  geom_segment(aes(x = 5, y = 6, xend = 5, yend = 4.5),
+  annotate("segment", x = 5, y = 6, xend = 5, yend = 4.5,
     arrow = arrow(angle = 45, ends = "last", type = "open"),
-    size = 1.8,
+    linewidth = 1.8,
     color = "black",
     lineend = "butt",
     linejoin = "mitre"
