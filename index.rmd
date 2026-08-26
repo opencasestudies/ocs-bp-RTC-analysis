@@ -34,7 +34,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   include = TRUE, comment = NA, echo = TRUE,
-  message = FALSE, warning = FALSE, cache = FALSE, fig.width = 10, fig.height = 7,
+  message = FALSE, warning = TRUE, cache = FALSE, fig.width = 10, fig.height = 7,
   fig.align = "center", out.width = "90%"
 )
 library(here)
@@ -45,6 +45,7 @@ remotes::install_github("alistaire47/read.so")
 library(wordcountaddin)
 library(read.so)
 library(OCSdata)
+library(tidyverse)
 
 rmarkdown:::perf_timer_reset_all()
 rmarkdown:::perf_timer_start("render")
