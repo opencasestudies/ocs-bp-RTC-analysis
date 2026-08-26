@@ -34,7 +34,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   include = TRUE, comment = NA, echo = TRUE,
-  message = FALSE, warning = TRUE, cache = FALSE, fig.width = 10, fig.height = 7,
+  message = FALSE, warning = FALSE, cache = FALSE, fig.width = 10, fig.height = 7,
   fig.align = "center", out.width = "90%"
 )
 library(here)
