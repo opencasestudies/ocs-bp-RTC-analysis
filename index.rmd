@@ -39,7 +39,6 @@ knitr::opts_chunk$set(
 )
 library(here)
 library(knitr)
-library(magrittr)
 remotes::install_github("opencasestudies/OCSdata")
 remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
 remotes::install_github("alistaire47/read.so")
@@ -105,8 +104,8 @@ This case study is part of a series of public health case studies for the [Bloom
 The total reading time for this case study is calculated via [koRpus](https://github.com/unDocUMeantIt/koRpus) and shown below: 
 
 ```{r, echo=FALSE}
-readtable = text_stats("index.Rmd") # producing reading time markdown table
-readtime = read.so::read.md(readtable) %>% dplyr::select(Method, koRpus) %>% # reading table into dataframe, selecting relevant factors
+readtable <- text_stats("index.Rmd") # producing reading time markdown table
+readtime <- read.so::read.md(readtable) %>% dplyr::select(Method, koRpus) %>% # reading table into dataframe, selecting relevant factors
   dplyr::filter(Method == "Reading time") %>% # dropping unnecessary rows
   dplyr::mutate(koRpus = paste(round(as.numeric(stringr::str_split(koRpus, " ")[[1]][1])), "minutes")) %>% # rounding reading time estimate
   dplyr::mutate(Method = "koRpus") %>% dplyr::relocate(koRpus, .before = Method) %>% dplyr::rename(`Reading Time` = koRpus) # reorganizing table
@@ -120,8 +119,8 @@ knitr::kable(readtime, format="markdown")
 A readability index estimates the reading difficulty level of a particular text. Flesch-Kincaid, FORCAST, and SMOG are three common readability indices that were calculated for this case study via [koRpus](https://github.com/unDocUMeantIt/koRpus). These indices provide an estimation of the minimum reading level required to comprehend this case study by grade and age. 
 
 ```{r, echo=FALSE}
-rt = wordcountaddin::readability("index.Rmd", quiet=TRUE) # producing readability markdown table
-df = read.so::read.md(rt) %>% dplyr::select(index, grade, age) %>%  # reading table into dataframe, selecting relevant factors
+rt <- wordcountaddin::readability("index.Rmd", quiet=TRUE) # producing readability markdown table
+df <- read.so::read.md(rt) %>% dplyr::select(index, grade, age) %>%  # reading table into dataframe, selecting relevant factors
   tidyr::drop_na() %>% dplyr::mutate(grade = round(as.numeric(grade)), # dropping rows with missing values, rounding age and grade columns
                                      age = round(as.numeric(age))
                                      )
@@ -347,7 +346,6 @@ We will begin by loading the packages that we will need:
 ```{r}
 library(here)
 library(dplyr)
-library(magrittr)
 library(purrr)
 library(tibble)
 library(ggplot2)
@@ -372,7 +370,6 @@ library(OCSdata)
 ---------- |-------------
 [`here`](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
 [`dplyr`](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
-[`magrittr`](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
 [`purrr`](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
 [`tibble`](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
 [`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots 
@@ -1643,7 +1640,7 @@ Notice that this does not contain any outcome data. We will add this by taking t
 Also recall that the `d_panel_DONOHUE` data is just the Donohue data in panel format. 
 
 ```{r}
-lm_DONOHUE_data %<>%
+lm_DONOHUE_data <- lm_DONOHUE_data %>%
   mutate(Viol_crime_rate_1k_log = plm::Within(pull(
     d_panel_DONOHUE, Viol_crime_rate_1k_log
   )), effect = "twoways")
@@ -1702,7 +1699,7 @@ LOTT_fmla
 
 ```{r}
 lm_LOTT_data <- as.data.frame(model.matrix(LOTT_OUTPUT))
-lm_LOTT_data %<>%
+lm_LOTT_data <- lm_LOTT_data %>%
   mutate(Viol_crime_rate_1k_log = plm::Within(pull(
     d_panel_LOTT, Viol_crime_rate_1k_log
   ), effect = "twoways")) %>%
@@ -1746,9 +1743,9 @@ Now we will make a plot of the VIF values for both analyses. We will add text to
 
 ```{r}
 
-vif_DONOHUE %<>%
+vif_DONOHUE <- vif_DONOHUE %>%
   mutate(Analysis = "Analysis 1")
-vif_LOTT %<>%
+vif_LOTT <- vif_LOTT %>%
   mutate(Analysis = "Analysis 2")
 
 vif_df <- bind_rows(
@@ -2164,7 +2161,6 @@ and [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
-[magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html){target="_blank"} | to use the compound assignment pipe operator `%<>%`
 [purrr](https://purrr.tidyverse.org/){target="_blank"}   | to import the data in all the different excel and csv files efficiently  
 [tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
@@ -2191,7 +2187,7 @@ sessionInfo()
 
 ```{r, echo=FALSE}
 rmarkdown:::perf_timer_stop("render")
-pts = rmarkdown:::perf_timer_summary()
+pts <- rmarkdown:::perf_timer_summary()
 cat("About", round(pts$time[1]/1000 + 5), "-", round(pts$time[1]/1000 + 15),"seconds")
 ```
 
