@@ -271,7 +271,7 @@ Some require extensive effort to obtain a permit to legally carry a firearm, whi
 
 <details> <summary> Click here for more information on history of right-to-carry policies in the US. </summary>
 
-According to the [Wikipedia entry](https://en.wikipedia.org/wiki/History_of_concealed_carry_in_the_U.S.){target="_blank"} about the history of right-to-carry policies in the United States:
+According to the [Wikipedia entry](https://en.wikipedia.org/wiki/History_of_concealed_carry_in_the_United_States){target="_blank"} about the history of right-to-carry policies in the United States:
 
 > Public perception on concealed carry vs open carry has largely flipped. In the early days of the United States, open carrying of firearms, long guns and revolvers was a common and well-accepted practice. Seeing guns carried openly was not considered to be any cause for alarm. Therefore, anyone who would carry a firearm but attempt to conceal it was considered to have something to hide, and presumed to be a criminal. For this reason, concealed carry was denounced as a detestable practice in the early days of the United States.
 
@@ -1271,7 +1271,7 @@ summary(subset_1_result)
 
 Indeed, we can see that now we have an unbalanced panel with N = 1394 observations instead of 1395, as expected.
 
-Now that we have our subsets, we want to write a function to fit a panel regression using `plm()`on each subset. See [this case study](https://opencasestudies.github.io/ocs-bloomberg-vaping-case-study/){target="_blank"} for more information on writing functions.
+Now that we have our subsets, we want to write a function to fit a panel regression using `plm()`on each subset. See [this case study](https://www.opencasestudies.org/ocs-bp-vaping-case-study/){target="_blank"} for more information on writing functions.
 
 ```{r}
 fit_nls_on_bootstrap_DONOHUE <- function(subset) {
@@ -1773,7 +1773,7 @@ vif_plot
 We can see that analysis 2 has variables with much higher multicollinearity.
 
 
-Let's make this plot a little easier to see using the `coord_transform()` function of the `ggplot2` package with the `y ="log10"` argument. This does not change the values, but adjusts the way the y axis is displayed with diminishing distance between grid lines. 
+Let's make this plot a little easier to see using the `coord_trans()` function of the `ggplot2` package with the `y ="log10"` argument. This does not change the values, but adjusts the way the y axis is displayed with diminishing distance between grid lines.
 
 ```{r}
 
@@ -1782,7 +1782,7 @@ vif_plot <- vif_df %>%
   geom_jitter(width = 0.1, alpha = 0.5, size = 2) +
   geom_hline(yintercept = 10, color = "red") +
   annotate("text", x = .75, y = 13, label = "typical cutoff of 10") +
-  coord_transform(y = "log10") +
+  coord_trans(y = "log10") +
   labs(title = "Variance inflation factors") +
   theme_minimal() +
   theme(
