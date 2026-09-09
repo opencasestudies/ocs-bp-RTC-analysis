@@ -337,7 +337,7 @@ States of all other categories (shall issue, discretionary/reasonable issue, and
 3) Because our analysis is an oversimplification, the results presented here should not be used for determining policy changes; instead we suggest that users interested in such a determination consult with a specialist.
 
 
-4) The inclusion of race as an explanatory variable in an epidemiological study can be useful in certain circumstances. However, there are limitations and issues around defining, determining, and reporting race, as well as in interpreting differences in public health outcomes by race. For more information on this topic, we have included a [link](https://academic.oup.com/epirev/article/22/2/187/456942) to a paper on the use of race as a measure in epidemiology. We include race in this analysis to demonstrate and consider the limitations of what the previous papers have done to analyze the influence of RTC laws on violent crime, with a focus on multicollinearity. Thus in our analysis we have also defined race as was previously done in these papers. Furthermore, we want to point out that reporting analyses about crime with race as a variable can have very unexpected consequences and thus care should be taken. See [here](https://journals.sagepub.com/doi/full/10.1177/0963721418763931) for suggestions. Any association between demographic variables (indicating the proportion of the population from specific race and age groups) and violent crime does not necessarily indicate that the two are linked causally, as aside from the issues presented in the [article]((https://academic.oup.com/epirev/article/22/2/187/456942)), this may instead indicate higher rates of police engagement with certain racial groups due to [racial profling](https://www.aclu.org/other/racial-profiling-definition).
+4) The inclusion of race as an explanatory variable in an epidemiological study can be useful in certain circumstances. However, there are limitations and issues around defining, determining, and reporting race, as well as in interpreting differences in public health outcomes by race. For more information on this topic, we have included a [link](https://academic.oup.com/epirev/article/22/2/187/456942) to a paper on the use of race as a measure in epidemiology. We include race in this analysis to demonstrate and consider the limitations of what the previous papers have done to analyze the influence of RTC laws on violent crime, with a focus on multicollinearity. Thus in our analysis we have also defined race as was previously done in these papers. Furthermore, we want to point out that reporting analyses about crime with race as a variable can have very unexpected consequences and thus care should be taken. See [here](https://journals.sagepub.com/doi/full/10.1177/0963721418763931) for suggestions. Any association between demographic variables (indicating the proportion of the population from specific race and age groups) and violent crime does not necessarily indicate that the two are linked causally, as aside from the issues presented in the [article]((https://academic.oup.com/epirev/article/22/2/187/456942)), this may instead indicate higher rates of police engagement with certain racial groups due to [racial profiling](https://www.aclu.org/other/racial-profiling-definition).
 
 The ACLU defines racial profiling as:
 
@@ -381,7 +381,7 @@ library(OCSdata)
 [`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots 
 [`naniar`](https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html){target="_blank"}  | to quickly visualize missing data     
 [`ggrepel`](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
-[`plm`](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
+[`plm`](https://cran.r-project.org/package=plm){target="_blank"} | to work with panel data fitting fixed effects and linear regression models
 [`broom`](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
 [`GGally`](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
 [`ggcorrplot`](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
@@ -439,7 +439,7 @@ The  data was downloaded from the [US Census Bureau](https://www.census.gov/geog
 ## **Police staffing data**
 ***
 
-The following data was downloaded from the [Federal Bureau of Investigation](https://crime-data-explorer.fr.cloud.gov/downloads-and-docs){target="_blank"}. 
+The following data was downloaded from the [Federal Bureau of Investigation](https://cde.ucr.cjis.gov/LATEST/){target="_blank"}.
 
 ## **Unemployment data**
 ***
@@ -454,7 +454,7 @@ Extracted from Table 21 from [US Census Bureau Poverty Data ](https://www.census
 ## **Violent crime**
 ***
 
-Violent crime data was obtained from [here](https://www.ucrdatatool.gov/Search/Crime/State/StatebyState.cfm){target="_blank"}. 
+Violent crime data was obtained from [here](https://cde.ucr.cjis.gov/LATEST/){target="_blank"}.
 
 ## **Right-to-carry data**
 ***
@@ -481,7 +481,7 @@ We can see that only the percentage of males that were from age 15-39 of the rac
 
 The final products from our data wrangling which is described in [another case study](https://www.opencasestudies.org/ocs-bp-RTC-wrangling/){target="_blank"} are two tibbles of data each with variables selected to be similar to those used in either the Donohue or Mustard and Lott analysis. The overarching idea of this case study is to compare the model results from these two datasets, which differ only in the demographic variables. This is an oversimplification of the actual differences between the datasets and approaches taken by Donohue and Lott/Mustard, but will be useful for illustrating the impact of multicollinearity on our modeling results, which is the main objective of this case study.
 
-If you have trouble accessing the GitHub Repository, the "Wrangled_data.rda" data can be downloaded from [here](https://github.com/opencasestudies/ocs-bp-RTC-analysis/blob/master/data/Wrangled_data.rda).
+If you have trouble accessing the GitHub Repository, the "Wrangled_data.rda" data can be downloaded from [here](https://github.com/opencasestudies/ocs-bp-RTC-analysis/blob/master/data/wrangled/Wrangled_data.rda).
 
 We will load this data now. 
 
@@ -771,7 +771,7 @@ The main difference between the three sub-types are the assumptions about unobse
 
 If you are familiar with fixed and random effects in the context in the statistical literature the following econometric definitions will sound a bit different.
 
-From the `plm` package [vignette](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html):
+From the `plm` package [documentation](https://cran.r-project.org/package=plm):
 
 > In the mixed models literature,...fixed effect indicates a parameter that is assumed constant, while random effects are parameters that vary randomly around zero according to a joint multivariate normal distribution.
 
@@ -798,7 +798,7 @@ This type of panel regression makes the fewest assumptions.
 3) **random effects** - assumes that there are unknown or unobserved unique qualities about the individuals that influence the outcome variable of interest that are **not correlated** with the independent variables. Thus, the random effects model actually makes **more assumptions** than the fixed effect model. We will not consider this model here.
 
 There is quite a lot of discussion in econometrics around which model is appropriate to use and when, but we are not going to dwell on this topic here, as our main focus in this case study is on multicollinearity. However, here are some additional references on these topics for further reading:
-See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html) for more information about these different models.
+See [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf) and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models) and [here](https://cran.r-project.org/package=plm) for more information about these different models.
 
 
 ## **Donohue, et al.**
@@ -836,7 +836,7 @@ As discussed above, there are different types of panel data analysis, and which 
 There are three main options for the `effect` argument:
 1) individual  - model for the effect of individual identity
 2) time - model for the effect of time
-3) twoways - meaning modeling for the effect of both individual identity and time  
+3) two ways - meaning modeling for the effect of both individual identity and time  
 
 There are four main options for the `model` argument:  
 1) pooling - standard pooled ordinary least squares regression model  
@@ -889,7 +889,7 @@ As discussed above, we are choosing to use a fixed effects model because we beli
 
 Finally, we could also perform a test to evaluate if there is indeed an individual (state) effect and a time effect in our model using the `plmtest()` function of the `plm` package. 
 
-For more information on these tests and this package, see [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
+For more information on these tests and this package, see [here](https://cran.r-project.org/package=plm){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
 
 
 ## **Mustard and Lott**
@@ -1164,7 +1164,7 @@ To do so we will perform a process called [resampling](https://en.wikipedia.org/
 
 To do this we will use some functions in the `rsample` package which is very useful for splitting data in various ways.
 
-We will use the `loo_cv()` function which stands for **leave one out** [cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)){target="_blank"}. This will allow us to split our data into every possible subset where a unique observation is left out of the data.
+We will use the `loo_cv()` function which stands for **leave one out** [cross validation](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29){target="_blank"}. This will allow us to split our data into every possible subset where a unique observation is left out of the data.
 
 This function will however only prepare the data to be split.
 
@@ -1913,7 +1913,7 @@ To do so we are going to create a plot with a large label in the middle containi
 
 To create our plot we will first plot values from 1-10 for both the x and y axis, allowing us to center the formula at the x and y values of 5.
 
-To type the formula we will use [LaTeX mathematical notation](https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html){target="_blank"}.
+To type the formula we will use [LaTeX mathematical notation](https://rpruim.github.io/s341/S19/from-class/MathinRmd.html){target="_blank"}.
 
 The start and end of inline mathematical formulas are specified using dollar signs (`$`).   
 Subscripts are written by using an underscore (`_`) and brackets (`{}`) indicate the start and end of the subscript.   
@@ -2135,13 +2135,13 @@ Please see [this case study](https://opencasestudies.github.io/ocs-bp-co2-emissi
 [Variance inflation factor (VIF)](https://en.wikipedia.org/wiki/Variance_inflation_factor){target="_blank"}   
 [$R^2$ coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination){target="_blank"}   
 [Ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization){target="_blank"}  
-[LaTeX mathematical notation](https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html){target="_blank"}   
+[LaTeX mathematical notation](https://rpruim.github.io/s341/S19/from-class/MathinRmd.html){target="_blank"}
 
 For more information on linear regression see this [book](https://rafalab.github.io/dsbook/linear-models.html#linear-regression-in-the-tidyverse){target="_blank"} and this [case study](https://opencasestudies.github.io/ocs-bp-diet/){target="_blank"}.
 
 For more information on the different types of panel regression models see this [book](https://bookdown.org/ccolonescu/RPoE4/panel-data-models.html),  [here](https://www.bauer.uh.edu/rsusmel/phd/ec1-15.pdf), and [here](https://sites.google.com/site/econometricsacademy/econometrics-models/panel-data-models).
 
-For more information on implementing panel regression in R using the `plm` package, see [here](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
+For more information on implementing panel regression in R using the `plm` package, see [here](https://cran.r-project.org/package=plm){target="_blank"}  and [here](http://www.princeton.edu/~otorres/Panel101R.pdf){target="_blank"}.
 
 For more information on multicollinearity and VIF, see this [article](https://link.springer.com/content/pdf/10.1007/s11135-006-9018-6.pdf){target="_blank"}.DOI 10.1007/s11135-006-9018-6
 
@@ -2163,7 +2163,7 @@ and [here](http://karthur.org/2019/implementing-fixed-effects-panel-models-in-r.
 [tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with `dplyr`/`stringr`/`tidyr`/`purrr`  
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}     | to create plots   
 [ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap  
-[plm](https://cran.r-project.org/web/packages/plm/vignettes/plmPackage.html){target="_blank"} | to work with panel data fitting fixed effects and linear regression models  
+[plm](https://cran.r-project.org/package=plm){target="_blank"} | to work with panel data fitting fixed effects and linear regression models
 [broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html){target="_blank"} | to create nicely formatted model output  
 [GGally](https://github.com/ggobi/ggally){target="_blank"} | to extend ggplot2 functionality to easily create more complex plots  
 [ggcorrplot](https://www.rdocumentation.org/packages/ggcorrplot/versions/0.1.3){target="_blank"} | to easily visualize a correlation matrix  
