@@ -681,8 +681,8 @@ skimr::skim(DONOHUE_DF)
 ```
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "skim1.png"))
-knitr::include_graphics(here("img", "skim2.png"))
+knitr::include_graphics(here("img", "skim1.PNG"))
+knitr::include_graphics(here("img", "skim2.PNG"))
 ```
 
 ```{r, eval=FALSE}
@@ -690,9 +690,9 @@ skimr::skim(LOTT_DF)
 ```
 
 ```{r, echo=FALSE, out.height = '100%', out.width = '100%', fig.align='center'}
-knitr::include_graphics(here("img", "skim3.png"))
-knitr::include_graphics(here("img", "skim4.png"))
-knitr::include_graphics(here("img", "skim5.png"))
+knitr::include_graphics(here("img", "skim3.PNG"))
+knitr::include_graphics(here("img", "skim4.PNG"))
+knitr::include_graphics(here("img", "skim5.PNG"))
 ```
 
 We can see from this function that we have the number of variables of the class types that we expect for each tibble. We can also see that the means of the variables that should be the same for each tibble are in fact the same. 
