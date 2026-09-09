@@ -37,6 +37,11 @@ knitr::opts_chunk$set(
   message = FALSE, warning = FALSE, cache = FALSE, fig.width = 10, fig.height = 7,
   fig.align = "center", out.width = "90%"
 )
+# Install packages used below that are not included in the standard package list.
+install.packages(c(
+  "car", "cowplot", "GGally", "ggcorrplot", "ggrepel", "latex2exp",
+  "naniar", "plm", "rsample", "skimr"
+))
 library(here)
 library(knitr)
 library(magrittr)
